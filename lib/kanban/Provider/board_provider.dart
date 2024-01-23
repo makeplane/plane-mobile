@@ -137,7 +137,7 @@ class BoardProvider extends ChangeNotifier {
               const SizedBox(
                 width: 10,
               ),
-              data[i].leading!,
+              // data[i].leading!,
               const SizedBox(
                 width: 10,
               ),

@@ -19,7 +19,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/mixins/widget_state_mixin.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/selected_label_widget.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/selected_label_widget.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/delete_module_sheet.dart';
 
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Modules/ModuleDetail/module_issues_page.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/utils/constants.dart';
 import '/utils/enums.dart';
@@ -37,14 +37,13 @@ class _ModuleCardState extends ConsumerState<ModuleCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CycleDetail(
+            builder: (context) => ModuleDetail(
               moduleId: widget.isFav
                   ? modulesProvider.favModules[widget.index]['id']
                   : modulesProvider.modules[widget.index]['id'],
               moduleName: widget.isFav
                   ? modulesProvider.favModules[widget.index]['name']
                   : modulesProvider.modules[widget.index]['name'],
-              fromModule: true,
             ),
           ),
         );

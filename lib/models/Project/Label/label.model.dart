@@ -10,19 +10,12 @@ part 'label.model.g.dart';
 @freezed
 class LabelModel with _$LabelModel {
   const factory LabelModel({
-    required String id,
-    required DateTime created_at,
-    required DateTime updated_at,
-    required String name,
-    required String description,
-    required String color,
-    required String created_by,
-    required String updated_by,
-    required String project,
-    required ProjectLiteModel project_detail,
-    required String workspace,
-    required WorkspaceLiteModel workspace_detail,
     String? parent,
+    required String name,
+    required String color,
+    required String id,
+    required String project_id,
+    required String workspace_id,
     required double sort_order,
   }) = _LabelModel;
 

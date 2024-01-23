@@ -9,7 +9,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/utils/global_functions.dart';
@@ -21,7 +21,7 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class IssuesProvider extends ChangeNotifier {
   IssuesProvider(ChangeNotifierProviderRef<IssuesProvider> this.ref);
@@ -328,9 +328,9 @@ class IssuesProvider extends ChangeNotifier {
         items: items,
         shrink: j >= shrinkStates.length ? false : shrinkStates[j],
         index: j,
-        width: issues.projectView == IssueLayout.list
-            ? MediaQuery.of(Const.globalKey.currentContext!).size.width
-            : (width > 500 ? 400 : width * 0.8),
+        // width: issues.projectView == IssueLayout.list
+        //     ? MediaQuery.of(Const.globalKey.currentContext!).size.width
+        //     : (width > 500 ? 400 : width * 0.8),
         // shrink: shrinkStates[count++],
         title: issues.groupBY == GroupBY.labels && label != null
             ? label.name[0].toString().toUpperCase() +
@@ -374,7 +374,7 @@ class IssuesProvider extends ChangeNotifier {
               width: 10,
             ),
             SizedBox(
-              width: element.width - 150,
+              // width: element.width - 150,
               child: CustomText(
                 element.title.toString(),
                 type: FontStyle.Large,

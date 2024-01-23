@@ -15,12 +15,14 @@ class ViewsSheet extends ConsumerStatefulWidget {
     this.cycleId,
     this.fromView = false,
     this.isArchived = false,
+    this.moduleId,
     super.key,
   });
   final Enum issueCategory;
   final IssueLayout projectView;
   final bool fromView;
   final String? cycleId;
+  final String? moduleId;
   final bool isArchived;
 
   @override
@@ -783,7 +785,8 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                             IssueCategory.moduleIssues) {
                           modulesProvider.filterModuleIssues(
                             slug: slug,
-                            projectId: projID, ref: ref,
+                            projectId: projID,
+                            ref: ref,
                           );
                         } else {
                           issueProvider.filterIssues(
@@ -827,10 +830,7 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                       } else if (widget.issueCategory ==
                           IssueCategory.moduleIssues) {
                         modulesProvider.filterModuleIssues(
-                          slug: slug,
-                          projectId: projID,
-                          ref: ref
-                        );
+                            slug: slug, projectId: projID, ref: ref);
                       } else {
                         issueProvider.filterIssues(
                             fromViews: false,
@@ -975,6 +975,12 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         cyclesProvider.applyCycleIssuesView(ref: ref);
                       } else if (widget.issueCategory ==
                           IssueCategory.moduleIssues) {
+                        setState(() {
+                          modulesProvider.issues.groupBY =
+                              Issues.toGroupBY(groupBy);
+                          modulesProvider.issues.orderBY =
+                              Issues.toOrderBY(orderBy);
+                        });
                         modulesProvider.applyModuleIssuesView(ref: ref);
                       } else {
                         issueProvider.applyIssueView();
@@ -1011,23 +1017,25 @@ class _ViewsSheetState extends ConsumerState<ViewsSheet> {
                         //   issueCategory: widget.issueCategory,
                         // );
                         // cyclesProvider.issues.displayProperties = properties;
-                        // cyclesProvider.showEmptyStates = showEmptyStates;
+                        cyclesProvider.showEmptyStates = showEmptyStates;
+                        cyclesProvider.updateCycleView();
                       } else if (widget.issueCategory ==
                           IssueCategory.moduleIssues) {
-                        issueProvider.updateIssueProperties(
-                          properties: properties,
-                          issueCategory: widget.issueCategory,
-                        );
-                        modulesProvider.issues.displayProperties = properties;
+                        // issueProvider.updateIssueProperties(
+                        //   properties: properties,
+                        //   issueCategory: widget.issueCategory,
+                        // );
+                        // modulesProvider.issues.displayProperties = properties;
 
                         modulesProvider.showEmptyStates = showEmptyStates;
+                        modulesProvider.updateModuleView();
                       } else {
-                        issueProvider.updateIssueProperties(
-                          properties: properties,
-                          issueCategory: widget.issueCategory,
-                        );
-                        issueProvider.issues.displayProperties = properties;
-                        issueProvider.showEmptyStates = showEmptyStates;
+                        // issueProvider.updateIssueProperties(
+                        //   properties: properties,
+                        //   issueCategory: widget.issueCategory,
+                        // );
+                        // issueProvider.issues.displayProperties = properties;
+                        // issueProvider.showEmptyStates = showEmptyStates;
                       }
                       if (widget.issueCategory == IssueCategory.issues) {
                         issueProvider.updateProjectView();

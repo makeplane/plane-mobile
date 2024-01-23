@@ -5,7 +5,7 @@ import 'package:plane/bottom_sheets/page_filter_sheet.dart';
 import 'package:plane/bottom_sheets/type_sheet.dart';
 import 'package:plane/bottom_sheets/views_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 import 'package:plane/screens/MainScreens/Projects/create_page_screen.dart';
 import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/enums.dart';

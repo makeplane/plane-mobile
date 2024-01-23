@@ -8,7 +8,7 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 import 'custom_rich_text.dart';
 import 'custom_text.dart';
 
@@ -116,28 +116,28 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                   : null,
             ),
             child: Container(
-                width: widget.issueCategory == IssueCategory.cycleIssues &&
-                        ref
-                                .watch(ProviderList.issuesProvider)
-                                .issues
-                                .projectView ==
-                            IssueLayout.list
-                    ? width
-                    : widget.issueCategory == IssueCategory.moduleIssues
-                        ? width
-                        : widget.issueCategory == IssueCategory.cycleIssues
-                            ? width
-                            : widget.issueCategory == IssueCategory.myIssues
-                                ? ref
-                                    .watch(ProviderList.myIssuesProvider)
-                                    .issues
-                                    .issues[widget.listIndex]
-                                    .width
-                                : ref
-                                    .watch(ProviderList.issuesProvider)
-                                    .issues
-                                    .issues[0]
-                                    .width,
+                // width: widget.issueCategory == IssueCategory.cycleIssues &&
+                //         ref
+                //                 .watch(ProviderList.issuesProvider)
+                //                 .issues
+                //                 .projectView ==
+                //             IssueLayout.list
+                //     ? width
+                //     : widget.issueCategory == IssueCategory.moduleIssues
+                //         ? width
+                //         : widget.issueCategory == IssueCategory.cycleIssues
+                //             ? width
+                //             : widget.issueCategory == IssueCategory.myIssues
+                //                 ? ref
+                //                     .watch(ProviderList.myIssuesProvider)
+                //                     .issues
+                //                     .issues[widget.listIndex]
+                //                     .width
+                //                 : ref
+                //                     .watch(ProviderList.issuesProvider)
+                //                     .issues
+                //                     .issues[0]
+                //                     .width,
                 padding: const EdgeInsets.only(
                   left: 15.0,
                   right: 10,
@@ -650,6 +650,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
 
   Widget listCard() {
     final themeProvider = ref.read(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     dynamic provider;
     if (widget.issueCategory == IssueCategory.cycleIssues) {
       provider = ref.watch(ProviderList.cyclesProvider);
@@ -728,8 +729,7 @@ class _IssueCardWidgetState extends ConsumerState<IssueCardWidget> {
                       color: themeProvider.themeManager.placeholderTextColor,
                       widgets: [
                         TextSpan(
-                            text: provider.issuesResponse[widget.cardIndex]
-                                ['project_detail']['identifier'],
+                            text: projectProvider.currentProject['identifier'],
                             style: TextStyle(
                               color: themeProvider
                                   .themeManager.placeholderTextColor,

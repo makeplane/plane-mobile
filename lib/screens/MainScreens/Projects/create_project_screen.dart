@@ -51,6 +51,9 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
   @override
   void initState() {
     generateEmojis();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(ProviderList.projectProvider).getUnsplashImages();
+    });
     super.initState();
   }
 
@@ -188,8 +191,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                           enableDrag: true,
                                           isScrollControlled: true,
                                           constraints: BoxConstraints(
-                                            maxHeight: height *
-                                                0.8,
+                                            maxHeight: height * 0.8,
                                           ),
                                           shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(

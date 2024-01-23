@@ -7,7 +7,7 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -17,7 +17,7 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class ModuleProvider with ChangeNotifier {
   ModuleProvider(ChangeNotifierProviderRef<ModuleProvider> this.ref);
@@ -25,7 +25,6 @@ class ModuleProvider with ChangeNotifier {
   final modules = [];
   final favModules = [];
   Map createModule = {};
-  int cycleDetailSelectedIndex = 0;
   Map<String, dynamic> moduleDetailsData = {};
   List<String> selectedIssues = [];
   int statusIndex = -1;
@@ -70,6 +69,7 @@ class ModuleProvider with ChangeNotifier {
   Map filterIssues = {};
   List<dynamic> moduleIssuesList = [];
   Map issueProperty = {};
+  Map moduleView = {};
   bool showEmptyStates = true;
   bool isIssuesEmpty = false;
   int moduleDetailSelectedIndex = 0;
@@ -80,6 +80,7 @@ class ModuleProvider with ChangeNotifier {
   StateEnum moduleIssueState = StateEnum.loading;
   StateEnum deleteModuleState = StateEnum.empty;
   StateEnum moduleLinkState = StateEnum.empty;
+  StateEnum moduleViewState = StateEnum.empty;
 
   void changeIndex(int index) {
     statusIndex = index;
@@ -103,6 +104,11 @@ class ModuleProvider with ChangeNotifier {
   }
 
   void setState() {
+    notifyListeners();
+  }
+
+  void changeState(StateEnum state) {
+    state = StateEnum.loading;
     notifyListeners();
   }
 
@@ -402,6 +408,148 @@ class ModuleProvider with ChangeNotifier {
     }
   }
 
+  Future getModuleView({bool reset = false, required String moduleId}) async {
+    moduleViewState = StateEnum.loading;
+    if (reset) {
+      notifyListeners();
+    }
+    try {
+      var url = APIs.moduleIssueView
+          .replaceAll(
+              "\$SLUG",
+              ref!
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace
+                  .workspaceSlug)
+          .replaceAll('\$PROJECTID',
+              ref!.read(ProviderList.projectProvider).currentProject['id'])
+          .replaceAll('\$MODULEID', moduleId);
+      final response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: url,
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      moduleView = response.data;
+      issues.projectView = moduleView['display_filters']['layout'] == 'list'
+          ? IssueLayout.list
+          : moduleView['display_filters']['layout'] == 'calendar'
+              ? IssueLayout.calendar
+              : moduleView['display_filters']['layout'] == 'spreadsheet'
+                  ? IssueLayout.spreadsheet
+                  : IssueLayout.kanban;
+      issues.showSubIssues = moduleView['display_filters']['sub_issue'] ?? true;
+      issues.groupBY =
+          Issues.toGroupBY(moduleView["display_filters"]["group_by"]);
+      issues.orderBY =
+          Issues.toOrderBY(moduleView["display_filters"]["order_by"]);
+      issues.issueType =
+          Issues.toIssueType(moduleView["display_filters"]["type"]);
+      issues.filters.priorities =
+          (moduleView["filters"]["priority"] == 'none'
+                  ? []
+                  : moduleView["filters"]["priority"]) ??
+              [];
+      issues.filters.states = moduleView["filters"]["state"] ?? [];
+      issues.filters.assignees = moduleView["filters"]["assignees"] ?? [];
+      issues.filters.createdBy = moduleView["filters"]["created_by"] ?? [];
+      issues.filters.labels = moduleView["filters"]["labels"] ?? [];
+      issues.filters.targetDate = moduleView["filters"]["target_date"] ?? [];
+      issues.filters.startDate = moduleView["filters"]["start_date"] ?? [];
+      issues.filters.subscriber = moduleView["filters"]["subscriber"] ?? [];
+      issues.filters.stateGroup = moduleView["filters"]["state_group"] ?? [];
+      showEmptyStates = moduleView["display_filters"]["show_empty_groups"];
+
+      if (issues.groupBY == GroupBY.none) {
+        issues.projectView = IssueLayout.list;
+      }
+      if (reset) {
+        updateModuleView();
+      }
+      moduleViewState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.response.toString());
+      issues.projectView = IssueLayout.kanban;
+      moduleViewState = StateEnum.error;
+      notifyListeners();
+    }
+  }
+
+  Future updateModuleView(
+      {bool isArchive = false, bool setDefault = false}) async {
+    final Map<String, dynamic> view = {
+      "view_props": {
+        "calendarDateRange": "",
+        "collapsed": false,
+        "filterIssue": null,
+        "filters": {
+          // 'type': null,
+          // "priority": filterPriority,
+          if (issues.filters.priorities.isNotEmpty)
+            "priority": issues.filters.priorities,
+          if (issues.filters.states.isNotEmpty) "state": issues.filters.states,
+          if (issues.filters.assignees.isNotEmpty)
+            "assignees": issues.filters.assignees,
+          if (issues.filters.createdBy.isNotEmpty)
+            "created_by": issues.filters.createdBy,
+          if (issues.filters.labels.isNotEmpty) "labels": issues.filters.labels,
+          if (issues.filters.targetDate.isNotEmpty)
+            "target_date": issues.filters.targetDate,
+          if (issues.filters.startDate.isNotEmpty)
+            "start_date": issues.filters.startDate,
+          if (issues.filters.subscriber.isNotEmpty)
+            "subscriber": issues.filters.subscriber,
+          if (issues.filters.stateGroup.isNotEmpty)
+            "state_group": issues.filters.stateGroup,
+        },
+        "display_filters": {
+          "group_by": Issues.fromGroupBY(issues.groupBY),
+          "order_by": Issues.fromOrderBY(issues.orderBY),
+          "type": Issues.fromIssueType(issues.issueType),
+          "show_empty_groups": showEmptyStates,
+          if (!isArchive)
+            "layout": issues.projectView == IssueLayout.kanban
+                ? 'kanban'
+                : issues.projectView == IssueLayout.list
+                    ? 'list'
+                    : issues.projectView == IssueLayout.calendar
+                        ? 'calendar'
+                        : 'spreadsheet',
+          "sub_issue": false,
+        },
+      }
+    };
+    if (setDefault) {
+      view['default_props'] = view['view_props'];
+    }
+    try {
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.moduleIssueView
+            .replaceAll(
+                "\$SLUG",
+                ref!
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace
+                    .workspaceSlug)
+            .replaceAll('\$PROJECTID',
+                ref!.read(ProviderList.projectProvider).currentProject['id'])
+            .replaceAll('\$MODULEID', currentModule['id']),
+        hasBody: true,
+        data: view,
+        httpMethod: HttpMethod.patch,
+      );
+      moduleViewState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.response.toString());
+      moduleViewState = StateEnum.error;
+      notifyListeners();
+    }
+    notifyListeners();
+  }
+
   void applyModuleIssuesView({required WidgetRef ref}) {
     final labelIds =
         ref.read(ProviderList.labelProvider.notifier).getLabelIds();
@@ -458,7 +606,7 @@ class ModuleProvider with ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      moduleIssuesList = response.data.values.toList();
+      moduleIssuesList = response.data;
       final organizedIssues = IssueFilterHelper.organizeIssues(
           moduleIssuesList, issues.groupBY, issues.orderBY,
           labelIDs: labelNotifier.getLabelIds(),

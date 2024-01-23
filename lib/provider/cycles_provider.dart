@@ -10,7 +10,7 @@ import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -20,7 +20,7 @@ import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
 
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);
@@ -165,10 +165,6 @@ class CyclesProvider with ChangeNotifier {
         data: data,
       );
 
-      // log('CYCLES =========> ${response.data.toString()}');
-
-      // * RESPONSE FROM API CONVERTED TO MODEL IS THROWING ERRORS FOR VIEW PROPS ATTRIBUTE * //
-      // cyclesData = CyclesModel.fromJson(response.data);
       if (query == 'all') {
         cyclesAllData = [];
         cycleFavoriteData = [];
@@ -260,7 +256,7 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  void changeStateToLoading(StateEnum state) {
+  void changeState(StateEnum state) {
     state = StateEnum.loading;
     notifyListeners();
   }
@@ -294,7 +290,6 @@ class CyclesProvider with ChangeNotifier {
                     : HttpMethod.patch,
       );
       if (method == CRUD.read) {
-        // log('CYCLE DETAILS =========> ${response.data.toString()}');
         cyclesDetailsData = response.data;
       }
       if (method == CRUD.update) {
@@ -798,14 +793,12 @@ class CyclesProvider with ChangeNotifier {
           .replaceAll('\$PROJECTID',
               ref!.read(ProviderList.projectProvider).currentProject['id'])
           .replaceAll('\$CYCLEID', cycleId);
-      log('THIS IS CYCLE VIEW URL: $url');
       final response = await DioConfig().dioServe(
         hasAuth: true,
         url: url,
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      log(response.toString());
       cycleView = response.data;
       issues.projectView = cycleView['display_filters']['layout'] == 'list'
           ? IssueLayout.list
@@ -898,7 +891,9 @@ class CyclesProvider with ChangeNotifier {
         .replaceAll('\$PROJECTID', projectId)
         .replaceAll('\$CYCLEID', cycleID!)
         .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
+    url = '$url${IssueFilterHelper.getFilterQueryParams(issues.filters)}';
     url = '$url&sub_issue=${issues.showSubIssues}&show_empty_groups=true';
+    log(url.toString());
     try {
       final response = await DioConfig().dioServe(
         hasAuth: true,
@@ -906,7 +901,7 @@ class CyclesProvider with ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-      // log('CYCLE ISSUES RESPONSE: ${response.data}');
+      // cycleIssuesList = [];
       cycleIssuesList = response.data;
       final organizedIssues = IssueFilterHelper.organizeIssues(
           cycleIssuesList, issues.groupBY, issues.orderBY,
@@ -1015,7 +1010,7 @@ class CyclesProvider with ChangeNotifier {
             .replaceAll('\$CYCLEID', currentCycle['id']),
         hasBody: true,
         data: view,
-        httpMethod: HttpMethod.post,
+        httpMethod: HttpMethod.patch,
       );
       cycleViewState = StateEnum.success;
       notifyListeners();

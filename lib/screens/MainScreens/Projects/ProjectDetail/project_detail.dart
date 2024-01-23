@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/project_details_cycles.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Cycles/project_details_cycles.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Views/views.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/widgets/floating_action_button.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/empty.dart';

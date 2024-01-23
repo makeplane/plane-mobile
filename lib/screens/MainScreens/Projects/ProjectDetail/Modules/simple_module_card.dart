@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/bottom_sheets/delete_cycle_sheet.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Modules/ModuleDetail/module_issues_page.dart';
 import 'package:plane/utils/string_manager.dart';
 import '/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Cycles/CycleDetail/cycle_issues_page.dart';
 
 class SimpleModuleCard extends ConsumerStatefulWidget {
   const SimpleModuleCard({
@@ -36,14 +37,13 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CycleDetail(
+            builder: (context) => ModuleDetail(
               moduleId: widget.isFav
                   ? modulesProvider.favModules[widget.index]['id']
                   : modulesProvider.modules[widget.index]['id'],
               moduleName: widget.isFav
                   ? modulesProvider.favModules[widget.index]['name']
                   : modulesProvider.modules[widget.index]['name'],
-              fromModule: true,
             ),
           ),
         );

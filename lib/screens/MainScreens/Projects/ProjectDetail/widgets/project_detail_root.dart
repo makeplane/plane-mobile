@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issues_tab.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Cycles/project_details_cycles.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/issues_tab.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Modules/module_screen.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Views/views.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/models/project_detail_models.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/widgets/project_detail_bottom_actions.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/widgets/project_detail_tabs.dart';
@@ -82,7 +85,15 @@ class _ProjectDetailRootState extends ConsumerState<ProjectDetailRoot> {
                     widget.onTabChange(page);
                   },
                   itemBuilder: (ctx, index) {
-                    return index == 0 ? const IssuesTab() : Container();
+                    return widget.selectedTab == 0
+                        ? const IssuesTab()
+                        : widget.selectedTab == 1
+                            ? const CycleWidget()
+                            : widget.selectedTab == 2
+                                ? const ModuleScreen()
+                                : widget.selectedTab == 3
+                                    ? const Views()
+                                    : Container();
                   },
                   itemCount: TABS.length,
                 ),

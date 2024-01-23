@@ -11,7 +11,6 @@ import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/modules_provider.dart';
 import 'package:plane/provider/my_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/provider/states_provider.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/utils/constants.dart';
@@ -72,14 +71,20 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
           setState(() {});
         },
         ref: ref);
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-
+    log(ref
+        .read(ProviderList.cyclesProvider)
+        .issues
+        .filters
+        .priorities
+        .toString());
+    log(state.filters.priorities.toString());
+    
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Stack(
@@ -161,10 +166,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       ? Container()
                       : _saveView(state: state, ref: ref),
                   _applyFilterButton(
-                    state: state,
-                    context: context,
-                    cycleOrModuleId: widget.cycleOrModuleId
-                  )
+                      state: state,
+                      context: context,
+                      cycleOrModuleId: widget.cycleOrModuleId)
                 ],
               ),
             ),

@@ -21,8 +21,6 @@ class EstimatsPage extends ConsumerStatefulWidget {
 class _EstimatsPageState extends ConsumerState<EstimatsPage> {
   @override
   void initState() {
-    log(ref.read(ProviderList.projectProvider).currentProject.toString());
-
     super.initState();
   }
 

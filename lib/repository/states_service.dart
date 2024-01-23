@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/models/Project/State/states_model.dart';
 import 'package:plane/services/dio_service.dart';
@@ -87,14 +85,12 @@ class StatesService {
       {required Map data,
       required String slug,
       required String projectId,
-      required String stateId
-      }) async {
+      required String stateId}) async {
     try {
       final response = await DioConfig().dioServe(
           hasAuth: true,
-          url: '${APIs.states
-              .replaceFirst('\$SLUG', slug)
-              .replaceFirst('\$PROJECTID', projectId)}$stateId/',
+          url:
+              '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$stateId/',
           hasBody: true,
           httpMethod: HttpMethod.patch,
           data: data);
@@ -106,25 +102,21 @@ class StatesService {
   }
 
   Future<Either<void, DioException>> deleteState(
-      {
-      required String slug,
+      {required String slug,
       required String projectId,
-      required String stateId
-      }) async {
+      required String stateId}) async {
     try {
       final response = await DioConfig().dioServe(
-          hasAuth: true,
-          url: '${APIs.states
-              .replaceFirst('\$SLUG', slug)
-              .replaceFirst('\$PROJECTID', projectId)}$stateId/',
-          hasBody: true,
-          httpMethod: HttpMethod.delete,
-        );
+        hasAuth: true,
+        url:
+            '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$stateId/',
+        hasBody: true,
+        httpMethod: HttpMethod.delete,
+      );
       return Left(response.data);
     } on DioException catch (err) {
       log(err.response.toString());
       return Right(err);
     }
   }
-
 }

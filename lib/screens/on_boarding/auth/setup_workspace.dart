@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/config/config_variables.dart';
@@ -194,7 +195,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                             left: 15,
                                           ),
                                           child: CustomText(
-                                           Config.webUrl!,
+                                            //  Config.webUrl!,
+                                            dotenv.env['WEB_URL'].toString(),
                                             type: FontStyle.Small,
                                             color: themeProvider.themeManager
                                                 .placeholderTextColor,
@@ -233,8 +235,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                       onTap: () {
                                         FocusScope.of(context).unfocus();
                                         BottomSheetHelper.showBottomSheet(
-                                            context,
-                                            const CompanySize(),
+                                            context, const CompanySize(),
                                             constraints: const BoxConstraints(
                                               maxHeight: 400,
                                             ));

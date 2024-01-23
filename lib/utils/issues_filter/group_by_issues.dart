@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:plane/models/Project/State/states_model.dart';
 import 'package:plane/utils/enums.dart';
 
 class IssuesGroupBYHelper {
@@ -10,20 +13,19 @@ class IssuesGroupBYHelper {
   ];
 
   static Map<String, List<dynamic>> _groupByState(
-      List<dynamic> issues, Map<dynamic, dynamic> states) {
+      List<dynamic> issues, Map<String, StatesModel> states) {
     Map<String, List<dynamic>> groupedIssues = {};
-    Map<String, List<dynamic>> stateGroups = {};
+    Map<String, List<StatesModel>> stateGroups = {};
     for (final state in defaultStateGroups) {
-      stateGroups[state] =
-          states.values.where((e) => e['group'] == state).toList();
+      stateGroups[state] = states.values.where((e) =>  e.group == state).toList();
       stateGroups[state]!
-          .sort((a, b) => a['sequence'].compareTo(b['sequence']));
+          .sort((a, b) => a.sequence.compareTo(b.sequence));
     }
 
     for (final stateGroup in stateGroups.keys) {
       for (final state in stateGroups[stateGroup]!) {
-        groupedIssues[state['id']] =
-            issues.where((issue) => issue['state_id'] == state['id']).toList();
+        groupedIssues[state.id] =
+            issues.where((issue) => issue['state_id'] == state.id).toList();
       }
     }
     return groupedIssues;

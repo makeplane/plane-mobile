@@ -18,13 +18,27 @@ class _FilterState {
 
         isFilterDataEmpty =
             isFilterEmpty(tempFilters: myIssuesProvider.issues.filters);
-      } else {
+      } else if (issueCategory == IssueCategory.issues) {
         final issuesProvider = ref.read(ProviderList.issuesProvider);
         filters =
             Filters.fromJson(Filters.toJson(issuesProvider.issues.filters));
 
         isFilterDataEmpty =
             isFilterEmpty(tempFilters: issuesProvider.issues.filters);
+      } else if (issueCategory == IssueCategory.cycleIssues) {
+        final cyclesProvider = ref.read(ProviderList.cyclesProvider);
+        filters =
+            Filters.fromJson(Filters.toJson(cyclesProvider.issues.filters));
+
+        isFilterDataEmpty =
+            isFilterEmpty(tempFilters: cyclesProvider.issues.filters);
+      } else if (issueCategory == IssueCategory.moduleIssues) {
+        final modulesProvider = ref.read(ProviderList.modulesProvider);
+        filters =
+            Filters.fromJson(Filters.toJson(modulesProvider.issues.filters));
+
+        isFilterDataEmpty =
+            isFilterEmpty(tempFilters: modulesProvider.issues.filters);
       }
     } else {
       filters = Filters.fromJson(filtersData["Filters"]);
@@ -259,13 +273,13 @@ class _FilterState {
                 ? modulesProvider.issues.filters = filters
                 : issuesProvider.issues.filters = filters;
     if (issueCategory == IssueCategory.cycleIssues) {
-      // cyclesProvider.updateProjectView();
+      cyclesProvider.updateCycleView();
       cyclesProvider.filterCycleIssues(
-          slug: slug, projectId: projID, ref: ref, cycleID: cycleOrModuleId);
+          slug: slug, projectId: projID, cycleID: cycleOrModuleId, ref: ref);
     } else if (issueCategory == IssueCategory.moduleIssues) {
-      modulesProvider
-          .filterModuleIssues(slug: slug, projectId: projID, ref: ref)
-          .then((value) => modulesProvider.initializeBoard());
+      modulesProvider.updateModuleView();
+      modulesProvider.filterModuleIssues(
+          slug: slug, projectId: projID, ref: ref, moduleID: cycleOrModuleId);
     } else if (issueCategory == IssueCategory.myIssues) {
       myIssuesProvider.updateMyIssueView();
       myIssuesProvider.filterIssues();

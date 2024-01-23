@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/simple_module_card.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Modules/simple_module_card.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/empty.dart';
 import 'package:plane/widgets/loading_widget.dart';

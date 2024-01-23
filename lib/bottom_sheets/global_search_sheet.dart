@@ -12,11 +12,12 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/Import%20&%20Export/import_export.dart';
 import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
 import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/workspace_general.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/create_cycle.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_module_detail.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ModulesTab/create_module.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Cycles/create_cycle.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Cycles/CycleDetail/cycle_issues_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Modules/create_module.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Modules/ModuleDetail/module_issues_page.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Views/views_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/ProjectDetail/project_detail.dart';
 import 'package:plane/screens/MainScreens/Projects/create_project_screen.dart';
 import 'package:plane/screens/create_view_screen.dart';
@@ -28,7 +29,7 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class GlobalSearchSheet extends ConsumerStatefulWidget {
   const GlobalSearchSheet({super.key});
@@ -1011,14 +1012,13 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         Navigator.push(
                           Const.globalKey.currentContext!,
                           MaterialPageRoute(
-                            builder: (context) => CycleDetail(
+                            builder: (context) => ModuleDetail(
                               moduleId:
                                   globalSearchProvider.data!.modules[index].id,
                               moduleName: globalSearchProvider
                                   .data!.modules[index].name,
                               projId: globalSearchProvider
                                   .data!.modules[index].projectId,
-                              fromModule: true,
                             ),
                           ),
                         );
@@ -1038,13 +1038,13 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                               width: 10,
                             ),
                             SizedBox(
-                                width: width * 0.8,
-                                child: CustomText(
-                                  globalSearchProvider
-                                      .data!.modules[index].name,
-                                  type: FontStyle.Medium,
-                                  maxLines: 2,
-                                )),
+                              width: width * 0.8,
+                              child: CustomText(
+                                globalSearchProvider.data!.modules[index].name,
+                                type: FontStyle.Medium,
+                                maxLines: 2,
+                              ),
+                            ),
                           ],
                         ),
                       ),

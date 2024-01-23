@@ -72,8 +72,6 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final profileProvider = ref.watch(ProviderList.profileProvider);
     final fileUploadProvider = ref.watch(ProviderList.fileUploadProvider);
-    log('${profileProvider.userProfile.avatar} photo');
-    log('profile : ${profileProvider.userProfile} ');
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

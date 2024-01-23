@@ -14,7 +14,7 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'dart:developer';
 
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class EDITOR extends ConsumerStatefulWidget {
   const EDITOR(

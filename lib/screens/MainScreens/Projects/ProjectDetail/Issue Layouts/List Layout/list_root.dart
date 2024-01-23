@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
@@ -33,7 +33,7 @@ class _ListLayoutRootState extends ConsumerState<ListLayoutRoot> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding: const EdgeInsets.only(left: 15),
+                              // padding: const EdgeInsets.only(left: 15),
                               margin: const EdgeInsets.only(bottom: 10),
                               child: Row(
                                 children: [
@@ -42,8 +42,6 @@ class _ListLayoutRootState extends ConsumerState<ListLayoutRoot> {
                                     padding: const EdgeInsets.only(
                                       left: 10,
                                     ),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
                                     child: CustomText(
                                       state.title!,
                                       overflow: TextOverflow.ellipsis,
@@ -93,9 +91,6 @@ class _ListLayoutRootState extends ConsumerState<ListLayoutRoot> {
                                       : Container(
                                           height: 40,
                                         ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
                                 ],
                               ),
                             ),

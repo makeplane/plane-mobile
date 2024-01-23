@@ -16,7 +16,7 @@ import 'package:plane/widgets/error_state.dart';
 import 'package:plane/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import '../Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class Activity extends ConsumerStatefulWidget {
   const Activity({super.key});

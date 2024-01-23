@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/bottom_sheets/delete_cycle_sheet.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/ViewsTab/views_detail.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Views/views_detail.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';

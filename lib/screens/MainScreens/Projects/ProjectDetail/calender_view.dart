@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom_sheets/type_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
@@ -13,7 +15,7 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'IssuesTab/issue_detail.dart';
+import 'Issues/issue_detail.dart';
 
 class CalendarView extends ConsumerStatefulWidget {
   const CalendarView({Key? key}) : super(key: key);
@@ -291,6 +293,8 @@ class _DayDetailState extends ConsumerState<DayDetail> {
   Widget build(BuildContext context) {
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
+
     return Scaffold(
       appBar: CustomAppBar(
         icon: Icons.arrow_back,
@@ -346,10 +350,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                     focusedDay: widget.selectedDay,
                     calendarFormat: CalendarFormat.month,
                     eventLoader: (day) {
-                      return ref
-                          .read(ProviderList.issuesProvider)
-                          .issuesList
-                          .where((element) {
+                      return issuesProvider.issuesList.where((element) {
                         if (element['target_date'] == null) return false;
                         return DateFormat("MMM d, yyyy").format(
                                 DateTime.parse(element['target_date'])) ==
@@ -502,7 +503,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                               Row(
                                 children: [
                                   CustomText(
-                                    '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
+                                    '${projectProvider.currentProject['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
                                     type: FontStyle.Small,
                                   ),
                                   const SizedBox(

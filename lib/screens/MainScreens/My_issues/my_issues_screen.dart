@@ -7,7 +7,7 @@ import 'package:plane/bottom_sheets/views_and_layout_sheet.dart';
 import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
 
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';

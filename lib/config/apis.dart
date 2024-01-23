@@ -45,6 +45,8 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-members/me';
   static String cycleIssueView =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/user-properties/';
+  static String moduleIssueView =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/user-properties/';
   static String myIssuesView =
       '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
   static String updateMyIssuesView =
@@ -150,4 +152,5 @@ class APIs {
   static String retrieveUserRoleOnWorkspace =
       '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
   static String configApi = '$baseApi/api/mobile-configs';
+  static String unsplashApi = '$baseApi/api/unsplash';
 }

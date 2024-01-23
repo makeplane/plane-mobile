@@ -52,7 +52,7 @@ class LabelsService {
 
   // CREATE Label
   Future<Either<LabelModel, DioException>> createLabel(
-      String slug, String projectID, Map<String,dynamic> payload) async {
+      String slug, String projectID, Map<String, dynamic> payload) async {
     try {
       final response = await dio.dioServe(
         hasAuth: true,
@@ -71,7 +71,7 @@ class LabelsService {
 
   // UPDATE Label
   Future<Either<LabelModel, DioException>> updateLabel(
-      String slug, String projectID,  Map<String,dynamic> payload) async {
+      String slug, String projectID, Map<String, dynamic> payload) async {
     try {
       final response = await dio.dioServe(
         hasAuth: true,
@@ -79,7 +79,7 @@ class LabelsService {
             '${APIs.baseApi}/api/workspaces/$slug/projects/$projectID/issue-labels/${payload['id']}/',
         hasBody: true,
         data: payload,
-        httpMethod: HttpMethod.post,
+        httpMethod: HttpMethod.patch,
       );
       return Left(LabelModel.fromJson(response.data));
     } on DioException catch (err) {
@@ -92,7 +92,7 @@ class LabelsService {
   Future<Either<void, DioException>> deleteLabel(
       String slug, String projectID, String labelID) async {
     try {
-       await dio.dioServe(
+      await dio.dioServe(
         hasAuth: true,
         url:
             '${APIs.baseApi}/api/workspaces/$slug/projects/$projectID/issue-labels/$labelID/',

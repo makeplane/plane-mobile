@@ -7,7 +7,7 @@ import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
-import 'IssuesTab/issue_detail.dart';
+import 'Issues/issue_detail.dart';
 
 class SpreadSheetView extends ConsumerStatefulWidget {
   const SpreadSheetView({super.key, required this.issueCategory});

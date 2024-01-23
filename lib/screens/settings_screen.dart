@@ -37,7 +37,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     'Labels',
     'Integrations',
     'Estimates',
-    'Automations',
+    // 'Automations',
   ];
 
   final pageViewController = PageController(initialPage: 0);
@@ -313,7 +313,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                         LablesPage(),
                         IntegrationsWidget(),
                         EstimatsPage(),
-                        AutomationsPage(),
+                        // AutomationsPage(),
                       ]),
                 ),
               ],

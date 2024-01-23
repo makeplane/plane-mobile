@@ -209,11 +209,18 @@ class _CreateLabelState extends ConsumerState<CreateLabel> {
                             message: "Color is not valid",
                             toastType: ToastType.failure);
                       } else {
-                        
-                        labelNotifier.createLabel({
-                          "name": lableController.text,
-                          "color": '#${colorController.text}',
-                        });
+                        if (widget.method == CRUD.update) {
+                          labelNotifier.updateLabel({
+                            "id": widget.labelId,
+                            "name": lableController.text,
+                            "color": '#${colorController.text}',
+                          });
+                        } else if (widget.method == CRUD.create) {
+                          labelNotifier.createLabel({
+                            "name": lableController.text,
+                            "color": '#${colorController.text}',
+                          });
+                        }
                         Navigator.of(context).pop();
                       }
                     },

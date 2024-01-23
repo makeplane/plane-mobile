@@ -94,11 +94,10 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
   );
 }
 
-Widget _applyFilterButton({
-  required _FilterState state,
-  required BuildContext context,
-  String? cycleOrModuleId
-}) {
+Widget _applyFilterButton(
+    {required _FilterState state,
+    required BuildContext context,
+    String? cycleOrModuleId}) {
   return Container(
     height: 50,
     width: state.fromCreateView || state.issueCategory == IssueCategory.myIssues

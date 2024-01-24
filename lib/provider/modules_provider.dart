@@ -7,7 +7,8 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
+import 'package:plane/screens/project/issues/create_issue.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -17,7 +18,6 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
-import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class ModuleProvider with ChangeNotifier {
   ModuleProvider(ChangeNotifierProviderRef<ModuleProvider> this.ref);
@@ -445,11 +445,10 @@ class ModuleProvider with ChangeNotifier {
           Issues.toOrderBY(moduleView["display_filters"]["order_by"]);
       issues.issueType =
           Issues.toIssueType(moduleView["display_filters"]["type"]);
-      issues.filters.priorities =
-          (moduleView["filters"]["priority"] == 'none'
-                  ? []
-                  : moduleView["filters"]["priority"]) ??
-              [];
+      issues.filters.priorities = (moduleView["filters"]["priority"] == 'none'
+              ? []
+              : moduleView["filters"]["priority"]) ??
+          [];
       issues.filters.states = moduleView["filters"]["state"] ?? [];
       issues.filters.assignees = moduleView["filters"]["assignees"] ?? [];
       issues.filters.createdBy = moduleView["filters"]["created_by"] ?? [];

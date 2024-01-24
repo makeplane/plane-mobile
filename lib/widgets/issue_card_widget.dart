@@ -4,11 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/utils/constants.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
-import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 import 'custom_rich_text.dart';
 import 'custom_text.dart';
 

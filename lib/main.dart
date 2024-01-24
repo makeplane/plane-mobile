@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/config_variables.dart';
 import 'package:plane/config/plane_keys.dart';
-import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/screens/onboarding/on_boarding_screen.dart';
 import 'package:plane/services/shared_preference_service.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/startup/dependency_resolver.dart';

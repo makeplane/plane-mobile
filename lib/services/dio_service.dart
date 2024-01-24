@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/screens/on_boarding/on_boarding_screen.dart';
+import 'package:plane/screens/onboarding/on_boarding_screen.dart';
 import 'package:plane/services/shared_preference_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:retry/retry.dart';

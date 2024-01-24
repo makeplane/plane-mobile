@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane/screens/MainScreens/My_issues/my_issues_screen.dart';
-import 'package:plane/screens/MainScreens/Notification/notification.dart';
-import 'package:plane/screens/MainScreens/Profile/ProfileSettings/profile_screen.dart';
+import 'package:plane/screens/dashboard/dash_board_screen.dart';
+import 'package:plane/screens/my-issues/my_issues_screen.dart';
+import 'package:plane/screens/notifications/notification.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/profile/profile-settings/profile_screen.dart';
+import 'package:plane/screens/project/project_screen.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/error_state.dart';
-
-import 'MainScreens/Home/Dashboard/dash_board_screen.dart';
-import 'MainScreens/Projects/project_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({required this.fromSignUp, super.key});

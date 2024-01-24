@@ -10,7 +10,8 @@ import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Issues/CreateIssue/create_issue.dart';
+import 'package:plane/screens/project/issues/create_issue.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -19,8 +20,6 @@ import 'package:plane/utils/global_functions.dart';
 import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
-
-import '../screens/MainScreens/Projects/ProjectDetail/Issues/issue_detail.dart';
 
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);

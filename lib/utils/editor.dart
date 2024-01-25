@@ -10,11 +10,10 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/config/config_variables.dart';
 import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'dart:developer';
-
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class EDITOR extends ConsumerStatefulWidget {
   const EDITOR(

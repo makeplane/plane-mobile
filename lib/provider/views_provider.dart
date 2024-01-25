@@ -63,8 +63,9 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
       {required dynamic data,
       required WidgetRef ref,
       required BuildContext context}) async {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     try {
       final response = await DioConfig().dioServe(
           hasAuth: true,
@@ -97,7 +98,8 @@ class ViewsNotifier extends StateNotifier<ViewsModel> {
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'VIEW_ID': response.data['id']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
     } on DioException catch (e) {
       log(e.error.toString());
       state = state.copyWith(viewsState: StateEnum.error);

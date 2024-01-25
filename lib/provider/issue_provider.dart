@@ -10,18 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/config_variables.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/screens/MainScreens/Profile/User_profile/user_profile.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
+import 'package:plane/screens/profile/user-profile/user_profile.dart';
+import 'package:plane/screens/project/cycles/cycle-detail/cycle_issues_page.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
+import 'package:plane/screens/project/modules/module-detail/module_issues_page.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../screens/MainScreens/Projects/ProjectDetail/CyclesTab/cycle_detail.dart';
 import '../utils/global_functions.dart';
-// import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 class IssueProvider with ChangeNotifier {
   IssueProvider(ChangeNotifierProviderRef<IssueProvider> this.ref);
@@ -199,6 +198,7 @@ class IssueProvider with ChangeNotifier {
       BuildContext? buildContext}) async {
     final workspaceProvider = refs.watch(ProviderList.workspaceProvider);
     final projectProvider = refs.watch(ProviderList.projectProvider);
+    final profileProvider = refs.watch(ProviderList.profileProvider);
     try {
       updateIssueState = StateEnum.loading;
       notifyListeners();
@@ -223,7 +223,8 @@ class IssueProvider with ChangeNotifier {
                 .firstWhere((element) => element['id'] == projID)['name'],
             'ISSUE_ID': issueID
           },
-          ref: refs);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       await getIssueDetails(slug: slug, projID: projID, issueID: issueID);
       await getIssueActivity(slug: slug, projID: projID, issueID: issueID);
       await ref.read(ProviderList.myIssuesProvider.notifier).getMyIssues(
@@ -617,9 +618,8 @@ class IssueProvider with ChangeNotifier {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CycleDetail(
+          builder: (context) => ModuleDetail(
             from: previousScreen,
-            fromModule: true,
             moduleId: data['module_id'],
             projId: data['project_id'],
             moduleName: data['module_name'],

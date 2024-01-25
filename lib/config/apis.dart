@@ -8,10 +8,9 @@ class APIs {
   static String generateMagicLink = '/api/magic-generate/';
   static String googleAuth = '$baseApi/api/social-auth/';
   static String magicValidate = '/api/magic-sign-in/';
-  static String profile = '/api/users/me/';
+  static String profile = '$baseApi/api/users/me/';
   static String listWorkspaceInvitaion =
-      '/api/users/me/invitations/workspaces/';
-  static String joinWorkspace = '$baseApi/api/users/me/invitations/workspaces/';
+      '$baseApi/api/users/me/workspaces/invitations/';
   static String createWorkspace = '$baseApi/api/workspaces/';
   static String inviteToWorkspace = '$baseApi/api/workspaces/\$SLUG/invite/';
   static String inviteToProject =
@@ -35,7 +34,7 @@ class APIs {
   static String states =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/states/';
   static String orderByGroupByTypeIssues =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/?type=\$TYPE';
   static String orderByGroupByTypeArchivedIssues =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/archived-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String orderByGroupByIssues =
@@ -44,6 +43,10 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/members/';
   static String userIssueView =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-members/me';
+  static String cycleIssueView =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/user-properties/';
+  static String moduleIssueView =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/user-properties/';
   static String myIssuesView =
       '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
   static String updateMyIssuesView =
@@ -66,8 +69,8 @@ class APIs {
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-labels/';
   static String projectViews =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/project-views/';
-  static String issueProperties =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issue-properties/';
+  static String issueDisplayProperties =
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-properties/';
   static String issueDetails =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/issues/\$ISSUEID/';
   static String subIssues =
@@ -82,9 +85,9 @@ class APIs {
   static String toggleFavoriteCycle =
       '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/user-favorite-cycles/';
   static String orderByGroupByCycleIssues =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/cycles/\$CYCLEID/cycle-issues/?type=\$TYPE/';
   static String orderByGroupByModuleIssues =
-      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE/';
+      '$baseApi/api/workspaces/\$SLUG/projects/\$PROJECTID/modules/\$MODULEID/module-issues/?type=\$TYPE/';
   static String myIssues =
       '$baseApi/api/workspaces/\$SLUG/my-issues/?order_by=\$ORDERBY&group_by=\$GROUPBY&type=\$TYPE';
   static String projectIdentifier =
@@ -149,4 +152,5 @@ class APIs {
   static String retrieveUserRoleOnWorkspace =
       '$baseApi/api/workspaces/\$SLUG/workspace-members/me/';
   static String configApi = '$baseApi/api/mobile-configs';
+  static String unsplashApi = '$baseApi/api/unsplash';
 }

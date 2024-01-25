@@ -10,16 +10,16 @@ import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
+import 'package:plane/screens/project/issues/create_issue.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
+import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
-
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class CyclesProvider with ChangeNotifier {
   CyclesProvider(ChangeNotifierProviderRef<CyclesProvider> this.ref);
@@ -33,6 +33,7 @@ class CyclesProvider with ChangeNotifier {
   StateEnum completedCyclesState = StateEnum.loading;
   StateEnum draftCyclesState = StateEnum.loading;
   StateEnum transferIssuesState = StateEnum.empty;
+  StateEnum cycleViewState = StateEnum.empty;
   List<dynamic> cyclesAllData = [];
   List<dynamic> cycleFavoriteData = [];
   List<dynamic> cycleUpcomingFavoriteData = [];
@@ -46,18 +47,21 @@ class CyclesProvider with ChangeNotifier {
   List<dynamic> cyclesDraftData = [];
   Map<String, dynamic> cyclesDetailsData = {};
   Map currentCycle = {};
+  Map cycleView = {};
   int cyclesTabIndex = 0;
   Issues issues = Issues.initialize();
   List issuesResponse = [];
   List shrinkStates = [];
   Map filterIssues = {};
+  List<dynamic> cycleIssuesList = [];
   Map issueProperty = {};
   bool showEmptyStates = true;
   bool isIssuesEmpty = false;
   int cycleDetailSelectedIndex = 0;
   List queries = ['all', 'current', 'upcoming', 'completed', 'draft'];
-  List stateOrdering = [];
   List<String> loadingCycleId = [];
+  Enum issueCategory = IssueCategory.cycleIssues;
+
   void setState() {
     notifyListeners();
   }
@@ -125,6 +129,7 @@ class CyclesProvider with ChangeNotifier {
       required WidgetRef ref}) async {
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     if (query == 'all') {
       allCyclesState = StateEnum.loading;
     } else if (query == 'current') {
@@ -159,10 +164,6 @@ class CyclesProvider with ChangeNotifier {
         data: data,
       );
 
-      // log('CYCLES =========> ${response.data.toString()}');
-
-      // * RESPONSE FROM API CONVERTED TO MODEL IS THROWING ERRORS FOR VIEW PROPS ATTRIBUTE * //
-      // cyclesData = CyclesModel.fromJson(response.data);
       if (query == 'all') {
         cyclesAllData = [];
         cycleFavoriteData = [];
@@ -242,7 +243,8 @@ class CyclesProvider with ChangeNotifier {
                       'PROJECT_NAME': projectProvider.projectDetailModel!.name,
                       'CYCLE_ID': response.data['id']
                     },
-              ref: ref);
+              userEmail: profileProvider.userProfile.email!,
+              userID: profileProvider.userProfile.id!);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
       });
@@ -253,7 +255,7 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  void changeStateToLoading(StateEnum state) {
+  void changeState(StateEnum state) {
     state = StateEnum.loading;
     notifyListeners();
   }
@@ -267,10 +269,10 @@ class CyclesProvider with ChangeNotifier {
     Map<String, dynamic>? data,
   }) async {
     try {
-      if (!disableLoading) {
-        cyclesDetailState = StateEnum.loading;
-        notifyListeners();
-      }
+      // if (!disableLoading) {
+      cyclesDetailState = StateEnum.loading;
+      notifyListeners();
+      // }
       final url =
           '${APIs.cycles.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$cycleId/';
       final response = await DioConfig().dioServe(
@@ -287,7 +289,6 @@ class CyclesProvider with ChangeNotifier {
                     : HttpMethod.patch,
       );
       if (method == CRUD.read) {
-        // log('CYCLE DETAILS =========> ${response.data.toString()}');
         cyclesDetailsData = response.data;
       }
       if (method == CRUD.update) {
@@ -381,18 +382,21 @@ class CyclesProvider with ChangeNotifier {
   List<BoardListsData> initializeBoard() {
     final themeProvider = ref!.read(ProviderList.themeProvider);
     final issuesProvider = ref!.read(ProviderList.issuesProvider);
+    final labelNotifier = ref!.read(ProviderList.labelProvider.notifier);
+    final statesProvider = ref!.read(ProviderList.statesProvider);
     int count = 0;
     // log(issues.groupBY.name);
     issues.issues = [];
     issuesResponse = [];
-    for (int j = 0; j < stateOrdering.length; j++) {
-      final List<Widget> items = [];
+    final projectMembers =
+        ref!.read(ProviderList.projectProvider).projectMembers;
 
-      for (int i = 0;
-          filterIssues[stateOrdering[j]] != null &&
-              i < filterIssues[stateOrdering[j]]!.length;
-          i++) {
-        issuesResponse.add(filterIssues[stateOrdering[j]]![i]);
+    for (int j = 0; j < filterIssues.length; j++) {
+      final List<Widget> items = [];
+      final groupedIssues = filterIssues.values.toList()[j];
+      final groupID = filterIssues.keys.elementAt(j);
+      for (int i = 0; i < groupedIssues.length; i++) {
+        issuesResponse.add(groupedIssues[i]);
         items.add(
           IssueCardWidget(
             from: PreviousScreen.cycles,
@@ -402,51 +406,38 @@ class CyclesProvider with ChangeNotifier {
           ),
         );
       }
-      Map label = {};
       String userName = '';
-
-      bool labelFound = false;
       bool userFound = false;
+      final label = labelNotifier.getLabelById(groupID);
 
-      for (int i = 0; i < issuesProvider.labels.length; i++) {
-        if (stateOrdering[j] == issuesProvider.labels[i]['id']) {
-          label = issuesProvider.labels[i];
-          labelFound = true;
-          break;
-        }
-      }
-
-      for (int i = 0; i < issuesProvider.members.length; i++) {
-        if (stateOrdering[j] == issuesProvider.members[i]['member']['id']) {
-          userName = issuesProvider.members[i]['member']['first_name'] +
+      for (int i = 0; i < projectMembers.length; i++) {
+        if (groupID == projectMembers[i]['member']['id']) {
+          userName = projectMembers[i]['member']['first_name'] +
               ' ' +
-              issuesProvider.members[i]['member']['last_name'];
+              projectMembers[i]['member']['last_name'];
           userName = userName.trim().isEmpty
-              ? issuesProvider.members[i]['member']['email']
+              ? projectMembers[i]['member']['email']
               : userName;
           userFound = true;
           break;
         }
       }
-      //log('RESPONSE : ' + filterIssues.toString());
-      // log('================================================================ ${stateOrdering[j]}');
       var title = issues.groupBY == GroupBY.priority
-          ? stateOrdering[j]
+          ? groupID
           : issues.groupBY == GroupBY.state
-              ? issuesProvider.states[stateOrdering[j]]['name']
-              : stateOrdering[j];
+              ? statesProvider.projectStates[groupID]!.name
+              : groupID;
       issues.issues.add(BoardListsData(
-        id: stateOrdering[j],
+        id: groupID,
         items: items,
         shrink: shrinkStates[j],
         index: j,
-        width: issuesProvider.issues.projectView == ProjectView.list
+        width: issuesProvider.issues.projectView == IssueLayout.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : 300,
         // shrink: shrinkissuesProvider.states[count++],
-        title: issues.groupBY == GroupBY.labels && labelFound
-            ? label['name'][0].toString().toUpperCase() +
-                label['name'].toString().substring(1)
+        title: issues.groupBY == GroupBY.labels && label != null
+            ? label.name[0].toUpperCase() + label.name.toString().substring(1)
             : userFound &&
                     (issues.groupBY == GroupBY.createdBY ||
                         issues.groupBY == GroupBY.assignees)
@@ -455,7 +446,7 @@ class CyclesProvider with ChangeNotifier {
                 : title = title[0].toString().toUpperCase() +
                     title.toString().substring(1),
         header: Text(
-          stateOrdering[j],
+          groupID,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -633,11 +624,14 @@ class CyclesProvider with ChangeNotifier {
         notifyListeners();
         return;
       }
-      (filterIssues[stateOrdering[newListIndex]] as List).insert(newCardIndex,
-          filterIssues[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
+
+      final List newList = filterIssues.values.toList()[newListIndex];
+      final List oldList = filterIssues.values.toList()[oldListIndex];
+
+      newList.insert(newCardIndex, oldList.removeAt(oldCardIndex));
 
       notifyListeners();
-      final issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
+      final issue = newList[newCardIndex];
       // log(issue.toString());
       final response = await DioConfig().dioServe(
           hasAuth: true,
@@ -655,40 +649,21 @@ class CyclesProvider with ChangeNotifier {
           httpMethod: HttpMethod.patch,
           data: issues.groupBY == GroupBY.state
               ? {
-                  'state': stateOrdering[newListIndex],
+                  'state': filterIssues.keys.elementAt(newListIndex),
                   'priority': issue['priority']
                 }
               : {
                   'state': issue['state'],
-                  'priority': stateOrdering[newListIndex],
+                  'priority': filterIssues.keys.elementAt(newListIndex)
                 });
-      filterIssues[stateOrdering[newListIndex]][newCardIndex] = response.data;
-
-      final List labelDetails = [];
-      final issuesProvider = ref!.read(ProviderList.issuesProvider);
-      filterIssues[stateOrdering[newListIndex]][newCardIndex]['labels']
-          .forEach((element) {
-        for (int i = 0; i < issuesProvider.labels.length; i++) {
-          if (issuesProvider.labels[i]['id'] == element) {
-            labelDetails.add(issuesProvider.labels[i]);
-            break;
-          }
-        }
-
-        // labelDetails.add(labels.firstWhere((e) => e['id'] == element));
-      });
-
-      filterIssues[stateOrdering[newListIndex]][newCardIndex]['label_details'] =
-          labelDetails;
-
-      log(response.data.toString());
+      newList[newCardIndex] = response.data;
       if (issues.groupBY == GroupBY.priority) {
-        log(filterIssues[stateOrdering[newListIndex]][newCardIndex]['name']);
-        filterIssues[stateOrdering[newListIndex]][newCardIndex]['priority'] =
-            stateOrdering[newListIndex];
+        log(newList[newCardIndex]['name']);
+        newList[newCardIndex]['priority'] =
+            filterIssues.keys.elementAt(newListIndex);
       }
       if (issues.orderBY != OrderBY.manual) {
-        (filterIssues[stateOrdering[newListIndex]] as List).sort((a, b) {
+        newList.sort((a, b) {
           if (issues.orderBY == OrderBY.priority) {
             return priorityParser(a['priority'])
                 .compareTo(priorityParser(b['priority']));
@@ -703,11 +678,10 @@ class CyclesProvider with ChangeNotifier {
           }
         });
       }
-      log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
-      (filterIssues[stateOrdering[oldListIndex]] as List).insert(oldCardIndex,
-          filterIssues[stateOrdering[newListIndex]].removeAt(newCardIndex));
+      filterIssues.values.elementAt(oldListIndex).insert(oldCardIndex,
+          filterIssues.values.elementAt(newListIndex).removeAt(newCardIndex));
       log(err.toString());
       notifyListeners();
       rethrow;
@@ -802,25 +776,140 @@ class CyclesProvider with ChangeNotifier {
     }
   }
 
-  Future filterCycleIssues({
-    required String slug,
-    required String projectId,
-    String? cycleID,
-    String? moduleID,
-    // required Map<String, dynamic> data,
-  }) async {
+  Future getCycleView({bool reset = false, required String cycleId}) async {
+    cycleViewState = StateEnum.loading;
+    if (reset) {
+      notifyListeners();
+    }
+    try {
+      var url = APIs.cycleIssueView
+          .replaceAll(
+              "\$SLUG",
+              ref!
+                  .read(ProviderList.workspaceProvider)
+                  .selectedWorkspace
+                  .workspaceSlug)
+          .replaceAll('\$PROJECTID',
+              ref!.read(ProviderList.projectProvider).currentProject['id'])
+          .replaceAll('\$CYCLEID', cycleId);
+      final response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: url,
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      cycleView = response.data;
+      issues.projectView = cycleView['display_filters']['layout'] == 'list'
+          ? IssueLayout.list
+          : cycleView['display_filters']['layout'] == 'calendar'
+              ? IssueLayout.calendar
+              : cycleView['display_filters']['layout'] == 'spreadsheet'
+                  ? IssueLayout.spreadsheet
+                  : IssueLayout.kanban;
+      issues.showSubIssues = cycleView['display_filters']['sub_issue'] ?? true;
+      issues.groupBY =
+          Issues.toGroupBY(cycleView["display_filters"]["group_by"]);
+      issues.orderBY =
+          Issues.toOrderBY(cycleView["display_filters"]["order_by"]);
+      issues.issueType =
+          Issues.toIssueType(cycleView["display_filters"]["type"]);
+      issues.filters.priorities = (cycleView["filters"]["priority"] == 'none'
+              ? []
+              : cycleView["filters"]["priority"]) ??
+          [];
+      issues.filters.states = cycleView["filters"]["state"] ?? [];
+      issues.filters.assignees = cycleView["filters"]["assignees"] ?? [];
+      issues.filters.createdBy = cycleView["filters"]["created_by"] ?? [];
+      issues.filters.labels = cycleView["filters"]["labels"] ?? [];
+      issues.filters.targetDate = cycleView["filters"]["target_date"] ?? [];
+      issues.filters.startDate = cycleView["filters"]["start_date"] ?? [];
+      issues.filters.subscriber = cycleView["filters"]["subscriber"] ?? [];
+      issues.filters.stateGroup = cycleView["filters"]["state_group"] ?? [];
+      showEmptyStates = cycleView["display_filters"]["show_empty_groups"];
+
+      if (issues.groupBY == GroupBY.none) {
+        issues.projectView = IssueLayout.list;
+      }
+      if (reset) {
+        updateCycleView();
+      }
+      cycleViewState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.response.toString());
+      issues.projectView = IssueLayout.kanban;
+      cycleViewState = StateEnum.error;
+      notifyListeners();
+    }
+  }
+
+  void applyCycleIssuesView({required WidgetRef ref}) {
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider);
+
+    final labelIds =
+        ref.read(ProviderList.labelProvider.notifier).getLabelIds();
+    filterIssues = IssueFilterHelper.organizeIssues(
+        cycleIssuesList, issues.groupBY, issues.orderBY,
+        labelIDs: labelIds,
+        memberIDs: projectProvider.projectMembers
+            .map((e) => e['member']['id'].toString())
+            .toList(),
+        states: statesProvider.projectStates);
+    notifyListeners();
+  }
+
+  Future filterCycleIssues(
+      {required String slug,
+      required String projectId,
+      String? cycleID,
+      required WidgetRef ref
+      // required Map<String, dynamic> data,
+      }) async {
     cyclesIssueState = StateEnum.loading;
     notifyListeners();
-    try {
-      final issuesProvider = ref!.read(ProviderList.issuesProvider);
-      filterIssues = await issuesProvider.filterIssues(
-        slug: slug,
-        projID: projectId,
-        cycleId: cycleID,
-        moduleId: moduleID,
-        issueCategory: IssueCategory.cycleIssues,
-      );
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final statesProvider = ref.read(ProviderList.statesProvider.notifier);
+    final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
+    final states = ref.read(ProviderList.statesProvider).projectStates;
 
+    if (issues.groupBY == GroupBY.labels) {
+      labelNotifier.getProjectLabels();
+    } else if (issues.groupBY == GroupBY.createdBY) {
+      projectProvider.getProjectMembers(slug: slug, projId: projectId);
+    } else if (issues.groupBY == GroupBY.state) {
+      statesProvider.getStates(
+        slug: slug,
+        projectId: projectId,
+      );
+    }
+
+    String url;
+    url = APIs.orderByGroupByCycleIssues
+        .replaceAll("\$SLUG", slug)
+        .replaceAll('\$PROJECTID', projectId)
+        .replaceAll('\$CYCLEID', cycleID!)
+        .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
+    url = '$url${IssueFilterHelper.getFilterQueryParams(issues.filters)}';
+    url = '$url&sub_issue=${issues.showSubIssues}&show_empty_groups=true';
+    log(url.toString());
+    try {
+      final response = await DioConfig().dioServe(
+        hasAuth: true,
+        url: url,
+        hasBody: false,
+        httpMethod: HttpMethod.get,
+      );
+      // cycleIssuesList = [];
+      cycleIssuesList = response.data;
+      final organizedIssues = IssueFilterHelper.organizeIssues(
+          cycleIssuesList, issues.groupBY, issues.orderBY,
+          labelIDs: labelNotifier.getLabelIds(),
+          memberIDs: projectProvider.projectMembers
+              .map((e) => e['member']['id'].toString())
+              .toList(),
+          states: states);
+      filterIssues = organizedIssues;
       issuesResponse = [];
       isIssuesEmpty = true;
       if (issues.groupBY != GroupBY.none) {
@@ -834,17 +923,15 @@ class CyclesProvider with ChangeNotifier {
         isIssuesEmpty = filterIssues.values.first.isEmpty;
       }
       if (issues.groupBY == GroupBY.state) {
-        issuesProvider.states.forEach((key, value) {
+        states.forEach((key, value) {
           if (issues.filters.states.isEmpty && filterIssues[key] == null) {
             filterIssues[key] = [];
           }
           shrinkStates.add(false);
         });
       } else {
-        stateOrdering = [];
         shrinkStates = [];
         filterIssues.forEach((key, value) {
-          stateOrdering.add(key);
           shrinkStates.add(false);
         });
       }
@@ -858,6 +945,80 @@ class CyclesProvider with ChangeNotifier {
       cyclesIssueState = StateEnum.error;
       notifyListeners();
     }
+  }
+
+  Future updateCycleView(
+      {bool isArchive = false, bool setDefault = false}) async {
+    final Map<String, dynamic> view = {
+      "view_props": {
+        "calendarDateRange": "",
+        "collapsed": false,
+        "filterIssue": null,
+        "filters": {
+          // 'type': null,
+          // "priority": filterPriority,
+          if (issues.filters.priorities.isNotEmpty)
+            "priority": issues.filters.priorities,
+          if (issues.filters.states.isNotEmpty) "state": issues.filters.states,
+          if (issues.filters.assignees.isNotEmpty)
+            "assignees": issues.filters.assignees,
+          if (issues.filters.createdBy.isNotEmpty)
+            "created_by": issues.filters.createdBy,
+          if (issues.filters.labels.isNotEmpty) "labels": issues.filters.labels,
+          if (issues.filters.targetDate.isNotEmpty)
+            "target_date": issues.filters.targetDate,
+          if (issues.filters.startDate.isNotEmpty)
+            "start_date": issues.filters.startDate,
+          if (issues.filters.subscriber.isNotEmpty)
+            "subscriber": issues.filters.subscriber,
+          if (issues.filters.stateGroup.isNotEmpty)
+            "state_group": issues.filters.stateGroup,
+        },
+        "display_filters": {
+          "group_by": Issues.fromGroupBY(issues.groupBY),
+          "order_by": Issues.fromOrderBY(issues.orderBY),
+          "type": Issues.fromIssueType(issues.issueType),
+          "show_empty_groups": showEmptyStates,
+          if (!isArchive)
+            "layout": issues.projectView == IssueLayout.kanban
+                ? 'kanban'
+                : issues.projectView == IssueLayout.list
+                    ? 'list'
+                    : issues.projectView == IssueLayout.calendar
+                        ? 'calendar'
+                        : 'spreadsheet',
+          "sub_issue": false,
+        },
+      }
+    };
+    if (setDefault) {
+      view['default_props'] = view['view_props'];
+    }
+    try {
+      await DioConfig().dioServe(
+        hasAuth: true,
+        url: APIs.cycleIssueView
+            .replaceAll(
+                "\$SLUG",
+                ref!
+                    .read(ProviderList.workspaceProvider)
+                    .selectedWorkspace
+                    .workspaceSlug)
+            .replaceAll('\$PROJECTID',
+                ref!.read(ProviderList.projectProvider).currentProject['id'])
+            .replaceAll('\$CYCLEID', currentCycle['id']),
+        hasBody: true,
+        data: view,
+        httpMethod: HttpMethod.patch,
+      );
+      cycleViewState = StateEnum.success;
+      notifyListeners();
+    } on DioException catch (e) {
+      log(e.response.toString());
+      cycleViewState = StateEnum.error;
+      notifyListeners();
+    }
+    notifyListeners();
   }
 
   bool isTagsEnabled() {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/bottom_sheets/filters/filter_sheet.dart';
+import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
@@ -108,6 +108,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
     final viewsProvider = ref.watch(ProviderList.viewsProvider);
     final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final labelProvider = ref.watch(ProviderList.labelProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -250,190 +252,215 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                   itemCount: filtersData['Filters']!.length,
                                   primary: false,
                                   shrinkWrap: true,
-                                  itemBuilder:
-                                      ((context, index) =>
-                                          filtersData['Filters']!
-                                                  .values
-                                                  .elementAt(index)
-                                                  .isNotEmpty
-                                              ? Container(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10,
-                                                          bottom: 10,
-                                                          left: 10,
-                                                          right: 10),
-                                                  margin: const EdgeInsets.only(
-                                                      bottom: 10),
-                                                  decoration: BoxDecoration(
+                                  itemBuilder: ((context, index) =>
+                                      filtersData['Filters']!
+                                              .values
+                                              .elementAt(index)
+                                              .isNotEmpty
+                                          ? Container(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 10,
+                                                  right: 10),
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              decoration: BoxDecoration(
+                                                  color: themeProvider
+                                                      .themeManager
+                                                      .primaryBackgroundDefaultColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  border: Border.all(
                                                       color: themeProvider
                                                           .themeManager
-                                                          .primaryBackgroundDefaultColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      border: Border.all(
-                                                          color: themeProvider
-                                                              .themeManager
-                                                              .borderStrong01Color)),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      CustomText(
-                                                        filterKeys[index],
-                                                        fontWeight: FontWeightt
-                                                            .Semibold,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Wrap(
-                                                        children: ((filtersData['Filters'] as Map).values.elementAt(index) as List)
-                                                            .map((e) => filterKeys[index] == 'Priority:'
-                                                                ? GestureDetector(
-                                                                    onTap: () {
-                                                                      log(e);
-                                                                      ((filtersData['Filters'] as Map).values.elementAt(index)
-                                                                              as List)
-                                                                          .remove(
-                                                                              e);
-                                                                      setState(
-                                                                          () {});
-                                                                    },
-                                                                    child:
-                                                                        filterWidget(
-                                                                      color: priorities[
-                                                                              e]
-                                                                          [
-                                                                          'color'],
-                                                                      icon:
-                                                                          Icon(
-                                                                        priorities[e]
-                                                                            [
-                                                                            'icon'],
-                                                                        size:
+                                                          .borderStrong01Color)),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  CustomText(
+                                                    filterKeys[index],
+                                                    fontWeight:
+                                                        FontWeightt.Semibold,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Wrap(
+                                                    children:
+                                                        ((filtersData['Filters']
+                                                                        as Map)
+                                                                    .values
+                                                                    .elementAt(
+                                                                        index)
+                                                                as List)
+                                                            .map((e) {
+                                                      return filterKeys[
+                                                                  index] ==
+                                                              'Priority:'
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                ((filtersData['Filters']
+                                                                            as Map)
+                                                                        .values
+                                                                        .elementAt(
+                                                                            index) as List)
+                                                                    .remove(e);
+                                                                setState(() {});
+                                                              },
+                                                              child:
+                                                                  filterWidget(
+                                                                color:
+                                                                    priorities[
+                                                                            e][
+                                                                        'color'],
+                                                                icon: Icon(
+                                                                  priorities[e]
+                                                                      ['icon'],
+                                                                  size: 15,
+                                                                  color: priorities[
+                                                                          e]
+                                                                      ['color'],
+                                                                ),
+                                                                text:
+                                                                    priorities[
+                                                                            e][
+                                                                        'text'],
+                                                              ),
+                                                            )
+                                                          : filterKeys[index] ==
+                                                                  'State:'
+                                                              ? GestureDetector(
+                                                                  onTap: () {
+                                                                    ((filtersData['Filters']
+                                                                                as Map)
+                                                                            .values
+                                                                            .elementAt(index) as List)
+                                                                        .remove(e);
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                  child:
+                                                                      filterWidget(
+                                                                    color: statesProvider
+                                                                        .projectStates[
+                                                                            e]!
+                                                                        .color
+                                                                        .toColor(),
+                                                                    icon: SizedBox(
+                                                                        height:
                                                                             15,
-                                                                        color: priorities[e]
-                                                                            [
-                                                                            'color'],
-                                                                      ),
-                                                                      text: priorities[
-                                                                              e]
-                                                                          [
-                                                                          'text'],
-                                                                    ),
-                                                                  )
-                                                                : filterKeys[index] == 'State:'
-                                                                    ? GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          ((filtersData['Filters'] as Map).values.elementAt(index) as List)
-                                                                              .remove(e);
-                                                                          setState(
-                                                                              () {});
-                                                                        },
-                                                                        child:
-                                                                            filterWidget(
-                                                                          color: issuesProvider
-                                                                              .states[e]['color']
-                                                                              .toString()
-                                                                              .toColor(),
-                                                                          icon: SizedBox(
-                                                                              height: 15,
-                                                                              width: 15,
-                                                                              child: issuesProvider.stateIcons[e]),
-                                                                          text: issuesProvider.states[e]
-                                                                              [
-                                                                              'name'],
-                                                                        ),
-                                                                      )
-                                                                    : filterKeys[index] == 'Assignees:' || filterKeys[index] == 'Created By:'
-                                                                        ? GestureDetector(
-                                                                            onTap:
-                                                                                () {
-                                                                              ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
-                                                                              setState(() {});
-                                                                            },
-                                                                            child:
-                                                                                filterWidget(
-                                                                              fill: false,
-                                                                              color: Colors.black,
-                                                                              icon: projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['avatar'] != ''
-                                                                                  ? CircleAvatar(
-                                                                                      radius: 10,
-                                                                                      backgroundImage: NetworkImage(projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['avatar']),
-                                                                                    )
-                                                                                  : CircleAvatar(
-                                                                                      radius: 10,
-                                                                                      backgroundColor: const Color.fromRGBO(55, 65, 81, 1),
-                                                                                      child: Center(
-                                                                                          child: CustomText(
-                                                                                        projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['first_name'][0].toString().toUpperCase(),
-                                                                                        color: Colors.white,
-                                                                                        fontSize: 12,
-                                                                                      )),
-                                                                                    ),
-                                                                              text: projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['display_name'] ?? '',
-                                                                            ),
-                                                                          )
-                                                                        : filterKeys[index] == 'Labels:'
-                                                                            ? GestureDetector(
-                                                                                onTap: () {
-                                                                                  ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
-                                                                                  setState(() {});
-                                                                                },
-                                                                                child: filterWidget(
-                                                                                    color: issuesProvider.labels.where((element) => element["id"] == e).first['color'].toString().toUpperCase().toColor(),
-                                                                                    icon: Container(
-                                                                                      height: 15,
-                                                                                      width: 15,
-                                                                                      decoration: BoxDecoration(
-                                                                                        borderRadius: BorderRadius.circular(20),
-                                                                                        color: issuesProvider.labels.where((element) => element["id"] == e).first['color'].toString().toUpperCase().toColor(),
-                                                                                      ),
-                                                                                    ),
-                                                                                    text: issuesProvider.labels.where((element) => element["id"] == e).first["name"]),
+                                                                        width:
+                                                                            15,
+                                                                        child: issuesProvider
+                                                                            .stateIcons[e]),
+                                                                    text: statesProvider
+                                                                        .projectStates[
+                                                                            e]!
+                                                                        .name,
+                                                                  ),
+                                                                )
+                                                              : filterKeys[index] ==
+                                                                          'Assignees:' ||
+                                                                      filterKeys[
+                                                                              index] ==
+                                                                          'Created By:'
+                                                                  ? GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        ((filtersData['Filters'] as Map).values.elementAt(index)
+                                                                                as List)
+                                                                            .remove(e);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                      child:
+                                                                          filterWidget(
+                                                                        fill:
+                                                                            false,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        icon: projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['avatar'] !=
+                                                                                ''
+                                                                            ? CircleAvatar(
+                                                                                radius: 10,
+                                                                                backgroundImage: NetworkImage(projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['avatar']),
                                                                               )
-                                                                            : filterKeys[index] == 'Target Date:'
-                                                                                ? GestureDetector(
-                                                                                    onTap: () {
-                                                                                      ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
-                                                                                      setState(() {});
-                                                                                    },
-                                                                                    child: filterWidget(
-                                                                                      color: Colors.black,
-                                                                                      icon: Icon(
-                                                                                        Icons.calendar_today_outlined,
-                                                                                        size: 15,
-                                                                                        color: themeProvider.themeManager.placeholderTextColor,
-                                                                                      ),
-                                                                                      text: e,
+                                                                            : CircleAvatar(
+                                                                                radius: 10,
+                                                                                backgroundColor: const Color.fromRGBO(55, 65, 81, 1),
+                                                                                child: Center(
+                                                                                    child: CustomText(
+                                                                                  projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['first_name'][0].toString().toUpperCase(),
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 12,
+                                                                                )),
+                                                                              ),
+                                                                        text: projectProvider.projectMembers.where((element) => element['member']["id"] == e).first['member']['display_name'] ??
+                                                                            '',
+                                                                      ),
+                                                                    )
+                                                                  : filterKeys[
+                                                                              index] ==
+                                                                          'Labels:'
+                                                                      ? GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
+                                                                            setState(() {});
+                                                                          },
+                                                                          child: filterWidget(
+                                                                              color: labelProvider.projectLabels[e]!.color.toUpperCase().toColor(),
+                                                                              icon: Container(
+                                                                                height: 15,
+                                                                                width: 15,
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.circular(20),
+                                                                                  color: labelProvider.projectLabels[e]!.color.toUpperCase().toColor(),
+                                                                                ),
+                                                                              ),
+                                                                              text: labelProvider.projectLabels[e]!.name),
+                                                                        )
+                                                                      : filterKeys[index] ==
+                                                                              'Target Date:'
+                                                                          ? GestureDetector(
+                                                                              onTap: () {
+                                                                                ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
+                                                                                setState(() {});
+                                                                              },
+                                                                              child: filterWidget(
+                                                                                color: Colors.black,
+                                                                                icon: Icon(
+                                                                                  Icons.calendar_today_outlined,
+                                                                                  size: 15,
+                                                                                  color: themeProvider.themeManager.placeholderTextColor,
+                                                                                ),
+                                                                                text: e,
+                                                                              ),
+                                                                            )
+                                                                          : filterKeys[index] == 'Start Date:'
+                                                                              ? GestureDetector(
+                                                                                  onTap: () {
+                                                                                    ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
+                                                                                    setState(() {});
+                                                                                  },
+                                                                                  child: filterWidget(
+                                                                                    color: Colors.black,
+                                                                                    icon: Icon(
+                                                                                      Icons.calendar_today_outlined,
+                                                                                      size: 15,
+                                                                                      color: themeProvider.themeManager.placeholderTextColor,
                                                                                     ),
-                                                                                  )
-                                                                                : filterKeys[index] == 'Start Date:'
-                                                                                    ? GestureDetector(
-                                                                                        onTap: () {
-                                                                                          ((filtersData['Filters'] as Map).values.elementAt(index) as List).remove(e);
-                                                                                          setState(() {});
-                                                                                        },
-                                                                                        child: filterWidget(
-                                                                                          color: Colors.black,
-                                                                                          icon: Icon(
-                                                                                            Icons.calendar_today_outlined,
-                                                                                            size: 15,
-                                                                                            color: themeProvider.themeManager.placeholderTextColor,
-                                                                                          ),
-                                                                                          text: e,
-                                                                                        ),
-                                                                                      )
-                                                                                    : Container())
-                                                            .toList(),
-                                                      ),
-                                                    ],
-                                                  ))
-                                              : const SizedBox()))
+                                                                                    text: e,
+                                                                                  ),
+                                                                                )
+                                                                              : Container();
+                                                    }).toList(),
+                                                  ),
+                                                ],
+                                              ))
+                                          : const SizedBox()))
                             ],
                           ),
                         ),

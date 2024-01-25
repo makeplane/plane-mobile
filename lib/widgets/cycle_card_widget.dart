@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:plane/bottom_sheets/delete_cycle_sheet.dart';
+import 'package:plane/bottom-sheets/delete_cycle_sheet.dart';
 import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';

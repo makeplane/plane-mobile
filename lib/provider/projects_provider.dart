@@ -7,17 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/kanban/models/project_detail_model.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/repository/projects_service.dart';
+import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
-
 import '../models/issues.dart';
 
 class ProjectsProvider extends ChangeNotifier {
-  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider>? this.ref);
-  final Ref? ref;
+  ProjectsProvider(ChangeNotifierProviderRef<ProjectsProvider> this.ref);
+  final Ref ref;
   List projects = [];
   List starredProjects = [];
   StateEnum joinprojectState = StateEnum.empty;
@@ -70,8 +71,7 @@ class ProjectsProvider extends ChangeNotifier {
     currentProject = {};
     loadingProjectIndex = [];
 
-    coverUrl =
-        "https://app.plane.so/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1575116464504-9e7652fddcb3%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dmax%26fm%3Djpg%26ixid%3DMnwyODUyNTV8MHwxfHNlYXJjaHwxOHx8cGxhbmV8ZW58MHx8fHwxNjgxNDY4NTY5%26ixlib%3Drb-4.0.3%26q%3D80%26w%3D1080&w=1920&q=75";
+    coverUrl = "";
     projectDetailModel = null;
     memberCount = 0;
     lead.clear();
@@ -86,12 +86,13 @@ class ProjectsProvider extends ChangeNotifier {
       {Filters? filters,
       bool fromViews = false,
       required WidgetRef ref}) async {
-    final prov = ref.read(ProviderList.issuesProvider);
+    final issuesProv = ref.read(ProviderList.issuesProvider);
     final moduleProv = ref.read(ProviderList.modulesProvider);
     final viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
     final intergrationProvider = ref.read(ProviderList.integrationProvider);
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
-    final pageProv = ref.read(ProviderList.pageProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider.notifier);
+    // final pageProv = ref.read(ProviderList.pageProvider);
     if (currentProject['estimate'] != null &&
         currentProject['estimate'] != '') {
       // prov.issues.displayProperties.estimate = true;
@@ -101,21 +102,22 @@ class ProjectsProvider extends ChangeNotifier {
         .selectedWorkspace
         .workspaceSlug;
 
-    prov.getStates(slug: workspaceSlug, projID: currentProject['id']);
-    prov.getProjectMembers(
+    statesProvider.getStates(
+        slug: workspaceSlug, projectId: currentProject['id']);
+    getProjectMembers(
       slug: workspaceSlug,
-      projID: currentProject['id'],
+      projId: currentProject['id'],
     );
     ref.read(ProviderList.estimatesProvider).getEstimates(
           slug: workspaceSlug,
           projID: currentProject['id'],
         );
-    prov.getIssueProperties(issueCategory: IssueCategory.issues);
-    prov.getProjectView().then((value) {
+    issuesProv.getIssueDisplayProperties(issueCategory: IssueCategory.issues);
+    issuesProv.getProjectView().then((value) {
       if (filters != null) {
-        prov.issues.filters = filters;
+        issuesProv.issues.filters = filters;
       }
-      prov.filterIssues(
+      issuesProv.filterIssues(
         fromViews: fromViews,
         slug: workspaceSlug,
         projID: currentProject['id'],
@@ -128,7 +130,8 @@ class ProjectsProvider extends ChangeNotifier {
     );
     viewsProvider.getViews();
 
-    prov.getLabels(slug: workspaceSlug, projID: currentProject['id']);
+    // Fetching labels
+    ref.read(ProviderList.labelProvider.notifier).getProjectLabels();
 
     getProjectDetails(slug: workspaceSlug, projId: currentProject['id']);
 
@@ -172,10 +175,10 @@ class ProjectsProvider extends ChangeNotifier {
         cycleId: '',
         ref: ref);
 
-    pageProv.updatepageList(
-      slug: workspaceSlug,
-      projectId: projectID,
-    );
+    // pageProv.updatepageList(
+    //   slug: workspaceSlug,
+    //   projectId: projectID,
+    // );
 
     if (workspaceProvider.githubIntegration != null) {
       intergrationProvider.getSlackIntegration(
@@ -343,7 +346,8 @@ class ProjectsProvider extends ChangeNotifier {
       WidgetRef? ref,
       BuildContext? context}) async {
     createProjectState = StateEnum.loading;
-    final workspaceProvider = ref!.watch(ProviderList.workspaceProvider);
+    final workspaceProvider = ref!.read(ProviderList.workspaceProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     notifyListeners();
     try {
       final response = await DioConfig().dioServe(
@@ -362,7 +366,8 @@ class ProjectsProvider extends ChangeNotifier {
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       await getProjects(slug: slug);
       createProjectState = StateEnum.success;
       notifyListeners();
@@ -437,7 +442,8 @@ class ProjectsProvider extends ChangeNotifier {
       required Map data,
       required WidgetRef ref}) async {
     updateProjectState = StateEnum.loading;
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     notifyListeners();
     log("${APIs.listProjects.replaceAll('\$SLUG', slug)}$projId/");
     try {
@@ -454,8 +460,6 @@ class ProjectsProvider extends ChangeNotifier {
       projectDetailModel!.projectLead = projectLead;
       final int index = currentProject["index"];
       currentProject = projectDetailModel!.toJson();
-      log('CURRENT PROJECT');
-      log(currentProject.toString());
       currentProject["index"] = index;
       projects[index]["name"] = currentProject["name"];
       projects[index]["description"] = currentProject["description"];
@@ -479,7 +483,8 @@ class ProjectsProvider extends ChangeNotifier {
             'PROJECT_ID': response.data['id'],
             'PROJECT_NAME': response.data['name']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());
@@ -545,8 +550,10 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future getProjectMembers(
-      {required String slug, required String projId}) async {
+  Future getProjectMembers({
+    required String slug,
+    required String projId,
+  }) async {
     // projectDetailState = AuthStateEnum.loading;
     // notifyListeners();
     try {
@@ -558,8 +565,21 @@ class ProjectsProvider extends ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
-
       projectMembers = response.data;
+
+      for (final element in projectMembers) {
+        for (final workspace
+            in ref.watch(ProviderList.workspaceProvider).workspaceMembers) {
+          if (element['member'] == workspace['member']['id']) {
+            // Replace the map in projectMembers with the one from workspaceMembers
+            projectMembers[projectMembers.indexOf(element)] = workspace;
+          }
+          if (element["member"] ==
+              ref.read(ProviderList.profileProvider).userProfile.id) {
+            role = roleParser(role: element["role"]);
+          }
+        }
+      }
       projectMembersState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -657,73 +677,17 @@ class ProjectsProvider extends ChangeNotifier {
     }
   }
 
-  Future stateCrud(
-      {required String slug,
-      required String projId,
-      required String stateId,
-      required CRUD method,
-      required BuildContext context,
-      required WidgetRef ref,
-      required Map data}) async {
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
-    try {
-      final url = method == CRUD.update || method == CRUD.delete
-          ? '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projId)}$stateId/'
-          : APIs.states
-              .replaceFirst('\$SLUG', slug)
-              .replaceFirst('\$PROJECTID', projId);
-      stateCrudState = StateEnum.loading;
+  Future getUnsplashImages() async {
+    unsplashImageState = StateEnum.loading;
+    notifyListeners();
+    final response = await ProjectsService().getUnspalshImages();
+    response.fold((images) {
+      // unsplashImages = images;
+      unsplashImageState = StateEnum.success;
       notifyListeners();
-      final response = await DioConfig().dioServe(
-          hasAuth: true,
-          url: url,
-          hasBody: true,
-          httpMethod: method == CRUD.create
-              ? HttpMethod.post
-              : method == CRUD.update
-                  ? HttpMethod.put
-                  : method == CRUD.delete
-                      ? HttpMethod.delete
-                      : HttpMethod.patch,
-          data: data);
-      stateCrudState = StateEnum.success;
-      method != CRUD.read
-          ? postHogService(
-              eventName: method == CRUD.create
-                  ? 'STATE_CREATE'
-                  : method == CRUD.update
-                      ? 'STATE_UPDATE'
-                      : method == CRUD.delete
-                          ? 'STATE_DELETE'
-                          : '',
-              properties: method == CRUD.delete
-                  ? {}
-                  : {
-                      'WORKSPACE_ID':
-                          workspaceProvider.selectedWorkspace.workspaceId,
-                      'WORKSPACE_SLUG':
-                          workspaceProvider.selectedWorkspace.workspaceSlug,
-                      'WORKSPACE_NAME':
-                          workspaceProvider.selectedWorkspace.workspaceName,
-                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
-                      'STATE_ID':
-                          method == CRUD.create ? response.data['id'] : stateId
-                    },
-              ref: ref)
-          : null;
+    }, (err) {
+      unsplashImageState = StateEnum.error;
       notifyListeners();
-    } catch (e) {
-      if (e is DioException) {
-        log(e.message.toString());
-      }
-      CustomToast.showToast(context,
-          message: 'Something went wrong, Please try again.',
-          toastType: ToastType.failure);
-      log(e.toString());
-      stateCrudState = StateEnum.error;
-      notifyListeners();
-    }
+    });
   }
 }

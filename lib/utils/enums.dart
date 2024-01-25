@@ -18,7 +18,7 @@ enum PageFilters { all, recent, favourites, createdByMe, createdByOthers }
 
 enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
-enum ProjectView { kanban, list, calendar, spreadsheet }
+enum IssueLayout { kanban, list, calendar, spreadsheet }
 
 enum GroupBY {
   state,

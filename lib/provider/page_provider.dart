@@ -69,6 +69,7 @@ class PageProvider with ChangeNotifier {
       required String projectId}) async {
     final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
+    final profileProvider = ref.watch(ProviderList.profileProvider);
     try {
       if (httpMethod != HttpMethod.get || httpMethod == HttpMethod.delete) {
         if (httpMethod == HttpMethod.delete) {
@@ -130,7 +131,8 @@ class PageProvider with ChangeNotifier {
                       'PAGE_ID': pageID,
                       'BLOCK_ID': res.data['id']
                     },
-              ref: ref)
+              userEmail: profileProvider.userProfile.email!,
+              userID: profileProvider.userProfile.id!)
           : null;
       if (httpMethod == HttpMethod.delete) {
         blocks.removeWhere((element) => element['id'] == blockID);
@@ -241,8 +243,9 @@ class PageProvider with ChangeNotifier {
       bool? fromDispose = false}) async {
     blockSheetState = StateEnum.loading;
     notifyListeners();
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     try {
       final res = await DioConfig().dioServe(
           httpMethod: HttpMethod.patch,
@@ -261,7 +264,8 @@ class PageProvider with ChangeNotifier {
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'PAGE_ID': res.data['id']
           },
-          ref: ref);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       final int index = pages[selectedFilter]!
           .indexWhere((element) => element["id"] == pageId);
       pagesListState = StateEnum.success;
@@ -338,8 +342,9 @@ class PageProvider with ChangeNotifier {
       required WidgetRef ref}) async {
     pagesListState = StateEnum.loading;
     setState();
-    final workspaceProvider = ref.watch(ProviderList.workspaceProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
+    final workspaceProvider = ref.read(ProviderList.workspaceProvider);
+    final projectProvider = ref.read(ProviderList.projectProvider);
+    final profileProvider = ref.read(ProviderList.profileProvider);
     try {
       final response = await DioConfig().dioServe(
           httpMethod: HttpMethod.post,
@@ -358,7 +363,8 @@ class PageProvider with ChangeNotifier {
             'PROJECT_NAME': projectProvider.projectDetailModel!.name,
             'PAGE_ID': response.data['id']
           },
-          ref: ref);
+               userEmail: profileProvider.userProfile.email!,
+                                userID: profileProvider.userProfile.id!);
       updatepageList(
         slug: slug,
         projectId: projectId,

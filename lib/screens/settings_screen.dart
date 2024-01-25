@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/bottom_sheets/create_estimate.dart';
-import 'package:plane/bottom_sheets/project_invite_memebers_sheet.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/automations_page.dart';
+import 'package:plane/bottom-sheets/create_estimate.dart';
+import 'package:plane/bottom-sheets/project_invite_memebers_sheet.dart';
+import 'package:plane/screens/profile/workpsace-settings/members.dart';
+import 'package:plane/screens/project/settings/control_page.dart';
+import 'package:plane/screens/project/settings/create_label.dart';
+import 'package:plane/screens/project/settings/estimates_page.dart';
+import 'package:plane/screens/project/settings/features_page.dart';
+import 'package:plane/screens/project/settings/general_page.dart';
+import 'package:plane/screens/project/settings/lables_page.dart';
+import 'package:plane/screens/project/settings/states_pages.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/control_page.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/estimates_page.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/features_page.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/general_page.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/integrations_page.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/lables_page.dart';
-import 'package:plane/screens/MainScreens/Profile/WorkpsaceSettings/members.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/loading_widget.dart';
 
-import 'MainScreens/Projects/ProjectDetail/Settings/create_label.dart';
+import 'project/settings/integrations_page.dart';
+
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
@@ -37,7 +37,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
     'Labels',
     'Integrations',
     'Estimates',
-    'Automations',
+    // 'Automations',
   ];
 
   final pageViewController = PageController(initialPage: 0);
@@ -313,7 +313,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
                         LablesPage(),
                         IntegrationsWidget(),
                         EstimatsPage(),
-                        AutomationsPage(),
+                        // AutomationsPage(),
                       ]),
                 ),
               ],

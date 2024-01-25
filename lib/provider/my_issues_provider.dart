@@ -9,15 +9,13 @@ import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/MainScreens/Projects/ProjectDetail/IssuesTab/CreateIssue/create_issue.dart';
-//import 'package:plane/screens/MainScreens/Projects/ProjectDetail/Settings/states_pages.dart';
+import 'package:plane/screens/project/issues/create_issue.dart';
+import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/issue_card_widget.dart';
-
-import '../screens/MainScreens/Projects/ProjectDetail/IssuesTab/issue_detail.dart';
 
 class MyIssuesProvider extends ChangeNotifier {
   MyIssuesProvider(ChangeNotifierProviderRef<MyIssuesProvider> this.ref);
@@ -73,7 +71,7 @@ class MyIssuesProvider extends ChangeNotifier {
     issues = Issues(
         showSubIssues: true,
         issues: [],
-        projectView: ProjectView.kanban,
+        projectView: IssueLayout.kanban,
         groupBY: GroupBY.state,
         orderBY: OrderBY.manual,
         issueType: IssueType.all,
@@ -141,12 +139,12 @@ class MyIssuesProvider extends ChangeNotifier {
       );
       myIssueView = response.data["view_props"];
       issues.projectView = myIssueView["display_filters"]['layout'] == 'list'
-          ? ProjectView.list
+          ? IssueLayout.list
           : myIssueView["display_filters"]['layout'] == 'calendar'
-              ? ProjectView.calendar
+              ? IssueLayout.calendar
               : myIssueView["display_filters"]['layout'] == 'spreadsheet'
-                  ? ProjectView.spreadsheet
-                  : ProjectView.kanban;
+                  ? IssueLayout.spreadsheet
+                  : IssueLayout.kanban;
       issues.groupBY =
           Issues.toGroupBY(myIssueView["display_filters"]['group_by']);
       issues.orderBY =
@@ -195,7 +193,7 @@ class MyIssuesProvider extends ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log("MY ISSUES:${e.response}");
-      issues.projectView = ProjectView.kanban;
+      issues.projectView = IssueLayout.kanban;
       myIssuesViewState = StateEnum.error;
       notifyListeners();
     }
@@ -519,7 +517,7 @@ class MyIssuesProvider extends ChangeNotifier {
           items: items,
           shrink: j >= shrinkStates.length ? false : shrinkStates[j],
           index: j,
-          width: issues.projectView == ProjectView.list
+          width: issues.projectView == IssueLayout.list
               ? MediaQuery.of(Const.globalKey.currentContext!).size.width
               : (width > 500 ? 400 : width * 0.8),
           // shrink: shrinkStates[count++],
@@ -792,7 +790,6 @@ class MyIssuesProvider extends ChangeNotifier {
             'priority': stateOrdering[newListIndex].toString().toLowerCase(),
           });
 
-      // log(response.data.toString());
       if (issues.groupBY == GroupBY.priority) {
         log(groupByResponse[stateOrdering[newListIndex]][newCardIndex]['name']);
         groupByResponse[stateOrdering[newListIndex]][newCardIndex]['priority'] =
@@ -816,7 +813,6 @@ class MyIssuesProvider extends ChangeNotifier {
         });
       }
 
-      log("ISSUE REPOSITIONED");
       notifyListeners();
     } on DioException catch (err) {
       (groupByResponse[stateOrdering[oldListIndex]] as List).insert(
@@ -862,11 +858,11 @@ class MyIssuesProvider extends ChangeNotifier {
                 "start_date": issues.filters.startDate,
             },
             "display_filters": {
-              "layout": issues.projectView == ProjectView.kanban
+              "layout": issues.projectView == IssueLayout.kanban
                   ? 'kanban'
-                  : issues.projectView == ProjectView.list
+                  : issues.projectView == IssueLayout.list
                       ? 'list'
-                      : issues.projectView == ProjectView.calendar
+                      : issues.projectView == IssueLayout.calendar
                           ? 'calendar'
                           : 'spreadsheet',
               "group_by": Issues.fromGroupBY(issues.groupBY),

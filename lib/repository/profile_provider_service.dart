@@ -17,7 +17,7 @@ class ProfileService {
     try {
       final response = await dio.dioServe(
         hasAuth: true,
-        url: '${APIs.baseApi}${APIs.profile}',
+        url: APIs.profile,
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
@@ -32,7 +32,7 @@ class ProfileService {
     try {
       final response = await dio.dioServe(
         hasAuth: true,
-        url: '${APIs.baseApi}${APIs.profile}settings/',
+        url: '${APIs.profile}settings/',
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
@@ -48,7 +48,7 @@ class ProfileService {
     try {
       final response = await dio.dioServe(
           hasAuth: true,
-          url: APIs.baseApi + APIs.profile,
+          url: APIs.profile,
           hasBody: true,
           httpMethod: HttpMethod.patch,
           data: data);

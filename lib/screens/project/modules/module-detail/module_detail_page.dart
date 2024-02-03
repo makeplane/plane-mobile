@@ -8,10 +8,9 @@ import 'package:plane/bottom-sheets/assignee_sheet.dart';
 import 'package:plane/models/chart_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/widgets/assignee_widget.dart';
-import 'package:plane/screens/project/widgets/assignees_widget.dart';
 import 'package:plane/screens/project/widgets/links_widget.dart';
-import 'package:plane/screens/project/widgets/progress_chart.dart';
-import 'package:plane/screens/project/widgets/states_widget.dart';
+import 'package:plane/core/components/cycle_module_widgets/progress_chart_section.dart';
+import 'package:plane/core/components/cycle_module_widgets/states_section.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -60,13 +59,13 @@ class _ModuleDetailsPageState extends ConsumerState<ModuleDetailsPage> {
           const SizedBox(height: 30),
           detailsWidget(),
           const SizedBox(height: 30),
-          progressWidget(ref: ref, chartData: widget.chartData),
+          ProgressChartSection(chartData: widget.chartData),
           const SizedBox(height: 30),
-          assigneesWidget(
-              ref: ref,
-              detailData: modulesProvider.moduleDetailsData['distribution']),
+          // assigneesWidget(
+          //     ref: ref,
+          //     detailData: modulesProvider.moduleDetailsData['distribution']),
           const SizedBox(height: 30),
-          statesWidget(ref: ref, detailData: modulesProvider.moduleDetailsData),
+          StatesSection(stateIssuesInfo: modulesProvider.moduleDetailsData),
           const SizedBox(height: 30),
           labelsWidget(),
           const SizedBox(height: 30),
@@ -362,7 +361,6 @@ class _ModuleDetailsPageState extends ConsumerState<ModuleDetailsPage> {
 
   Widget labelsWidget({bool fromModule = false}) {
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
 
     final detailData = modulesProvider.moduleDetailsData;
@@ -399,7 +397,7 @@ class _ModuleDetailsPageState extends ConsumerState<ModuleDetailsPage> {
                             vertical: 8, horizontal: 8),
                         margin: const EdgeInsets.symmetric(vertical: 2),
                         decoration: BoxDecoration(
-                          color: issuesProvider.issues.filters.labels.contains(
+                          color: modulesProvider.issues.filters.labels.contains(
                                   detailData['distribution']['labels'][index]
                                       ['label_id'])
                               ? themeProvider
@@ -598,7 +596,7 @@ class _ModuleDetailsPageState extends ConsumerState<ModuleDetailsPage> {
                           height: 30,
                           child: SquareAvatarWidget(
                               borderRadius: 50,
-                              details: modulesProvider
+                              member_ids: modulesProvider
                                   .currentModule['members_detail']),
                         ),
                       ),

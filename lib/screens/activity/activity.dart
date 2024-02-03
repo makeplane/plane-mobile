@@ -85,26 +85,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (_) => IssueDetail(
-                                                        from: PreviousScreen
-                                                            .activity,
-                                                        projID: activityProvider
-                                                                .data[index]
-                                                            ["project"],
-                                                        workspaceSlug: ref
-                                                            .read(ProviderList
-                                                                .workspaceProvider)
-                                                            .workspaces
-                                                            .firstWhere((element) =>
-                                                                element['id'] ==
-                                                                activityProvider
-                                                                            .data[
-                                                                        index][
-                                                                    "workspace"])["slug"],
-                                                        appBarTitle: '',
-                                                        issueId:
-                                                            activityProvider
-                                                                    .data[index]
-                                                                ["issue"],
+                                                       
                                                       )));
                                         } else if (activityProvider.data[index]
                                                 ["comment"]
@@ -246,11 +227,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                 ..onTap = () {
                                                                                   Navigator.of(context).push(MaterialPageRoute(
                                                                                       builder: (_) => IssueDetail(
-                                                                                            from: PreviousScreen.activity,
-                                                                                            projID: activityProvider.data[index]["project"],
-                                                                                            workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
-                                                                                            appBarTitle: '',
-                                                                                            issueId: activityProvider.data[index]["issue"],
+                                                                                          
                                                                                           )));
                                                                                 },
                                                                               text: activityProvider.data[index]['issue_detail'] != null ? ' ${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
@@ -464,11 +441,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                                 Navigator.of(context).push(
                                                                                   MaterialPageRoute(
                                                                                     builder: (_) => IssueDetail(
-                                                                                      from: PreviousScreen.activity,
-                                                                                      projID: activityProvider.data[index]["project"],
-                                                                                      workspaceSlug: ref.read(ProviderList.workspaceProvider).workspaces.firstWhere((element) => element['id'] == activityProvider.data[index]["workspace"])["slug"],
-                                                                                      appBarTitle: activityProvider.data[index]['issue_detail'] != null ? '${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
-                                                                                      issueId: activityProvider.data[index]["issue"],
+                                                                                   
                                                                                     ),
                                                                                   ),
                                                                                 );

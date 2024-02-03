@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
-import 'package:plane/models/issues.dart';
+import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -24,7 +24,7 @@ class CreateView extends ConsumerStatefulWidget {
     this.filtersData,
   });
   final bool fromProjectIssues;
-  final Filters? filtersData;
+  final FiltersModel? filtersData;
 
   @override
   ConsumerState<CreateView> createState() => _CreateViewState();
@@ -88,12 +88,12 @@ class _CreateViewState extends ConsumerState<CreateView> {
       filtersData = {
         'Filters': {
           "assignees": widget.filtersData!.assignees,
-          "created_by": widget.filtersData!.createdBy,
+          "created_by": widget.filtersData!.created_by,
           "labels": widget.filtersData!.labels,
-          "priority": widget.filtersData!.priorities,
-          "state": widget.filtersData!.states,
-          "target_date": widget.filtersData!.targetDate,
-          "start_date": widget.filtersData!.startDate,
+          "priority": widget.filtersData!.priority,
+          "state": widget.filtersData!.state,
+          "target_date": widget.filtersData!.target_date,
+          "start_date": widget.filtersData!.start_date,
         }
       };
 
@@ -106,7 +106,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final viewsProvider = ref.watch(ProviderList.viewsProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final labelProvider = ref.watch(ProviderList.labelProvider);
     final statesProvider = ref.watch(ProviderList.statesProvider);
@@ -204,8 +204,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                       context: context,
                                       builder: (ctx) {
                                         return FilterSheet(
-                                          filtersData: filtersData,
-                                          issueCategory: IssueCategory.issues,
+                                          issueCategory:
+                                              IssueCategory.projectIssues,
                                           fromCreateView: true,
                                         );
                                       });
@@ -353,8 +353,8 @@ class _CreateViewState extends ConsumerState<CreateView> {
                                                                             15,
                                                                         width:
                                                                             15,
-                                                                        child: issuesProvider
-                                                                            .stateIcons[e]),
+                                                                        child:
+                                                                            Container()),
                                                                     text: statesProvider
                                                                         .projectStates[
                                                                             e]!

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/screens/project/cycles/cycle-detail/cycle_issues_page.dart';
+import 'package:plane/models/current_route_detail.dart';
+import 'package:plane/screens/project/cycles/cycle-detail/cycle_detail.dart';
 import 'package:plane/screens/project/cycles/cycle_active_card.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -196,6 +197,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                         ['is_favorite']
                                     ? InkWell(
                                         onTap: () {
+                                          /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cycleFavoriteData[index]
+                                                  ['id']);
                                           cyclesProvider.currentCycle =
                                               cyclesProvider
                                                   .cycleFavoriteData[index];
@@ -262,6 +268,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
+                                      /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cyclesAllData[index]
+                                                  ['id']);
                                       cyclesProvider.currentCycle =
                                           cyclesProvider.cyclesAllData[index];
                                       Navigator.push(
@@ -373,6 +384,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                       onTap: () {
+                                        /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cycleCompletedFavoriteData[index]
+                                                  ['id']);
                                         cyclesProviderRead.currentCycle =
                                             cyclesProvider
                                                     .cycleCompletedFavoriteData[
@@ -436,9 +452,15 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                       onTap: () {
+                                        /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cyclesCompletedData[index]
+                                                  ['id']);
                                         cyclesProviderRead.currentCycle =
                                             cyclesProvider
                                                 .cyclesCompletedData[index];
+                                                
                                         cyclesProviderRead.setState();
                                         Navigator.push(
                                           context,
@@ -514,6 +536,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                       onTap: () {
+                                        /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cycleUpcomingFavoriteData[index]
+                                                  ['id']);
                                         cyclesProviderRead.currentCycle =
                                             cyclesProvider
                                                     .cycleUpcomingFavoriteData[
@@ -577,6 +604,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                       onTap: () {
+                                        /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cyclesUpcomingData[index]
+                                                  ['id']);
                                         cyclesProviderRead.currentCycle =
                                             cyclesProvider
                                                 .cyclesUpcomingData[index];
@@ -654,6 +686,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
+                                      /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cycleFavoriteData[index]
+                                                  ['id']);
                                       cyclesProviderRead.currentCycle =
                                           cyclesProvider
                                               .cycleDraftFavoriteData[index];
@@ -716,6 +753,11 @@ class _CycleWidgetState extends ConsumerState<CycleWidget> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                       onTap: () {
+                                        /// Update current-route detail
+                                          currentRouteDetails.update(
+                                              cycleId: cyclesProvider
+                                                      .cyclesDraftData[index]
+                                                  ['id']);
                                         cyclesProviderRead.currentCycle =
                                             cyclesProvider
                                                 .cyclesDraftData[index];

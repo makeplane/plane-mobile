@@ -5,17 +5,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
-import 'package:plane/bottom-sheets/type_sheet.dart';
-import 'package:plane/bottom-sheets/views_sheet.dart';
 import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/chart_model.dart';
-import 'package:plane/models/issues.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/project/issue-layouts/calender_view.dart';
-import 'package:plane/screens/project/issue-layouts/spreadsheet_view.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/screens/project/modules/module-detail/module_detail_page.dart';
 import 'package:plane/utils/constants.dart';
@@ -48,32 +41,6 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
 
   @override
   void initState() {
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
-    tempIssuesList = issuesProvider.issuesList;
-    issuesProvider.tempProjectView = issuesProvider.issues.projectView;
-    issuesProvider.tempGroupBy = issuesProvider.issues.groupBY;
-    issuesProvider.tempOrderBy = issuesProvider.issues.orderBY;
-    issuesProvider.tempIssueType = issuesProvider.issues.issueType;
-    issuesProvider.tempFilters = issuesProvider.issues.filters;
-
-    issuesProvider.issues.projectView = IssueLayout.kanban;
-    issuesProvider.issues.groupBY = GroupBY.state;
-
-    issuesProvider.issues.orderBY = OrderBY.lastCreated;
-    issuesProvider.issues.issueType = IssueType.all;
-    issuesProvider.showEmptyStates = true;
-    issuesProvider.issues.filters = Filters(
-      assignees: [],
-      createdBy: [],
-      labels: [],
-      priorities: [],
-      states: [],
-      targetDate: [],
-      startDate: [],
-      stateGroup: [],
-      subscriber: [],
-    );
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getModuleData();
     });
@@ -82,7 +49,6 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
 
   Future getModuleData() async {
     final modulesProvider = ref.read(ProviderList.modulesProvider);
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
     modulesProvider.moduleDetailState = StateEnum.loading;
     pageController = PageController(
         initialPage: modulesProvider.moduleDetailSelectedIndex,
@@ -102,25 +68,19 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
         .then((value) => getChartData(modulesProvider
             .moduleDetailsData['distribution']['completion_chart']));
 
-    ref
-        .read(ProviderList.issuesProvider)
-        .getIssueDisplayProperties(issueCategory: IssueCategory.cycleIssues);
+    // ref
+    //     .read(ProviderList.issuesProvider)
+    //     .getIssueDisplayProperties(issueCategory: IssueCategory.cycleIssues);
     await modulesProvider.getModuleView(moduleId: widget.moduleId!);
-    modulesProvider
-        .filterModuleIssues(
-            moduleID: widget.moduleId!,
-            slug: ref
-                .read(ProviderList.workspaceProvider)
-                .selectedWorkspace
-                .workspaceSlug,
-            projectId: widget.projId ??
-                ref.read(ProviderList.projectProvider).currentProject['id'],
-            ref: ref)
-        .then((value) {
-      if (issuesProvider.issues.projectView == IssueLayout.list) {
-        modulesProvider.initializeBoard();
-      }
-    });
+    modulesProvider.filterModuleIssues(
+        moduleID: widget.moduleId!,
+        slug: ref
+            .read(ProviderList.workspaceProvider)
+            .selectedWorkspace
+            .workspaceSlug,
+        projectId: widget.projId ??
+            ref.read(ProviderList.projectProvider).currentProject['id'],
+        ref: ref);
   }
 
   Future getChartData(Map<String, dynamic> data) async {
@@ -133,7 +93,6 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issueProvider = ref.watch(ProviderList.issuesProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     return WillPopScope(
@@ -346,8 +305,8 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                                         projectId: widget.projId,
                                         type: IssueCategory.cycleIssues,
                                         ref: ref)
-                                    : (issueProvider.issues.projectView ==
-                                            IssueLayout.list)
+                                    : (modulesProvider.issues.projectView ==
+                                            IssuesLayout.list)
                                         ? Container(
                                             color: themeProvider.themeManager
                                                 .secondaryBackgroundDefaultColor,
@@ -431,15 +390,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                                                                         IconButton(
                                                                             onPressed:
                                                                                 () {
-                                                                              if (issueProvider.issues.groupBY == GroupBY.state) {
-                                                                                issueProvider.createIssuedata['state'] = state.id;
-                                                                              } else {
-                                                                                issueProvider.createIssuedata['priority'] = 'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
-                                                                              }
-                                                                              Navigator.of(context).push(MaterialPageRoute(
-                                                                                  builder: (ctx) => CreateIssue(
-                                                                                        moduleId: widget.moduleId,
-                                                                                      )));
+                                                                             
                                                                             },
                                                                             icon:
                                                                                 Icon(
@@ -501,8 +452,8 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                                                       .toList()),
                                             ),
                                           )
-                                        : issueProvider.issues.projectView ==
-                                                IssueLayout.kanban
+                                        : modulesProvider.issues.projectView ==
+                                                IssuesLayout.kanban
                                             ? Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 8),
@@ -539,8 +490,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                                                       },
                                                     );
                                                   },
-                                                  isCardsDraggable: issueProvider
-                                                      .checkIsCardsDaraggable(),
+                                                  isCardsDraggable: false,
                                                   groupEmptyStates:
                                                       !modulesProvider
                                                           .showEmptyStates,
@@ -588,224 +538,22 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                                                           FontWeight.w500),
                                                 ),
                                               )
-                                            : issueProvider
-                                                        .issues.projectView ==
-                                                    IssueLayout.calendar
-                                                ? const CalendarView()
-                                                : const SpreadSheetView(
-                                                    issueCategory: IssueCategory
-                                                        .cycleIssues,
-                                                  ),
+                                            : Container()
+//                                             modulesProvider
+//                                                         .issues.projectView ==
+//                                                     IssuesLayout.calendar
+//                                                 ?  CalendarView(
+// issues: [],
+//                                                   issuesProvider: ,
+//                                                 )
+//                                                 :  SpreadSheetView(
+//                                                   issues: [],
+//                                                   issuesProvider: ,
+//                                                     issueCategory: IssueCategory
+//                                                         .cycleIssues,
+//                                                   ),
                       ),
-                      SafeArea(
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: themeProvider
-                                  .themeManager.primaryBackgroundDefaultColor,
-                              boxShadow: themeProvider
-                                  .themeManager.shadowBottomControlButtons),
-                          child: Row(
-                            children: [
-                              projectProvider.role == Role.admin ||
-                                      projectProvider.role == Role.member
-                                  ? Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) => CreateIssue(
-                                                projectId: widget.projId ??
-                                                    projectProvider
-                                                        .currentProject['id'],
-                                                fromMyIssues: true,
-                                                moduleId: widget.moduleId,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: SizedBox(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.add,
-                                                color: themeProvider
-                                                    .themeManager
-                                                    .primaryTextColor,
-                                                size: 20,
-                                              ),
-                                              const CustomText(
-                                                ' Issue',
-                                                type: FontStyle.Medium,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              Container(
-                                height: 50,
-                                width: 0.5,
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color,
-                              ),
-                              Expanded(
-                                  child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      enableDrag: true,
-                                      constraints: BoxConstraints(
-                                          maxHeight: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.85),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(30),
-                                      )),
-                                      context: context,
-                                      builder: (ctx) {
-                                        return const TypeSheet(
-                                          issueCategory:
-                                              IssueCategory.moduleIssues,
-                                        );
-                                      });
-                                },
-                                child: SizedBox(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.menu,
-                                        color: themeProvider
-                                            .themeManager.primaryTextColor,
-                                        size: 19,
-                                      ),
-                                      const CustomText(
-                                        ' Layout',
-                                        type: FontStyle.Medium,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )),
-                              Container(
-                                height: 50,
-                                width: 0.5,
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color,
-                              ),
-                              issueProvider.issues.projectView ==
-                                      IssueLayout.calendar
-                                  ? Container()
-                                  : Expanded(
-                                      child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            enableDrag: true,
-                                            constraints: BoxConstraints(
-                                                maxHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.9),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30),
-                                            )),
-                                            context: context,
-                                            builder: (ctx) {
-                                              return ViewsSheet(
-                                                projectView: issueProvider
-                                                    .issues.projectView,
-                                                issueCategory:
-                                                    IssueCategory.moduleIssues,
-                                                moduleId: widget.moduleId,
-                                              );
-                                            });
-                                      },
-                                      child: SizedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.wysiwyg_outlined,
-                                              color: themeProvider.themeManager
-                                                  .primaryTextColor,
-                                              size: 19,
-                                            ),
-                                            const CustomText(
-                                              ' Display',
-                                              type: FontStyle.Medium,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                              Container(
-                                height: 50,
-                                width: 0.5,
-                                color: themeProvider
-                                    .themeManager.borderSubtle01Color,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        enableDrag: true,
-                                        constraints: BoxConstraints(
-                                            maxHeight: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.85),
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(30),
-                                          topRight: Radius.circular(30),
-                                        )),
-                                        context: context,
-                                        builder: (ctx) {
-                                          return FilterSheet(
-                                            issueCategory:
-                                                IssueCategory.moduleIssues,
-                                            cycleOrModuleId: widget.moduleId,
-                                          );
-                                        });
-                                  },
-                                  child: SizedBox(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.filter_list_outlined,
-                                          color: themeProvider
-                                              .themeManager.primaryTextColor,
-                                          size: 19,
-                                        ),
-                                        const CustomText(
-                                          ' Filters',
-                                          type: FontStyle.Medium,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // IssuesLayoutBottomActions(issuesProvider: issuesProvider, issuesState: issuesState, selectedTab: selectedTab)
                     ],
                   ),
                   ModuleDetailsPage(

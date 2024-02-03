@@ -21,11 +21,11 @@ class __CreatedByFilterState extends ConsumerState<_CreatedByFilter> {
             .map(
               (e) => GestureDetector(
                 onTap: () {
-                  if (widget.state.filters.createdBy
+                  if (widget.state.filters.created_by
                       .contains(e['member']['id'])) {
-                    widget.state.filters.createdBy.remove(e['member']['id']);
+                    widget.state.filters.created_by.remove(e['member']['id']);
                   } else {
-                    widget.state.filters.createdBy.add(e['member']['id']);
+                    widget.state.filters.created_by.add(e['member']['id']);
                   }
                   widget.state.setState();
                 },
@@ -51,10 +51,10 @@ class __CreatedByFilterState extends ConsumerState<_CreatedByFilter> {
                           )),
                         ),
                   text: e['member']['display_name'] ?? '',
-                  selected: widget.state.filters.createdBy
+                  selected: widget.state.filters.created_by
                       .contains(e['member']['id']),
                   color:
-                      widget.state.filters.createdBy.contains(e['member']['id'])
+                      widget.state.filters.created_by.contains(e['member']['id'])
                           ? themeProvider.themeManager.primaryColour
                           : themeProvider
                               .themeManager.secondaryBackgroundDefaultColor,

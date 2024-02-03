@@ -1,15 +1,12 @@
 // ignore_for_file: unused_local_variable
-
-import 'dart:developer';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:plane/core/icons/priority_icon.dart';
+import 'package:plane/core/icons/state_group_icon.dart';
+import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
 import 'package:plane/models/project/state/state_model.dart';
-import 'package:plane/models/issues.dart';
-import 'package:plane/provider/cycles_provider.dart';
-import 'package:plane/provider/modules_provider.dart';
-import 'package:plane/provider/my_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/create_view_screen.dart';
@@ -17,13 +14,13 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/utils/issues/issues.helper.dart';
 import 'package:plane/utils/theme_manager.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_divider.dart';
 import 'package:plane/widgets/custom_expansion_tile.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/rectangular_chip.dart';
-import '../../provider/issues_provider.dart';
 import '../../provider/projects_provider.dart';
 part 'filter_sheet_state.dart';
 part 'widgets/priority_filter.dart';
@@ -40,18 +37,12 @@ class FilterSheet extends ConsumerStatefulWidget {
   FilterSheet({
     super.key,
     required this.issueCategory,
-    this.filtersData,
-    this.fromViews = false,
-    this.isArchived = false,
+    this.appliedFilters = const FiltersModel(),
     this.fromCreateView = false,
-    this.cycleOrModuleId,
   });
   final IssueCategory issueCategory;
-  final bool fromCreateView;
-  final bool fromViews;
-  final bool isArchived;
-  dynamic filtersData;
-  String? cycleOrModuleId;
+  final FiltersModel appliedFilters;
+  bool fromCreateView = false;
   @override
   ConsumerState<FilterSheet> createState() => _FilterSheetState();
 }
@@ -62,14 +53,10 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   @override
   void initState() {
     state = _FilterState(
-        fromCreateView: widget.fromCreateView,
-        fromViews: widget.fromViews,
-        isArchived: widget.isArchived,
-        filtersData: widget.filtersData,
+        appliedFilters: widget.appliedFilters,
         issueCategory: widget.issueCategory,
-        setState: () {
-          setState(() {});
-        },
+        fromCreateView: widget.fromCreateView,
+        setState: () => setState(() {}),
         ref: ref);
     super.initState();
   }
@@ -77,14 +64,6 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    log(ref
-        .read(ProviderList.cyclesProvider)
-        .issues
-        .filters
-        .priorities
-        .toString());
-    log(state.filters.priorities.toString());
-    
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Stack(
@@ -113,14 +92,14 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   ],
                 ),
               ),
-              state.isFilterDataEmpty
+              state.isFilterApplied
                   ? Container()
                   : _clearFilterButton(state: state, ref: ref)
             ],
           ),
           Container(
             margin: EdgeInsets.only(
-                top: state.isFilterDataEmpty ? 50 : 95, bottom: 80),
+                top: state.isFilterApplied ? 50 : 95, bottom: 80),
             child: SingleChildScrollView(
               child: Wrap(
                 children: [
@@ -166,9 +145,9 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       ? Container()
                       : _saveView(state: state, ref: ref),
                   _applyFilterButton(
-                      state: state,
-                      context: context,
-                      cycleOrModuleId: widget.cycleOrModuleId)
+                    state: state,
+                    context: context,
+                  )
                 ],
               ),
             ),

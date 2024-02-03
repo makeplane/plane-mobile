@@ -18,7 +18,7 @@ enum PageFilters { all, recent, favourites, createdByMe, createdByOthers }
 
 enum HttpMethod { connect, delete, get, head, options, patch, post, put, trace }
 
-enum IssueLayout { kanban, list, calendar, spreadsheet }
+enum IssuesLayout { kanban, list, calendar, spreadsheet }
 
 enum GroupBY {
   state,
@@ -33,12 +33,12 @@ enum GroupBY {
 
 enum OrderBY { manual, lastCreated, lastUpdated, priority, startDate }
 
-enum IssueType { all, activeIssues, backlogIssues }
+enum IssueType { all, active, backlog }
 
 enum CRUD { create, read, update, delete }
 
 enum IssueCategory {
-  issues,
+  projectIssues,
   cycleIssues,
   moduleIssues,
   myIssues,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';
@@ -20,7 +21,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
+    final statesProvider = ref.watch(ProviderList.statesProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
       child: Wrap(
@@ -51,7 +52,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
 
           //list of durations
           ListView.separated(
-            itemCount: issuesProvider.statesData['cancelled'].length,
+            itemCount: statesProvider.stateGroups['cancelled']!.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
@@ -64,7 +65,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
                 child: InkWell(
                   onTap: () {
                     projectProvider.currentProject['default_state'] =
-                        issuesProvider.statesData['cancelled'][index]['id'];
+                        statesProvider.stateGroups['cancelled']![index].id;
                     projectProvider.setState();
                     projectProvider.updateProject(
                         slug: ref
@@ -76,8 +77,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
                             .currentProject['id'],
                         ref: ref,
                         data: {
-                          'default_state': issuesProvider
-                              .statesData['cancelled'][index]['id'],
+                          'default_state': statesProvider.stateGroups['cancelled']![index].id
                         });
 
                     Navigator.pop(context);
@@ -88,13 +88,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
                       SvgPicture.asset(
                         'assets/svg_images/cancelled.svg',
                         colorFilter: ColorFilter.mode(
-                            issuesProvider.statesData['cancelled'][index]
-                                        ['color'][0] !=
-                                    '#'
-                                ? Color(int.parse("FF3A3A3A", radix: 16))
-                                : Color(int.parse(
-                                    "FF${issuesProvider.statesData['cancelled'][index]['color'].replaceAll('#', '')}",
-                                    radix: 16)),
+                           statesProvider.stateGroups['cancelled']![index].color.toColor(),
                             BlendMode.srcIn),
                         height: 22,
                         width: 22,
@@ -103,7 +97,7 @@ class _SelectAutomationStateState extends ConsumerState<SelectAutomationState> {
                         width: 10,
                       ),
                       CustomText(
-                        issuesProvider.statesData['cancelled'][index]['name'],
+                        statesProvider.stateGroups['cancelled']![index].name,
                       ),
                     ],
                   ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:plane/core/icons/state_group_icon.dart';
+import 'package:plane/models/project/issue/issue_model.dart';
+import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/utils/enums.dart';
@@ -9,8 +12,14 @@ import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
 class SpreadSheetView extends ConsumerStatefulWidget {
-  const SpreadSheetView({super.key, required this.issueCategory});
+  const SpreadSheetView(
+      {required this.issues,
+      required this.issueCategory,
+      required this.issuesProvider,
+      super.key});
   final IssueCategory issueCategory;
+  final ABaseIssuesProvider issuesProvider;
+  final List<IssueModel> issues;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -66,117 +75,48 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
         ),
       );
     }
+    final statesNotifier = ref.watch(ProviderList.statesProvider.notifier);
+    final labelsNotifier = ref.watch(ProviderList.labelProvider.notifier);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
 
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    final modulesProvider = ref.watch(ProviderList.modulesProvider);
-
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.state
-            ? width += 201
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['state']
-                ? width += 201
-                : width += 0
-            : modulesProvider.issueProperty['properties']['state']
-                ? width += 201
-                : width += 0;
+    widget.issuesProvider.displayProperties.state ? width += 201 : width += 0;
 
     //for assignee
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.assignee
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['assignee']
-                ? width += 151
-                : width += 0
-            : modulesProvider.issueProperty['properties']['assignee']
-                ? width += 151
-                : width += 0;
+    widget.issuesProvider.displayProperties.assignee
+        ? width += 151
+        : width += 0;
 
     //for label
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.label
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['labels']
-                ? width += 151
-                : width += 0
-            : modulesProvider.issueProperty['properties']['labels']
-                ? width += 151
-                : width += 0;
+    widget.issuesProvider.displayProperties.labels ? width += 151 : width += 0;
 
     //for start date
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.startDate
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['start_date']
-                ? width += 151
-                : width += 0
-            : modulesProvider.issueProperty['properties']['start_date']
-                ? width += 151
-                : width += 0;
+    widget.issuesProvider.displayProperties.start_date
+        ? width += 151
+        : width += 0;
 
     //for due date
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.dueDate
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['due_date']
-                ? width += 151
-                : width += 0
-            : modulesProvider.issueProperty['properties']['due_date']
-                ? width += 151
-                : width += 0;
+    widget.issuesProvider.displayProperties.due_date
+        ? width += 151
+        : width += 0;
 
     //for estimate
-    ref.watch(ProviderList.projectProvider).currentProject['estimate'] != null
-        ? widget.issueCategory == IssueCategory.issues
-            ? issuesProvider.issues.displayProperties.estimate
-                ? width += 151
-                : width += 0
-            : widget.issueCategory == IssueCategory.cycleIssues
-                ? cyclesProvider.issueProperty['properties']['estimate']
-                    ? width += 151
-                    : width += 0
-                : modulesProvider.issueProperty['properties']['estimate']
-                    ? width += 151
-                    : width += 0
+    projectProvider.currentProject['estimate'] != null
+        ? widget.issuesProvider.displayProperties.estimate
+            ? width += 151
+            : width += 0
         : width += 0;
 
     //for updated on
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.updatedOn
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['updated_on']
-                ? width += 151
-                : width += 0
-            : modulesProvider.issueProperty['properties']['updated_on']
-                ? width += 151
-                : width += 0;
+    widget.issuesProvider.displayProperties.updated_on
+        ? width += 151
+        : width += 0;
 
     //for created on
-    widget.issueCategory == IssueCategory.issues
-        ? issuesProvider.issues.displayProperties.createdOn
-            ? width += 151
-            : width += 0
-        : widget.issueCategory == IssueCategory.cycleIssues
-            ? cyclesProvider.issueProperty['properties']['created_on']
-                ? width += 151
-                : width += 0
-            : modulesProvider.issueProperty['properties']['created_on']
-                ? width += 151
-                : width += 0;
+    widget.issuesProvider.displayProperties.created_on
+        ? width += 151
+        : width += 0;
 
-    Widget priorityWidget(int index) {
+    Widget priorityWidget(String? priority) {
       return Row(
         children: [
           Container(
@@ -188,19 +128,19 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               // margin: const EdgeInsets.only(right: 5),
               height: 30,
               width: 30,
-              child: issuesProvider.issuesList[index]['priority'] == null
+              child: priority == null
                   ? Icon(
                       Icons.do_disturb_alt_outlined,
                       size: 18,
                       color: themeProvider.themeManager.tertiaryTextColor,
                     )
-                  : issuesProvider.issuesList[index]['priority'] == 'high'
+                  : priority == 'high'
                       ? const Icon(
                           Icons.signal_cellular_alt,
                           color: Colors.orange,
                           size: 18,
                         )
-                      : issuesProvider.issuesList[index]['priority'] == 'medium'
+                      : priority == 'medium'
                           ? const Icon(
                               Icons.signal_cellular_alt_2_bar,
                               color: Colors.orange,
@@ -215,17 +155,12 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
       );
     }
 
-    Widget titleWidget(int index) {
+    Widget titleWidget(IssueModel issue) {
       return GestureDetector(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => IssueDetail(
-                from: PreviousScreen.projectDetail,
-                issueId: issuesProvider.issuesList[index]['id'],
-                appBarTitle:
-                    '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
-              ),
+              builder: (context) => const IssueDetail(),
             ),
           );
         },
@@ -247,36 +182,16 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 alignment: Alignment.centerLeft,
                 child: Row(
                   children: [
-                    widget.issueCategory == IssueCategory.issues
-                        ? issuesProvider.issues.displayProperties.priority
-                            ? priorityWidget(index)
-                            : const SizedBox()
-                        : widget.issueCategory == IssueCategory.cycleIssues
-                            ? cyclesProvider.issueProperty['properties']
-                                    ['priority']
-                                ? priorityWidget(index)
-                                : const SizedBox()
-                            : modulesProvider.issueProperty['properties']
-                                    ['priority']
-                                ? priorityWidget(index)
-                                : const SizedBox(),
-                    widget.issueCategory == IssueCategory.issues
-                        ? issuesProvider.issues.displayProperties.priority
-                            ? const SizedBox(width: 10)
-                            : const SizedBox()
-                        : widget.issueCategory == IssueCategory.cycleIssues
-                            ? cyclesProvider.issueProperty['properties']
-                                    ['priority']
-                                ? const SizedBox(width: 10)
-                                : const SizedBox()
-                            : modulesProvider.issueProperty['properties']
-                                    ['priority']
-                                ? const SizedBox(width: 10)
-                                : const SizedBox(),
+                    widget.issuesProvider.displayProperties.priority
+                        ? priorityWidget(issue.priority)
+                        : const SizedBox(),
+                    widget.issuesProvider.displayProperties.priority
+                        ? const SizedBox(width: 10)
+                        : const SizedBox(),
                     SizedBox(
                       width: 320,
                       child: CustomText(
-                        issuesProvider.issuesList[index]['name'],
+                        issue.name,
                         type: FontStyle.Small,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -313,8 +228,9 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             width: 200,
             child: Row(
               children: [
-                issuesProvider
-                    .stateIcons[issuesProvider.issuesList[index]['state']],
+                stateGroupIcon(statesNotifier
+                    .getStateById(widget.issues[index].state_id)
+                    ?.group),
                 const SizedBox(
                   width: 5,
                 ),
@@ -354,16 +270,12 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 ),
               ),
               width: 150,
-              child: (issuesProvider.issuesList[index]['assignee_details'] !=
-                          null &&
-                      issuesProvider
-                          .issuesList[index]['assignee_details'].isNotEmpty)
+              child: widget.issues[index].assignee_ids.isNotEmpty
                   ? Container(
                       alignment: Alignment.centerLeft,
                       height: 30,
                       child: SquareAvatarWidget(
-                        details: issuesProvider.issuesList[index]
-                            ['assignee_details'],
+                        member_ids: widget.issues[index].assignee_ids,
                       ),
                     )
                   : Container(
@@ -408,15 +320,11 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             ),
             width: 150,
             height: 60,
-            child: (issuesProvider.issues.displayProperties.label == true &&
-                    issuesProvider.issuesList[index]['label_details'] != null &&
-                    issuesProvider
-                        .issuesList[index]['label_details'].isNotEmpty)
+            child: widget.issuesProvider.displayProperties.labels == true &&
+                    widget.issues[index].label_ids.isNotEmpty
                 ? SizedBox(
                     height: 30,
-                    child: issuesProvider
-                                .issuesList[index]['label_details'].length >
-                            1
+                    child: widget.issues[index].label_ids.length > 1
                         ? Container(
                             height: 30,
                             // color: Colors.grey,
@@ -435,17 +343,17 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                               children: [
                                 CircleAvatar(
                                   radius: 5,
-                                  backgroundColor: issuesProvider
-                                      .issuesList[index]['label_details'][0]
-                                          ['color']
-                                      .toString()
+                                  backgroundColor: labelsNotifier
+                                      .getLabelById(
+                                          widget.issues[index].label_ids[0])
+                                      ?.color
                                       .toColor(),
                                 ),
                                 const SizedBox(
                                   width: 5,
                                 ),
                                 CustomText(
-                                  '${issuesProvider.issuesList[index]['label_details'].length} Labels',
+                                  '${widget.issues[index].label_ids.length} Labels',
                                   type: FontStyle.Small,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -458,8 +366,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                             scrollDirection: Axis.horizontal,
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: issuesProvider
-                                .issuesList[index]['label_details'].length,
+                            itemCount: widget.issues[index].label_ids.length,
                             itemBuilder: (context, idx) {
                               return Container(
                                 height: 20,
@@ -477,17 +384,20 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                   children: [
                                     CircleAvatar(
                                         radius: 5,
-                                        backgroundColor: issuesProvider
-                                            .issuesList[index]['label_details']
-                                                [idx]['color']
-                                            .toString()
+                                        backgroundColor: labelsNotifier
+                                            .getLabelById(widget
+                                                .issues[index].label_ids[idx])
+                                            ?.color
                                             .toColor()),
                                     const SizedBox(
                                       width: 5,
                                     ),
                                     CustomText(
-                                      issuesProvider.issuesList[index]
-                                          ['label_details'][idx]['name'],
+                                      labelsNotifier
+                                              .getLabelById(widget
+                                                  .issues[index].label_ids[idx])
+                                              ?.name ??
+                                          '',
                                       type: FontStyle.Small,
                                     ),
                                   ],
@@ -496,9 +406,8 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                             },
                           ),
                   )
-                : (issuesProvider.issues.displayProperties.label == true &&
-                        issuesProvider
-                            .issuesList[index]['label_details'].isEmpty)
+                : (widget.issuesProvider.displayProperties.labels == true &&
+                        widget.issues[index].label_ids.isEmpty)
                     ? Container(
                         alignment: Alignment.center,
                         height: 30,
@@ -542,10 +451,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             width: 150,
             child: Center(
               child: CustomText(
-                issuesProvider.issuesList[index]['target_date'] != null
+                widget.issues[index].target_date != null
                     ? DateFormat('dd MMM yyyy').format(
                         DateTime.parse(
-                          issuesProvider.issuesList[index]['target_date'],
+                          widget.issues[index].target_date!,
                         ),
                       )
                     : 'No Due Date',
@@ -579,10 +488,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             width: 150,
             child: Center(
               child: CustomText(
-                issuesProvider.issuesList[index]['start_date'] != null
+                widget.issues[index].start_date != null
                     ? DateFormat('dd MMM yyyy').format(
                         DateTime.parse(
-                          issuesProvider.issuesList[index]['start_date'],
+                          widget.issues[index].start_date!,
                         ),
                       )
                     : 'No Start Date',
@@ -625,9 +534,8 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                   width: 5,
                 ),
                 CustomText(
-                  issuesProvider.issuesList[index]['estimate_point'] != '' &&
-                          issuesProvider.issuesList[index]['estimate_point'] !=
-                              null
+                  widget.issues[index].estimate_point != '' &&
+                          widget.issues[index].estimate_point != null
                       ? ref
                           .read(ProviderList.estimatesProvider)
                           .estimates
@@ -638,8 +546,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                                   .currentProject['estimate'];
                         })['points'].firstWhere((element) {
                           return element['key'] ==
-                              issuesProvider.issuesList[index]
-                                  ['estimate_point'];
+                              widget.issues[index].estimate_point;
                         })['value']
                       : 'Estimate',
                   type: FontStyle.Small,
@@ -675,7 +582,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               child: CustomText(
                 DateFormat('dd MMM yyyy').format(
                   DateTime.parse(
-                    issuesProvider.issuesList[index]['created_at'],
+                    widget.issues[index].created_at,
                   ),
                 ),
                 type: FontStyle.Small,
@@ -711,7 +618,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                 //date month year
                 DateFormat('dd MMM yyyy').format(
                   DateTime.parse(
-                    issuesProvider.issuesList[index]['created_at'],
+                    widget.issues[index].created_at,
                   ),
                 ),
                 type: FontStyle.Small,
@@ -740,19 +647,13 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               child: ListView.builder(
                 controller: scrollController3,
                 // primary: false,
-                itemCount: issuesProvider.issuesList.length,
+                itemCount: widget.issues.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  String stateName = '';
-                  for (final keys in issuesProvider.statesData.keys) {
-                    for (final state in issuesProvider.statesData[keys]) {
-                      if (state['id'] ==
-                          issuesProvider.issuesList[index]['state']) {
-                        stateName = state['name'];
-                        break;
-                      }
-                    }
-                  }
+                  String stateName = statesNotifier
+                          .getStateById(widget.issues[index].state_id)
+                          ?.name ??
+                      '';
                   return SizedBox(
                     height: 60,
                     child: ListView(
@@ -764,134 +665,48 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           width: 100,
                         ),
 
-                        titleWidget(index),
+                        titleWidget(widget.issues[index]),
 
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.state
-                                ? stateWidget(index, stateName)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['state']
-                                    ? stateWidget(index, stateName)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['state']
-                                    ? stateWidget(index, stateName)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.state
+                            ? stateWidget(index, stateName)
+                            : Container(),
 
                         //for assignees
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.assignee
-                                ? assigneesWidget(index)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['assignee']
-                                    ? assigneesWidget(index)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['assignee']
-                                    ? assigneesWidget(index)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.assignee
+                            ? assigneesWidget(index)
+                            : Container(),
 
                         //for labels
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.label
-                                ? labelsWidget(index)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['labels']
-                                    ? labelsWidget(index)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['labels']
-                                    ? labelsWidget(index)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.labels
+                            ? labelsWidget(index)
+                            : Container(),
 
                         //for start date
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.startDate
-                                ? startDateWidget(index)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['start_date']
-                                    ? startDateWidget(index)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['start_date']
-                                    ? startDateWidget(index)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.start_date
+                            ? startDateWidget(index)
+                            : Container(),
 
                         //for due date
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.dueDate
-                                ? dueDateWidget(index)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['due_date']
-                                    ? dueDateWidget(index)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['due_date']
-                                    ? dueDateWidget(index)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.due_date
+                            ? dueDateWidget(index)
+                            : Container(),
 
                         //for estimate
-                        ref
-                                    .watch(ProviderList.projectProvider)
-                                    .currentProject['estimate'] ==
-                                null
+                        projectProvider.currentProject['estimate'] == null
                             ? Container()
-                            : widget.issueCategory == IssueCategory.issues
-                                ? issuesProvider
-                                        .issues.displayProperties.estimate
-                                    ? estimatesWidget(index)
-                                    : Container()
-                                : widget.issueCategory ==
-                                        IssueCategory.cycleIssues
-                                    ? cyclesProvider.issueProperty['properties']
-                                            ['estimate']
-                                        ? estimatesWidget(index)
-                                        : Container()
-                                    : modulesProvider
-                                                .issueProperty['properties']
-                                            ['estimate']
-                                        ? estimatesWidget(index)
-                                        : Container(),
+                            : widget.issuesProvider.displayProperties.estimate
+                                ? estimatesWidget(index)
+                                : Container(),
 
                         //for updated on
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.updatedOn
-                                ? updatedOnWidget(index)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['updated_on']
-                                    ? updatedOnWidget(index)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['updated_on']
-                                    ? updatedOnWidget(index)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.updated_on
+                            ? updatedOnWidget(index)
+                            : Container(),
 
                         //for created on
-                        widget.issueCategory == IssueCategory.issues
-                            ? issuesProvider.issues.displayProperties.createdOn
-                                ? createdOnWidget(index)
-                                : Container()
-                            : widget.issueCategory == IssueCategory.cycleIssues
-                                ? cyclesProvider.issueProperty['properties']
-                                        ['created_on']
-                                    ? createdOnWidget(index)
-                                    : Container()
-                                : modulesProvider.issueProperty['properties']
-                                        ['created_on']
-                                    ? createdOnWidget(index)
-                                    : Container(),
+                        widget.issuesProvider.displayProperties.created_on
+                            ? createdOnWidget(index)
+                            : Container(),
                       ],
                     ),
                   );
@@ -920,69 +735,28 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             children: [
               headingText('Key', 100),
               headingText('Title', 401),
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.state
-                      ? headingText('State', 201)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['state']
-                          ? headingText('State', 201)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']['state']
-                          ? headingText('State', 201)
-                          : Container(),
+              widget.issuesProvider.displayProperties.state
+                  ? headingText('State', 201)
+                  : Container(),
 
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.assignee
-                      ? headingText('Assignees', 151)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['assignee']
-                          ? headingText('Assignees', 151)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']['assignee']
-                          ? headingText('Assignees', 151)
-                          : Container(),
+              widget.issuesProvider.displayProperties.assignee
+                  ? headingText('Assignees', 151)
+                  : Container(),
 
               //for labels
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.label
-                      ? headingText('Labels', 151)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['labels']
-                          ? headingText('Labels', 151)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']['labels']
-                          ? headingText('Labels', 151)
-                          : Container(),
+              widget.issuesProvider.displayProperties.labels
+                  ? headingText('Labels', 151)
+                  : Container(),
 
               //for start date
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.startDate
-                      ? headingText('Start Date', 151)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['start_date']
-                          ? headingText('Start Date', 151)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']
-                              ['start_date']
-                          ? headingText('Start Date', 151)
-                          : Container(),
+              widget.issuesProvider.displayProperties.start_date
+                  ? headingText('Start Date', 151)
+                  : Container(),
 
               //for due date
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.dueDate
-                      ? headingText('Due Date', 151)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['due_date']
-                          ? headingText('Due Date', 151)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']['due_date']
-                          ? headingText('Due Date', 151)
-                          : Container(),
+              widget.issuesProvider.displayProperties.due_date
+                  ? headingText('Due Date', 151)
+                  : Container(),
 
               //for estimate
               ref
@@ -990,47 +764,19 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                           .currentProject['estimate'] ==
                       null
                   ? Container()
-                  : widget.issueCategory == IssueCategory.issues
-                      ? issuesProvider.issues.displayProperties.estimate
-                          ? headingText('Estimate', 151)
-                          : Container()
-                      : widget.issueCategory == IssueCategory.cycleIssues
-                          ? cyclesProvider.issueProperty['properties']
-                                  ['estimate']
-                              ? headingText('Estimate', 151)
-                              : Container()
-                          : modulesProvider.issueProperty['properties']
-                                  ['estimate']
-                              ? headingText('Estimate', 151)
-                              : Container(),
+                  : widget.issuesProvider.displayProperties.estimate
+                      ? headingText('Estimate', 151)
+                      : Container(),
 
               //for updated on
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.updatedOn
-                      ? headingText('Updated On', 151)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['updated_on']
-                          ? headingText('Updated On', 151)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']
-                              ['updated_on']
-                          ? headingText('Updated On', 151)
-                          : Container(),
+              widget.issuesProvider.displayProperties.updated_on
+                  ? headingText('Updated On', 151)
+                  : Container(),
 
               //for created on
-              widget.issueCategory == IssueCategory.issues
-                  ? issuesProvider.issues.displayProperties.createdOn
-                      ? headingText('Created On', 151)
-                      : Container()
-                  : widget.issueCategory == IssueCategory.cycleIssues
-                      ? cyclesProvider.issueProperty['properties']['created_on']
-                          ? headingText('Created On', 151)
-                          : Container()
-                      : modulesProvider.issueProperty['properties']
-                              ['created_on']
-                          ? headingText('Created On', 151)
-                          : Container(),
+              widget.issuesProvider.displayProperties.created_on
+                  ? headingText('Created On', 151)
+                  : Container(),
             ],
           ),
         ),
@@ -1043,9 +789,10 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
               primary: false,
               physics: const NeverScrollableScrollPhysics(),
               controller: scrollController4,
-              itemCount: issuesProvider.issuesList.length,
+              itemCount: widget.issues.length,
               // shrinkWrap: true,
               itemBuilder: (context, index) {
+                final issue = widget.issues[index];
                 return Container(
                   height: 60,
                   //right border
@@ -1073,7 +820,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
                     ),
                     child: Center(
                       child: CustomText(
-                        '${issuesProvider.issuesList[index]['project_detail']['identifier']} - ${issuesProvider.issuesList[index]['sequence_id']}',
+                        '${projectProvider.currentProject['identifier']} - ${issue.sequence_id}',
                         type: FontStyle.Small,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

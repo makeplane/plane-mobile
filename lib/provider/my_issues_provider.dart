@@ -9,13 +9,11 @@ import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
-import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:plane/widgets/issue_card_widget.dart';
+
 
 class MyIssuesProvider extends ChangeNotifier {
   MyIssuesProvider(ChangeNotifierProviderRef<MyIssuesProvider> this.ref);
@@ -71,7 +69,7 @@ class MyIssuesProvider extends ChangeNotifier {
     issues = Issues(
         showSubIssues: true,
         issues: [],
-        projectView: IssueLayout.kanban,
+        projectView: IssuesLayout.kanban,
         groupBY: GroupBY.state,
         orderBY: OrderBY.manual,
         issueType: IssueType.all,
@@ -139,12 +137,12 @@ class MyIssuesProvider extends ChangeNotifier {
       );
       myIssueView = response.data["view_props"];
       issues.projectView = myIssueView["display_filters"]['layout'] == 'list'
-          ? IssueLayout.list
+          ? IssuesLayout.list
           : myIssueView["display_filters"]['layout'] == 'calendar'
-              ? IssueLayout.calendar
+              ? IssuesLayout.calendar
               : myIssueView["display_filters"]['layout'] == 'spreadsheet'
-                  ? IssueLayout.spreadsheet
-                  : IssueLayout.kanban;
+                  ? IssuesLayout.spreadsheet
+                  : IssuesLayout.kanban;
       issues.groupBY =
           Issues.toGroupBY(myIssueView["display_filters"]['group_by']);
       issues.orderBY =
@@ -193,7 +191,7 @@ class MyIssuesProvider extends ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log("MY ISSUES:${e.response}");
-      issues.projectView = IssueLayout.kanban;
+      issues.projectView = IssuesLayout.kanban;
       myIssuesViewState = StateEnum.error;
       notifyListeners();
     }
@@ -457,15 +455,15 @@ class MyIssuesProvider extends ChangeNotifier {
           i++) {
         issuesResponse.add(groupByResponse[stateOrdering[j]]![i]);
 
-        items.add(
-          IssueCardWidget(
-            from: PreviousScreen.myIssues,
-            fromMyIssues: true,
-            cardIndex: count++,
-            listIndex: j,
-            issueCategory: IssueCategory.myIssues,
-          ),
-        );
+        // items.add(
+        //   IssueCardWidget(
+        //     from: PreviousScreen.myIssues,
+        //     fromMyIssues: true,
+        //     cardIndex: count++,
+        //     listIndex: j,
+        //     issueCategory: IssueCategory.myIssues,
+        //   ),
+        // );
       }
       Map label = {};
       // String userName = '';
@@ -517,7 +515,7 @@ class MyIssuesProvider extends ChangeNotifier {
           items: items,
           shrink: j >= shrinkStates.length ? false : shrinkStates[j],
           index: j,
-          width: issues.projectView == IssueLayout.list
+          width: issues.projectView == IssuesLayout.list
               ? MediaQuery.of(Const.globalKey.currentContext!).size.width
               : (width > 500 ? 400 : width * 0.8),
           // shrink: shrinkStates[count++],
@@ -720,26 +718,26 @@ class MyIssuesProvider extends ChangeNotifier {
                       ref!.read(ProviderList.projectProvider).projects[0];
                   ref!.read(ProviderList.projectProvider).setState();
 
-                  Navigator.push(
-                      Const.globalKey.currentContext!,
-                      MaterialPageRoute(
-                          builder: (ctx) => CreateIssue(
-                                projectId: ref!
-                                    .read(ProviderList.projectProvider)
-                                    .projects[0]['id'],
-                                fromMyIssues: true,
-                                assignee: pageIndex == 0
-                                    ? {
-                                        profileProv.userProfile.id.toString(): {
-                                          'display_name': profileProv
-                                              .userProfile.displayName,
-                                          'id': profileProv.userProfile.id,
-                                          "avatar":
-                                              profileProv.userProfile.avatar
-                                        }
-                                      }
-                                    : null,
-                              )));
+                  // Navigator.push(
+                  //     Const.globalKey.currentContext!,
+                  //     MaterialPageRoute(
+                  //         builder: (ctx) => CreateIssue(
+                  //               projectId: ref!
+                  //                   .read(ProviderList.projectProvider)
+                  //                   .projects[0]['id'],
+                  //               fromMyIssues: true,
+                  //               assignee: pageIndex == 0
+                  //                   ? {
+                  //                       profileProv.userProfile.id.toString(): {
+                  //                         'display_name': profileProv
+                  //                             .userProfile.displayName,
+                  //                         'id': profileProv.userProfile.id,
+                  //                         "avatar":
+                  //                             profileProv.userProfile.avatar
+                  //                       }
+                  //                     }
+                  //                   : null,
+                  //             )));
                 },
                 child: Icon(
                   Icons.add,
@@ -858,11 +856,11 @@ class MyIssuesProvider extends ChangeNotifier {
                 "start_date": issues.filters.startDate,
             },
             "display_filters": {
-              "layout": issues.projectView == IssueLayout.kanban
+              "layout": issues.projectView == IssuesLayout.kanban
                   ? 'kanban'
-                  : issues.projectView == IssueLayout.list
+                  : issues.projectView == IssuesLayout.list
                       ? 'list'
-                      : issues.projectView == IssueLayout.calendar
+                      : issues.projectView == IssuesLayout.calendar
                           ? 'calendar'
                           : 'spreadsheet',
               "group_by": Issues.fromGroupBY(issues.groupBY),

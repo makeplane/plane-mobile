@@ -8,7 +8,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/config/config_variables.dart';
-import 'package:plane/provider/issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/utils/enums.dart';
@@ -56,8 +55,6 @@ class _EDITORState extends ConsumerState<EDITOR> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final issueProvider = ref.watch(ProviderList.issueProvider);
-    final IssuesProvider issuesProvider =
-        ref.watch(ProviderList.issuesProvider);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -109,12 +106,11 @@ class _EDITORState extends ConsumerState<EDITOR> {
                         final Map data = json.decode(msg.message.substring(10));
                         final String descriptionHtml = data['data_html'];
 
-                        issuesProvider.createIssuedata['description_html'] =
-                            descriptionHtml;
+                        // issuesProvider.createIssuedata['description_html'] =
+                        //     descriptionHtml;
                         log(descriptionHtml);
                         issueProvider.setCookies(
                             key: 'data_html', value: descriptionHtml);
-                        issuesProvider.setsState();
                         Navigator.pop(context);
                       } else {
                         issueProvider.handleIssueDetailRedirection(

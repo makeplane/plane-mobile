@@ -1,12 +1,27 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:plane/models/Project/project-member/project_member.model.dart';
-import 'package:plane/models/Workspace/workspace_model.dart';
+import 'package:plane/models/project/project-member/project_member.model.dart';
+import 'package:plane/models/workspace/workspace_model.dart';
 import 'package:plane/utils/enums.dart';
 
 part 'project.model.freezed.dart';
 part 'project.model.g.dart';
+
+@freezed
+class ProjectLiteModel with _$ProjectLiteModel {
+  const factory ProjectLiteModel({
+    required String id,
+    required String identifier,
+    required String name,
+    required String description,
+    required String emoji,
+  }) = _ProjectLiteModel;
+
+  factory ProjectLiteModel.fromJson(Map<String, dynamic> json) =>
+      _$ProjectLiteModelFromJson(json);
+}
+
 
 @freezed
 class ProjectModel with _$ProjectModel {
@@ -62,16 +77,4 @@ class IconProp with _$IconProp {
       _$IconPropFromJson(json);
 }
 
-@freezed
-class ProjectLiteModel with _$ProjectLiteModel {
-  const factory ProjectLiteModel({
-    required String id,
-    required String identifier,
-    required String name,
-    required String description,
-    required String emoji,
-  }) = _ProjectLiteModel;
 
-  factory ProjectLiteModel.fromJson(Map<String, dynamic> json) =>
-      _$ProjectLiteModelFromJson(json);
-}

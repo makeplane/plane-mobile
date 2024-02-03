@@ -96,15 +96,8 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
 
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => IssueDetail(
-                                          from: PreviousScreen.notification,
-                                          projID: widget.data[index]["project"],
-                                          issueId: widget.data[index]['data']
-                                                  ['issue']['id']
-                                              .toString(),
-                                          appBarTitle:
-                                              '${widget.data[index]['data']['issue']['identifier']} - ${widget.data[index]['data']['issue']['sequence_id']}',
-                                        ),
+                                        builder: (context) =>
+                                            const IssueDetail(),
                                       ),
                                     );
                                   },

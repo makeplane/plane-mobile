@@ -19,12 +19,15 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.startLastWeek) {
-                widget.state.filters.startDate = [];
+                widget.state.filters = widget.state.filters.copyWith(
+                  start_date: [],
+                );
               } else {
-                widget.state.filters.startDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(start_date: [
                   '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
                   '${DateTime.now().toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.startDatesEnabled();
               widget.state.setState();
@@ -48,12 +51,14 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.startTwoWeeks) {
-                widget.state.filters.startDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(start_date: []);
               } else {
-                widget.state.filters.startDate = [
+                widget.state.filters = widget.state.filters =
+                    widget.state.filters.copyWith(start_date: [
                   '${DateTime.now().toString().split(' ')[0]};after',
                   '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.startDatesEnabled();
               widget.state.setState();
@@ -77,12 +82,14 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.startOneMonth) {
-                widget.state.filters.startDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(start_date: []);
               } else {
-                widget.state.filters.startDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(start_date: [
                   '${DateTime.now().toString().split(' ')[0]};after',
                   '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.startDatesEnabled();
               widget.state.setState();
@@ -106,12 +113,14 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.startTwoMonths) {
-                widget.state.filters.startDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(start_date: []);
               } else {
-                widget.state.filters.startDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(start_date: [
                   '${DateTime.now().toString().split(' ')[0]};after',
                   '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.startDatesEnabled();
               widget.state.setState();
@@ -216,7 +225,8 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
                                   color: themeProvider.themeManager
                                       .primaryBackgroundDefaultColor,
                                   ontap: () {
-                                    widget.state.filters.startDate = [];
+                                    widget.state.filters = widget.state.filters
+                                        .copyWith(start_date: []);
                                     widget.state.startDatesEnabled();
                                     widget.state.setState();
                                     Navigator.pop(context);
@@ -240,11 +250,13 @@ class __StartDateFilterState extends ConsumerState<_StartDateFilter> {
                                           toastType: ToastType.warning);
                                       return;
                                     }
-
-                                    widget.state.filters.startDate = [
-                                      '${widget.state._startRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
-                                      '${widget.state._startRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
-                                    ];
+                                    widget.state.filters =
+                                        widget.state.filters.copyWith(
+                                      start_date: [
+                                        '${widget.state._startRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
+                                        '${widget.state._startRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
+                                      ],
+                                    );
                                     widget.state.startDatesEnabled();
                                     widget.state.setState();
                                     Navigator.pop(context);

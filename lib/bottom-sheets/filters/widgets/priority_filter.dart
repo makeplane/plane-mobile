@@ -9,38 +9,37 @@ class _PriorityFilter extends ConsumerStatefulWidget {
 }
 
 class __PriorityFilterState extends ConsumerState<_PriorityFilter> {
+  final priorities = ['urgent', 'high', 'medium', 'low', 'none'];
+
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
     return CustomExpansionTile(
       title: 'Priority',
       child: Wrap(
-          children: widget.state.priorities
-              .map((e) => GestureDetector(
+          children: priorities
+              .map((priority) => GestureDetector(
                   onTap: () {
-                    if (widget.state.filters.priorities.contains(e['text'])) {
-                      widget.state.filters.priorities.remove(e['text']);
+                    List<String> priorities = widget.state.filters.priority.toList();
+                    if (priorities.contains(priority)) {
+                      priorities.remove(priority);
                     } else {
-                      widget.state.filters.priorities.add(e['text']);
+                      priorities.add(priority);
                     }
+                    widget.state.filters =
+                        widget.state.filters.copyWith(priority: priorities);
                     widget.state.setState();
                   },
                   child: RectangularChip(
                       ref: ref,
-                      icon: Icon(
-                        e['icon'],
-                        size: 15,
-                        color: Color(int.parse(
-                            "FF${e['color'].replaceAll('#', '')}",
-                            radix: 16)),
-                      ),
-                      text: e['text'],
-                      color: widget.state.filters.priorities.contains(e['text'])
+                      icon: priorityIcon(priority),
+                      text: priority,
+                      color: widget.state.filters.priority.contains(priority)
                           ? themeProvider.themeManager.primaryColour
                           : themeProvider
                               .themeManager.secondaryBackgroundDefaultColor,
                       selected:
-                          widget.state.filters.priorities.contains(e['text']))))
+                          widget.state.filters.priority.contains(priority))))
               .toList()),
     );
   }

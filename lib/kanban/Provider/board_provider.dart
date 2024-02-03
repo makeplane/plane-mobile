@@ -113,11 +113,13 @@ class BoardProvider extends ChangeNotifier {
     BoardList emptyStates = BoardList(
         // footer: data[i].footer,
         index: double.maxFinite.toInt(),
-        headerBackgroundColor: data.first.headerBackgroundColor,
-        footerBackgroundColor: data.first.footerBackgroundColor,
-        backgroundColor: data.first.backgroundColor,
+        headerBackgroundColor:
+            data.isNotEmpty ? data.first.headerBackgroundColor : null,
+        footerBackgroundColor:
+            data.isNotEmpty ? data.first.footerBackgroundColor : null,
+        backgroundColor: data.isNotEmpty ? data.first.backgroundColor : null,
         items: [],
-        width: data.first.width,
+        width: data.isNotEmpty ? data.first.width : null,
         scrollController: ScrollController(),
         title: 'Hidden groups');
     for (int i = 0; i < data.length; i++) {
@@ -137,12 +139,12 @@ class BoardProvider extends ChangeNotifier {
               const SizedBox(
                 width: 10,
               ),
-              // data[i].leading!,
+              data[i].leading ?? Container(),
               const SizedBox(
                 width: 10,
               ),
               CustomText(
-                data[i].title!,
+                data[i].title ?? '',
                 type: FontStyle.Small,
                 // fontSize: 20,
               ),

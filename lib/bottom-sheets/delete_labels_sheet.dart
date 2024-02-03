@@ -62,17 +62,11 @@ class _DeleteLabelSheetState extends ConsumerState<DeleteLabelSheet> {
             padding: const EdgeInsets.only(bottom: 20),
             child: Button(
               ontap: () async {
-                await labelNotifier.deleteLabel(widget.labelId).then((value) {
-                  ref.read(ProviderList.issuesProvider).filterIssues(
-                        slug: ref
-                            .watch(ProviderList.workspaceProvider)
-                            .selectedWorkspace
-                            .workspaceSlug,
-                        projID: ref
-                            .watch(ProviderList.projectProvider)
-                            .currentProject['id'],
-                      );
-                });
+                await labelNotifier.deleteLabel(widget.labelId);
+                ref
+                    .read(ProviderList.projectIssuesProvider.notifier)
+                    .fetchIssues();
+
                 Navigator.of(context).pop();
               },
               text: 'Delete Label',

@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/config_variables.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/screens/profile/user-profile/user_profile.dart';
-import 'package:plane/screens/project/cycles/cycle-detail/cycle_issues_page.dart';
+import 'package:plane/screens/project/cycles/cycle-detail/cycle_detail.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/screens/project/modules/module-detail/module_issues_page.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -67,70 +67,70 @@ class IssueProvider with ChangeNotifier {
       {required String slug,
       required String projID,
       required String issueID}) async {
-    try {
-      final issuesProvider = ref.read(ProviderList.issuesProvider);
-      final response = await DioConfig().dioServe(
-        hasAuth: true,
-        url: APIs.issueDetails
-            .replaceAll("\$SLUG", slug)
-            .replaceAll('\$PROJECTID', projID)
-            .replaceAll('\$ISSUEID', issueID),
-        hasBody: false,
-        httpMethod: HttpMethod.get,
-      );
-      issueDetails = response.data;
-      //log(issueDetails.toString());
-      issuesProvider.blockingIssuesIds.clear();
-      issuesProvider.blockedByIssuesIds.clear();
-      issuesProvider.blockedByIssues.clear();
-      issuesProvider.blockingIssues.clear();
-      issuesProvider.selectedLabels.clear();
+    // try {
+    //   final issuesProvider = ref.read(ProviderList.issuesProvider);
+    //   final response = await DioConfig().dioServe(
+    //     hasAuth: true,
+    //     url: APIs.issueDetails
+    //         .replaceAll("\$SLUG", slug)
+    //         .replaceAll('\$PROJECTID', projID)
+    //         .replaceAll('\$ISSUEID', issueID),
+    //     hasBody: false,
+    //     httpMethod: HttpMethod.get,
+    //   );
+    //   issueDetails = response.data;
+    //   //log(issueDetails.toString());
+    //   issuesProvider.blockingIssuesIds.clear();
+    //   issuesProvider.blockedByIssuesIds.clear();
+    //   issuesProvider.blockedByIssues.clear();
+    //   issuesProvider.blockingIssues.clear();
+    //   issuesProvider.selectedLabels.clear();
 
-      for (int i = 0; i < response.data['blocked_issues'].length; i++) {
-        issuesProvider.blockedByIssues.add(
-          {
-            'id': response.data['blocked_issues'][i]['blocked_issue_detail']
-                ['id'],
-            'title': response.data['project_detail']['identifier'] +
-                '-' +
-                response.data['blocked_issues'][i]['blocked_issue_detail']
-                        ['sequence_id']
-                    .toString(),
-          },
-        );
-        issuesProvider.blockedByIssuesIds.add(
-            response.data['blocked_issues'][i]['blocked_issue_detail']['id']);
-      }
-      for (int i = 0; i < response.data['blocker_issues'].length; i++) {
-        issuesProvider.blockingIssues.add({
-          'id': response.data['blocker_issues'][i]['blocker_issue_detail']
-              ['id'],
-          'title': response.data['project_detail']['identifier'] +
-              '-' +
-              response.data['blocker_issues'][i]['blocker_issue_detail']
-                      ['sequence_id']
-                  .toString(),
-        });
-        issuesProvider.blockingIssuesIds.add(
-            response.data['blocker_issues'][i]['blocker_issue_detail']['id']);
-      }
-      for (int i = 0; i < response.data['label_details'].length; i++) {
-        issuesProvider.selectedLabels.add(
-          {
-            'id': response.data['label_details'][i]['id'],
-            'name': response.data['label_details'][i]['name'],
-            'color': response.data['label_details'][i]['color'],
-          },
-        );
-      }
+    //   for (int i = 0; i < response.data['blocked_issues'].length; i++) {
+    //     issuesProvider.blockedByIssues.add(
+    //       {
+    //         'id': response.data['blocked_issues'][i]['blocked_issue_detail']
+    //             ['id'],
+    //         'title': response.data['project_detail']['identifier'] +
+    //             '-' +
+    //             response.data['blocked_issues'][i]['blocked_issue_detail']
+    //                     ['sequence_id']
+    //                 .toString(),
+    //       },
+    //     );
+    //     issuesProvider.blockedByIssuesIds.add(
+    //         response.data['blocked_issues'][i]['blocked_issue_detail']['id']);
+    //   }
+    //   for (int i = 0; i < response.data['blocker_issues'].length; i++) {
+    //     issuesProvider.blockingIssues.add({
+    //       'id': response.data['blocker_issues'][i]['blocker_issue_detail']
+    //           ['id'],
+    //       'title': response.data['project_detail']['identifier'] +
+    //           '-' +
+    //           response.data['blocker_issues'][i]['blocker_issue_detail']
+    //                   ['sequence_id']
+    //               .toString(),
+    //     });
+    //     issuesProvider.blockingIssuesIds.add(
+    //         response.data['blocker_issues'][i]['blocker_issue_detail']['id']);
+    //   }
+    //   for (int i = 0; i < response.data['label_details'].length; i++) {
+    //     issuesProvider.selectedLabels.add(
+    //       {
+    //         'id': response.data['label_details'][i]['id'],
+    //         'name': response.data['label_details'][i]['name'],
+    //         'color': response.data['label_details'][i]['color'],
+    //       },
+    //     );
+    //   }
 
-      issueDetailState = StateEnum.success;
-      notifyListeners();
-    } on DioException catch (e) {
-      log(e.error.toString());
-      issueDetailState = StateEnum.error;
-      notifyListeners();
-    }
+    //   issueDetailState = StateEnum.success;
+    //   notifyListeners();
+    // } on DioException catch (e) {
+    //   log(e.error.toString());
+    //   issueDetailState = StateEnum.error;
+    //   notifyListeners();
+    // }
   }
 
   Future getIssueActivity(
@@ -230,15 +230,15 @@ class IssueProvider with ChangeNotifier {
       await ref.read(ProviderList.myIssuesProvider.notifier).getMyIssues(
             slug: slug,
           );
-      await ref.read(ProviderList.issuesProvider).filterIssues(
-            slug: slug,
-            projID: projID,
-          );
+      // await ref.read(ProviderList.issuesProvider).filterIssues(
+      //       slug: slug,
+      //       projID: projID,
+      //     );
 
-      refs.read(ProviderList.issuesProvider).issuesResponse[refs
-          .read(ProviderList.issuesProvider)
-          .issuesResponse
-          .indexWhere((element) => element["id"] == issueID)] = issueDetails;
+      // refs.read(ProviderList.issuesProvider).issuesResponse[refs
+      //     .read(ProviderList.issuesProvider)
+      //     .issuesResponse
+      //     .indexWhere((element) => element["id"] == issueID)] = issueDetails;
 
       notifyListeners();
     } on DioException catch (e) {
@@ -273,8 +273,8 @@ class IssueProvider with ChangeNotifier {
 
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
-      ref.read(ProviderList.issuesProvider).issuesResponse[index] =
-          issueDetails;
+      // ref.read(ProviderList.issuesProvider).issuesResponse[index] =
+      //     issueDetails;
       updateIssueState = StateEnum.success;
       notifyListeners();
     } on DioException catch (e) {
@@ -338,10 +338,10 @@ class IssueProvider with ChangeNotifier {
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
       attachmentState = StateEnum.success;
-      ref.read(ProviderList.issuesProvider).issuesResponse[ref
-          .read(ProviderList.issuesProvider)
-          .issuesResponse
-          .indexWhere((element) => element["id"] == issueId)] = issueDetails;
+      // ref.read(ProviderList.issuesProvider).issuesResponse[ref
+      //     .read(ProviderList.issuesProvider)
+      //     .issuesResponse
+      //     .indexWhere((element) => element["id"] == issueId)] = issueDetails;
 
       notifyListeners();
     } on DioException catch (e) {
@@ -386,10 +386,10 @@ class IssueProvider with ChangeNotifier {
       addLinkState = StateEnum.success;
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
-      ref.read(ProviderList.issuesProvider).issuesResponse[ref
-          .read(ProviderList.issuesProvider)
-          .issuesResponse
-          .indexWhere((element) => element["id"] == issueId)] = issueDetails;
+      // ref.read(ProviderList.issuesProvider).issuesResponse[ref
+      //     .read(ProviderList.issuesProvider)
+      //     .issuesResponse
+      //     .indexWhere((element) => element["id"] == issueId)] = issueDetails;
       notifyListeners();
     } catch (e) {
       const String messageOnError = 'Something went wrong, please try again';
@@ -630,10 +630,7 @@ class IssueProvider with ChangeNotifier {
       final Map data = json.decode(msg.message.substring(5));
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => IssueDetail(
-                from: previousScreen,
-                appBarTitle: data['issue_identifier'],
-                projID: data['project_id'],
-                issueId: data['issue_id'],
+             
               )));
     } else if (msg.message.startsWith("toast")) {
       final Map data = json.decode(msg.message.substring(5));

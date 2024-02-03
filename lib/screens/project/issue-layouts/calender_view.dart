@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
-import 'package:plane/bottom-sheets/type_sheet.dart';
+import 'package:plane/bottom-sheets/views-layout-sheet/widgets/layout_tab.dart';
+import 'package:plane/models/project/issue/issue_model.dart';
+import 'package:plane/provider/issues/base-classes/base_issue_state.dart';
+import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
@@ -15,8 +17,15 @@ import 'package:plane/widgets/square_avatar_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarView extends ConsumerStatefulWidget {
-  const CalendarView({Key? key}) : super(key: key);
-
+  const CalendarView(
+      {required this.issues,
+      required this.issuesProvider,
+      required this.issuesState,
+      Key? key})
+      : super(key: key);
+  final ABaseIssuesProvider issuesProvider;
+  final ABaseIssuesState issuesState;
+  final List<IssueModel> issues;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CalendarViewState();
 }
@@ -209,13 +218,10 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                         color: themeProvider.themeManager.placeholderTextColor,
                       )),
                   eventLoader: (day) {
-                    return ref
-                        .read(ProviderList.issuesProvider)
-                        .issuesList
-                        .where((element) {
-                      if (element['target_date'] == null) return false;
+                    return widget.issues.where((issue) {
+                      if (issue.target_date == null) return false;
                       return DateFormat("MMM d, yyyy")
-                              .format(DateTime.parse(element['target_date'])) ==
+                              .format(DateTime.parse(issue.target_date!)) ==
                           DateFormat("MMM d, yyyy").format(day);
                     }).toList();
                   },
@@ -224,6 +230,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                       MaterialPageRoute(
                         builder: (context) => DayDetail(
                           selectedDay: selectedDay,
+                          issues: widget.issues,
+                          issuesProvider: widget.issuesProvider,
+                          issuesState: widget.issuesState,
                         ),
                       ),
                     );
@@ -277,8 +286,14 @@ class DayDetail extends ConsumerStatefulWidget {
   DayDetail({
     super.key,
     required this.selectedDay,
+    required this.issues,
+    required this.issuesProvider,
+    required this.issuesState,
   });
   DateTime selectedDay;
+  final List<IssueModel> issues;
+  final ABaseIssuesProvider issuesProvider;
+  final ABaseIssuesState issuesState;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DayDetailState();
@@ -288,9 +303,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
   bool showFull = true;
   @override
   Widget build(BuildContext context) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -347,10 +360,10 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                     focusedDay: widget.selectedDay,
                     calendarFormat: CalendarFormat.month,
                     eventLoader: (day) {
-                      return issuesProvider.issuesList.where((element) {
-                        if (element['target_date'] == null) return false;
-                        return DateFormat("MMM d, yyyy").format(
-                                DateTime.parse(element['target_date'])) ==
+                      return widget.issues.where((issue) {
+                        if (issue.target_date == null) return false;
+                        return DateFormat("MMM d, yyyy")
+                                .format(DateTime.parse(issue.target_date!)) ==
                             DateFormat("MMM d, yyyy").format(day);
                       }).toList();
                     },
@@ -470,25 +483,19 @@ class _DayDetailState extends ConsumerState<DayDetail> {
           ),
           Expanded(
             child: ListView.separated(
-              itemCount: issuesProvider.issuesList.length,
+              itemCount: widget.issues.length,
               itemBuilder: (context, index) {
-                return (issuesProvider.issuesList[index]['target_date'] !=
-                            null &&
-                        DateFormat("MMM d, yyyy").format(DateTime.parse(
-                                issuesProvider.issuesList[index]
-                                    ['target_date'])) ==
+                final issue = widget.issues[index];
+                return (issue.target_date != null &&
+                        DateFormat("MMM d, yyyy")
+                                .format(DateTime.parse(issue.target_date!)) ==
                             DateFormat("MMM d, yyyy")
                                 .format(widget.selectedDay))
                     ? InkWell(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => IssueDetail(
-                                from: PreviousScreen.projectDetail,
-                                appBarTitle:
-                                    '${issuesProvider.issuesList[index]['project_detail']['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
-                                issueId: issuesProvider.issuesList[index]['id'],
-                              ),
+                              builder: (context) => const IssueDetail(),
                             ),
                           );
                         },
@@ -500,7 +507,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                               Row(
                                 children: [
                                   CustomText(
-                                    '${projectProvider.currentProject['identifier'].toString()} - ${issuesProvider.issuesList[index]['sequence_id']}',
+                                    '${'Identifier'} - ${issue.sequence_id}',
                                     type: FontStyle.Small,
                                   ),
                                   const SizedBox(
@@ -510,7 +517,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                     width:
                                         MediaQuery.of(context).size.width * 0.5,
                                     child: CustomText(
-                                      issuesProvider.issuesList[index]['name'],
+                                      issue.name,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       type: FontStyle.Small,
@@ -534,26 +541,20 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                       // margin: const EdgeInsets.only(right: 5),
                                       height: 30,
                                       width: 30,
-                                      child: issuesProvider.issuesList[index]
-                                                  ['priority'] ==
-                                              null
+                                      child: issue.priority == 'none'
                                           ? Icon(
                                               Icons.do_disturb_alt_outlined,
                                               size: 18,
                                               color: themeProvider.themeManager
                                                   .tertiaryTextColor,
                                             )
-                                          : issuesProvider.issuesList[index]
-                                                      ['priority'] ==
-                                                  'high'
+                                          : issue.priority == 'high'
                                               ? const Icon(
                                                   Icons.signal_cellular_alt,
                                                   color: Colors.orange,
                                                   size: 18,
                                                 )
-                                              : issuesProvider.issuesList[index]
-                                                          ['priority'] ==
-                                                      'medium'
+                                              : issue.priority == 'medium'
                                                   ? const Icon(
                                                       Icons
                                                           .signal_cellular_alt_2_bar,
@@ -569,17 +570,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                                   const SizedBox(
                                     width: 15,
                                   ),
-                                  (issuesProvider.issuesList[index]
-                                                  ['assignee_details'] !=
-                                              null &&
-                                          issuesProvider
-                                              .issuesList[index]
-                                                  ['assignee_details']
-                                              .isNotEmpty)
+                                  (issue.assignee_ids.isNotEmpty)
                                       ? SquareAvatarWidget(
-                                          details:
-                                              issuesProvider.issuesList[index]
-                                                  ['assignee_details'],
+                                          member_ids: issue.assignee_ids,
                                         )
                                       : Container(
                                           height: 30,
@@ -615,11 +608,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                     : Container();
               },
               separatorBuilder: (context, index) {
-                return (issuesProvider.issuesList[index]['target_date'] !=
-                            null &&
+                return (widget.issues[index].target_date != null &&
                         DateFormat("MMM d, yyyy").format(DateTime.parse(
-                                issuesProvider.issuesList[index]
-                                    ['target_date'])) ==
+                                widget.issues[index].target_date!)) ==
                             DateFormat("MMM d, yyyy")
                                 .format(widget.selectedDay))
                     ? Divider(
@@ -642,14 +633,14 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                     ? Expanded(
                         child: InkWell(
                           onTap: () {
-                            issuesProvider.createIssuedata = {
-                              'due_date': (widget.selectedDay),
-                            };
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const CreateIssue(),
-                              ),
-                            );
+                            // issuesProvider.createIssuedata = {
+                            //   'due_date': (widget.selectedDay),
+                            // };
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const CreateIssue(),
+                            //   ),
+                            // );
                           },
                           child: SizedBox.expand(
                             child: Row(
@@ -690,8 +681,9 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         )),
                         context: context,
                         builder: (ctx) {
-                          return const TypeSheet(
-                            issueCategory: IssueCategory.issues,
+                          return LayoutTab(
+                            issuesProvider: widget.issuesProvider,
+                            issueCategory: IssueCategory.projectIssues,
                           );
                         });
                   },
@@ -739,7 +731,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         context: context,
                         builder: (ctx) {
                           return FilterSheet(
-                            issueCategory: IssueCategory.issues,
+                            issueCategory: IssueCategory.projectIssues,
                           );
                         });
                   },

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/create_view_screen.dart';
-import 'package:plane/screens/project/cycles/create_cycle.dart';
-import 'package:plane/screens/project/modules/create_module.dart';
+import 'package:plane/screens/project/cycles/create-cycle/create_cycle.dart';
+import 'package:plane/screens/project/modules/create-module/create_module.dart';
 import 'package:plane/utils/enums.dart';
 
 // ignore: non_constant_identifier_names

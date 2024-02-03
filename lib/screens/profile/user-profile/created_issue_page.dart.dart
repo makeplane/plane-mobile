@@ -55,16 +55,7 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => IssueDetail(
-                          from: PreviousScreen.profileCreatedIssues,
-                          appBarTitle: userProfileProvider
-                              .createdIssues![index].name
-                              .toString(),
-                          issueId:
-                              userProfileProvider.createdIssues![index].id!,
-                          projID: userProfileProvider
-                              .createdIssues![index].projectDetail!.id,
-                        ),
+                        builder: (context) => IssueDetail(),
                       ),
                     );
                   },
@@ -199,8 +190,8 @@ class _CreatedIssuesPageState extends ConsumerState<CreatedIssuesPage> {
                                   alignment: Alignment.center,
                                   height: 30,
                                   child: SquareAvatarWidget(
-                                    details: userProfileProvider
-                                        .createdIssues![index].assigneesList!,
+                                    member_ids: userProfileProvider
+                                        .createdIssues![index].assigneesList! as List<String>,
                                   ),
                                 ),
                               )

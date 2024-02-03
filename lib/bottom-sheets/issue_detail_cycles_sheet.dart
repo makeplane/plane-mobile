@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
-
 import '../utils/enums.dart';
 
 class IssueDetailCyclesList extends ConsumerStatefulWidget {
@@ -32,7 +30,6 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
   @override
   Widget build(BuildContext context) {
     final issueProvider = ref.watch(ProviderList.issueProvider);
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
     final cyclesProvider = ref.read(ProviderList.cyclesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
@@ -112,10 +109,6 @@ class _IssueDetailCyclesListState extends ConsumerState<IssueDetailCyclesList> {
                           projectId: projectProvider.currentProject['id'],
                           ref: ref
                         );
-                        issuesProvider.filterIssues(
-                            slug: workspaceProvider
-                                .selectedWorkspace.workspaceSlug,
-                            projID: projectProvider.currentProject['id']);
                       });
                       Navigator.of(context).pop();
                     },

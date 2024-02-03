@@ -9,6 +9,33 @@ class _StateFilter extends ConsumerStatefulWidget {
 }
 
 class __StateFilterState extends ConsumerState<_StateFilter> {
+  List<StateModel> stateGroups = [
+    StateModel.initialize().copyWith(
+        group: 'backlog',
+        name: 'Backlog',
+        color: '#5e6ad2',
+        stateIcon: stateGroupIcon('backlog')),
+    StateModel.initialize().copyWith(
+        group: 'unstarted',
+        name: 'Unstarted',
+        color: '#eb5757',
+        stateIcon: stateGroupIcon('unstarted')),
+    StateModel.initialize().copyWith(
+        group: 'started',
+        name: 'Started',
+        color: '#26b5ce',
+        stateIcon: stateGroupIcon('started')),
+    StateModel.initialize().copyWith(
+        group: 'completed',
+        name: 'Completed',
+        color: '#f2c94c',
+        stateIcon: stateGroupIcon('completed')),
+    StateModel.initialize().copyWith(
+        group: 'cancelled',
+        name: 'Cancelled',
+        color: '#4cb782',
+        stateIcon: stateGroupIcon('cancelled'))
+  ];
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
@@ -16,22 +43,28 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
     return CustomExpansionTile(
       title: 'State',
       child: Wrap(
+
+          /// if issue category is archived issues then we will not show [backlog], [unstarted] and [started] states.
+          /// if issue category is global-issues then we will show [state-groups] only.
           children: (widget.state.issueCategory == IssueCategory.myIssues
-                  ? widget.state.states
+                  ? stateGroups
                   : statesProvider.projectStates.values)
               .map((state) {
-        return (widget.state.isArchived &&
+        return (widget.state.issueCategory == IssueCategory.archivedIssues &&
                 (state.group == 'backlog' ||
                     state.group == 'unstarted' ||
                     state.group == 'started'))
             ? Container()
             : GestureDetector(
                 onTap: () {
-                  if (widget.state.filters.states.contains(state.group)) {
-                    widget.state.filters.states.remove(state.group);
+                  List<String> states = widget.state.filters.state;
+                  if (states.contains(state.group)) {
+                    states.remove(state.group);
                   } else {
-                    widget.state.filters.states.add(state.group);
+                    states.add(state.group);
                   }
+                  widget.state.filters =
+                      widget.state.filters.copyWith(state: states);
                   widget.state.setState();
                 },
                 child: RectangularChip(
@@ -47,7 +80,7 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
                                     ? 'assets/svg_images/done.svg'
                                     : 'assets/svg_images/unstarted.svg',
                     colorFilter: ColorFilter.mode(
-                        widget.state.filters.states.contains(state.group)
+                        widget.state.filters.state.contains(state.group)
                             ? (Colors.white)
                             : state.color.toColor(),
                         BlendMode.srcIn),
@@ -55,11 +88,11 @@ class __StateFilterState extends ConsumerState<_StateFilter> {
                     width: 20,
                   ),
                   text: state.name,
-                  color: widget.state.filters.states.contains(state.group)
+                  color: widget.state.filters.state.contains(state.group)
                       ? themeProvider.themeManager.primaryColour
                       : themeProvider
                           .themeManager.secondaryBackgroundDefaultColor,
-                  selected: widget.state.filters.states.contains(state.group),
+                  selected: widget.state.filters.state.contains(state.group),
                 ),
               );
       }).toList()),

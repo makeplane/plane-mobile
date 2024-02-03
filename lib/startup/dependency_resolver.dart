@@ -55,7 +55,6 @@ class DependencyResolver {
       }
 
       await _resolveProfileSetting(ref);
-
       await _resolveWorkspaces(ref);
       if (workspaceProvider.workspaces.isEmpty) {
         FlutterNativeSplash.remove();

@@ -71,18 +71,7 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => IssueDetail(
-                              from: PreviousScreen.profileSubscribedIssues,
-                              appBarTitle: userProfileProvider
-                                  .userSubscribedIssues[index].name
-                                  .toString(),
-                              issueId: userProfileProvider
-                                  .userSubscribedIssues[index].id!,
-                              projID: userProfileProvider
-                                  .userSubscribedIssues[index]
-                                  .projectDetail!
-                                  .id,
-                            ),
+                            builder: (context) => IssueDetail(),
                           ),
                         );
                       },
@@ -229,9 +218,9 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
                                       alignment: Alignment.center,
                                       height: 30,
                                       child: SquareAvatarWidget(
-                                        details: userProfileProvider
+                                        member_ids: userProfileProvider
                                             .userSubscribedIssues[index]
-                                            .assigneesList!,
+                                            .assigneesList! as List<String>,
                                       ),
                                     ),
                                   )

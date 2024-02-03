@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane/bottom-sheets/select_automation_state.dart';
 import 'package:plane/bottom-sheets/select_month.dart';
+import 'package:plane/models/project/state/state_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class AutomationsPage extends ConsumerStatefulWidget {
@@ -29,20 +31,15 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectsProvider = ref.watch(ProviderList.projectProvider);
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
-    // log(projectsProvider.currentProject.toString());
-    // log(projectsProvider.currentProject['close_in'].toString());
-    // log(projectsProvider.currentProject['default_state'].toString());
-    final String stateColor = issuesProvider.statesData['cancelled'].firstWhere(
-        (element) =>
-            element['id'] == projectsProvider.currentProject['default_state'],
-        orElse: () => {'color': '#000000'})['color'];
-    defaultStateController.text = issuesProvider.statesData['cancelled']
-        .firstWhere(
-            (element) =>
-                element['id'] ==
-                projectsProvider.currentProject['default_state'],
-            orElse: () => {'name': 'Cancelled'})['name'];
+    final statesProvider = ref.watch(ProviderList.statesProvider);
+
+    final Iterable<StateModel> defaultState =
+        statesProvider.stateGroups['cancelled']!.where((state) =>
+            state.id == projectsProvider.currentProject['default_state']);
+    final String stateColor =
+        defaultState.isEmpty ? '#3A3A3A' : defaultState.first.color;
+    defaultStateController.text =
+        defaultState.isEmpty ? 'Cancelled' : defaultState.first.name;
 
     closeController.text = projectsProvider.currentProject['close_in'] > 0
         ? '${projectsProvider.currentProject['close_in']} Month'
@@ -121,8 +118,8 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                                     ref: ref,
                                     data: {
                                       'close_in': value == 0 ? 1 : 0,
-                                      'default_state': issuesProvider
-                                          .statesData['cancelled'][0]['id'],
+                                      'default_state': statesProvider
+                                          .stateGroups['cancelled']!.first.id,
                                     });
                               }
                             : () {
@@ -241,7 +238,8 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                   projectsProvider.currentProject['close_in'] > 0
                       ? InkWell(
                           onTap: (projectsProvider.role == Role.admin)
-                              ? issuesProvider.statesData['cancelled'].length >
+                              ? statesProvider
+                                          .stateGroups['cancelled']!.length >
                                       1
                                   ? () {
                                       showModalBottomSheet(
@@ -279,8 +277,8 @@ class _AutomationsPageState extends ConsumerState<AutomationsPage> {
                             decoration: themeProvider
                                 .themeManager.textFieldDecoration
                                 .copyWith(
-                              suffixIcon: issuesProvider
-                                          .statesData['cancelled'].length >
+                              suffixIcon: statesProvider
+                                          .stateGroups['cancelled']!.length >
                                       1
                                   ? Icon(
                                       Icons.keyboard_arrow_down,

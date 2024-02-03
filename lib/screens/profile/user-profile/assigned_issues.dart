@@ -73,16 +73,7 @@ class _UserAssignedIssuesPageState
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => IssueDetail(
-                              from: PreviousScreen.profileAssingedIssues,
-                              appBarTitle: userProfileProvider
-                                  .userAssignedIssues[index].name
-                                  .toString(),
-                              issueId: userProfileProvider
-                                  .userAssignedIssues[index].id!,
-                              projID: userProfileProvider
-                                  .userAssignedIssues[index].projectDetail!.id!,
-                            ),
+                            builder: (context) => IssueDetail(),
                           ),
                         );
                       },
@@ -226,9 +217,9 @@ class _UserAssignedIssuesPageState
                                       alignment: Alignment.center,
                                       height: 30,
                                       child: SquareAvatarWidget(
-                                        details: userProfileProvider
+                                        member_ids: userProfileProvider
                                             .userAssignedIssues[index]
-                                            .assigneesList!,
+                                            .assigneesList! as List<String>,
                                       ),
                                     ),
                                   )

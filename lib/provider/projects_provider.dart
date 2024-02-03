@@ -86,7 +86,7 @@ class ProjectsProvider extends ChangeNotifier {
       {Filters? filters,
       bool fromViews = false,
       required WidgetRef ref}) async {
-    final issuesProv = ref.read(ProviderList.issuesProvider);
+    final issuesProv = ref.read(ProviderList.projectIssuesProvider.notifier);
     final moduleProv = ref.read(ProviderList.modulesProvider);
     final viewsProvider = ref.read(ProviderList.viewsProvider.notifier);
     final intergrationProvider = ref.read(ProviderList.integrationProvider);
@@ -102,8 +102,7 @@ class ProjectsProvider extends ChangeNotifier {
         .selectedWorkspace
         .workspaceSlug;
 
-    statesProvider.getStates(
-        slug: workspaceSlug, projectId: currentProject['id']);
+    statesProvider.getStates();
     getProjectMembers(
       slug: workspaceSlug,
       projId: currentProject['id'],
@@ -112,16 +111,11 @@ class ProjectsProvider extends ChangeNotifier {
           slug: workspaceSlug,
           projID: currentProject['id'],
         );
-    issuesProv.getIssueDisplayProperties(issueCategory: IssueCategory.issues);
-    issuesProv.getProjectView().then((value) {
-      if (filters != null) {
-        issuesProv.issues.filters = filters;
-      }
-      issuesProv.filterIssues(
-        fromViews: fromViews,
-        slug: workspaceSlug,
-        projID: currentProject['id'],
-      );
+    issuesProv.fetchLayoutProperties().then((value) {
+      // if (filters != null) {
+      //   issuesProv.issues.filters = filters;
+      // }
+      issuesProv.fetchIssues();
     });
     moduleProv.getModules(
       disableLoading: true,
@@ -199,7 +193,8 @@ class ProjectsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future joinProject({String? projectId, String? slug}) async {
+  Future joinProject(
+      {String? projectId, String? slug, required WidgetRef refs}) async {
     try {
       joinprojectState = StateEnum.loading;
       notifyListeners();
@@ -213,10 +208,8 @@ class ProjectsProvider extends ChangeNotifier {
           });
       joinprojectState = StateEnum.success;
       // updating local projects List
-      // ref!.read(ProviderList.projectProvider).projects[ref!
-      //     .read(ProviderList.projectProvider)
-      //     .currentProject["index"]]["is_member"] = true;
-      //ref!.read(ProviderList.projectProvider).initializeProject();
+      projects[currentProject["index"]]["is_member"] = true;
+      initializeProject(ref: refs);
       notifyListeners();
     } on DioException catch (e) {
       log(e.message.toString());

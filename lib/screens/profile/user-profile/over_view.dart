@@ -6,7 +6,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/project/cycles/cycle-detail/cycle_issues_page.dart';
+import 'package:plane/screens/project/cycles/cycle-detail/cycle_detail.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/screens/project/modules/module-detail/module_issues_page.dart';
 import 'package:plane/utils/constants.dart';
@@ -564,13 +564,7 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                       Const.globalKey.currentContext!,
                       MaterialPageRoute(
                         builder: (context) => IssueDetail(
-                          from: PreviousScreen.userProfile,
-                          appBarTitle: userProfileProvider
-                              .userActivity.results![index].issueDetail!.name!,
-                          projID: userProfileProvider
-                              .userActivity.results![index].projectDetail!.id,
-                          issueId: userProfileProvider
-                              .userActivity.results![index].issueDetail!.id!,
+                         
                         ),
                       ),
                     );

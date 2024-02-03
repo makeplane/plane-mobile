@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plane/bottom-sheets/issues_list_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/project/create_project_screen.dart';
-import 'package:plane/screens/project/cycles/create_cycle.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
-import 'package:plane/screens/project/modules/create_module.dart';
+import 'package:plane/screens/project/cycles/create-cycle/create_cycle.dart';
+import 'package:plane/screens/project/modules/create-module/create_module.dart';
 import 'package:plane/screens/project/pages/create_page_screen.dart';
 import 'package:plane/screens/project/settings/create_label.dart';
 import 'package:plane/screens/create_view_screen.dart';
@@ -246,27 +244,22 @@ class EmptyPlaceholder {
                       ref.watch(ProviderList.projectProvider).setState();
                     }
 
-                    ref
-                            .read(ProviderList.issuesProvider)
-                            .createIssuedata['prioriry'] =
-                        'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreateIssue(
-                                  projectId: projectId ??
-                                      (type == IssueCategory.myIssues
-                                          ? ref
-                                              .read(
-                                                  ProviderList.projectProvider)
-                                              .projects[0]['id']
-                                          : null),
-                                  cycleId: cycleId,
-                                  moduleId: moduleId,
-                                  assignee: assignee,
-                                  fromMyIssues: type == IssueCategory.myIssues,
-                                )));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => CreateIssue(
+                    //               projectId: projectId ??
+                    //                   (type == IssueCategory.myIssues
+                    //                       ? ref
+                    //                           .read(
+                    //                               ProviderList.projectProvider)
+                    //                           .projects[0]['id']
+                    //                       : null),
+                    //               cycleId: cycleId,
+                    //               moduleId: moduleId,
+                    //               assignee: assignee,
+                    //               fromMyIssues: type == IssueCategory.myIssues,
+                    //             )));
                   },
                   child: Container(
                     height: 40,
@@ -303,24 +296,24 @@ class EmptyPlaceholder {
                       projectProvider.role == Role.member)
               ? GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.85,
-                        minHeight: MediaQuery.of(context).size.height * 0.5,
-                      ),
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (ctx) => IssuesListSheet(
-                        // parent: false,
-                        type: cycleId != null
-                            ? IssueDetailCategory.addCycleIssue
-                            : IssueDetailCategory.addModuleIssue,
-                        issueId: '',
-                        createIssue: false,
-                        // blocking: true,
-                      ),
-                    );
+                    // showModalBottomSheet(
+                    //   constraints: BoxConstraints(
+                    //     maxHeight: MediaQuery.of(context).size.height * 0.85,
+                    //     minHeight: MediaQuery.of(context).size.height * 0.5,
+                    //   ),
+                    //   isScrollControlled: true,
+                    //   backgroundColor: Colors.transparent,
+                    //   context: context,
+                    //   builder: (ctx) => IssuesListSheet(
+                    //     // parent: false,
+                    //     type: cycleId != null
+                    //         ? IssueDetailCategory.addCycleIssue
+                    //         : IssueDetailCategory.addModuleIssue,
+                    //     issueId: '',
+                    //     createIssue: false,
+                    //     // blocking: true,
+                    //   ),
+                    // );
                   },
                   child: Container(
                     width: 215,
@@ -582,7 +575,7 @@ class EmptyPlaceholder {
     );
   }
 
-  static Widget emptyView(BuildContext context, WidgetRef ref) {
+  static Widget projectViews(BuildContext context, WidgetRef ref) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
@@ -718,6 +711,7 @@ class EmptyPlaceholder {
   static Widget joinProject(
       BuildContext context, WidgetRef ref, String projectId, String slug) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
+    final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
       alignment: Alignment.center,
       child: Wrap(
@@ -750,15 +744,15 @@ class EmptyPlaceholder {
           ),
           GestureDetector(
             onTap: () {
-              final issueProvider = ref.read(ProviderList.issuesProvider);
-              issueProvider
+              projectProvider
                   .joinProject(projectId: projectId, slug: slug, refs: ref)
                   .then((_) {
-                if (issueProvider.joinprojectState == StateEnum.success) {
+                if (projectProvider.joinprojectState == StateEnum.success) {
                   CustomToast.showToast(context,
                       message: "joined project successfully",
                       toastType: ToastType.success);
-                } else if (issueProvider.joinprojectState == StateEnum.error) {
+                } else if (projectProvider.joinprojectState ==
+                    StateEnum.error) {
                   CustomToast.showToast(context,
                       message: "Something gone wrong",
                       toastType: ToastType.failure);
@@ -775,8 +769,7 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: ref.watch(ProviderList.issuesProvider).joinprojectState ==
-                      StateEnum.loading
+              child: projectProvider.joinprojectState == StateEnum.loading
                   ? const Center(
                       child: SizedBox(
                         height: 20,

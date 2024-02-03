@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/models/Workspace/workspace_model.dart';
+import 'package:plane/models/current_route_detail.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -163,8 +164,8 @@ class WorkspaceProvider extends ChangeNotifier {
             'WORKSPACE_NAME': response.data['name'],
             'WORKSPACE_SLUG': response.data['slug']
           },
-               userEmail: profileProv.userProfile.email!,
-                                userID: profileProv.userProfile.id!);
+          userEmail: profileProv.userProfile.email!,
+          userID: profileProv.userProfile.id!);
       await profileProv.updateProfile(data: {
         "last_workspace_id": response.data['id'],
       });
@@ -301,7 +302,8 @@ class WorkspaceProvider extends ChangeNotifier {
                 .workspace
                 .lastWorkspaceId) {
           selectedWorkspace = WorkspaceModel.fromJson(element);
-
+          currentRouteDetails.update(
+              workspaceSlug: selectedWorkspace.workspaceSlug);
           tempLogo = selectedWorkspace.workspaceLogo;
           return true;
         }
@@ -371,9 +373,10 @@ class WorkspaceProvider extends ChangeNotifier {
     final response =
         await profileProv.updateProfile(data: {"last_workspace_id": id});
     if (response.isLeft()) {
-      ref!.read(ProviderList.issuesProvider).clearData();
+      ref!.read(ProviderList.projectIssuesProvider.notifier).resetState();
       selectedWorkspace = WorkspaceModel.fromJson(
           workspaces.where((element) => element['id'] == id).first);
+      currentRouteDetails.update(workspaceSlug: selectedWorkspace.workspaceSlug);
       ref!.read(ProviderList.dashboardProvider).getDashboard();
       role = Role.none;
       await retrieveUserRole();
@@ -503,9 +506,10 @@ class WorkspaceProvider extends ChangeNotifier {
             'WORKSPACE_NAME': response.data['name'],
             'WORKSPACE_SLUG': response.data['slug']
           },
-           userEmail: profileProvider.userProfile.email!,
-                                userID: profileProvider.userProfile.id!);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       selectedWorkspace = WorkspaceModel.fromJson(response.data);
+      currentRouteDetails.update(workspaceSlug: selectedWorkspace.workspaceSlug);
       tempLogo = selectedWorkspace.workspaceLogo;
 
       notifyListeners();

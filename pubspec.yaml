@@ -75,6 +75,7 @@ dependencies:
   upgrader: ^8.1.0
   flutter_native_splash: ^2.3.2
   freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   freezed: ^2.4.6

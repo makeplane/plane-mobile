@@ -7,17 +7,13 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
-import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/services/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/global_functions.dart';
-import 'package:plane/utils/issues_filter/issue_filter.helper.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:plane/widgets/issue_card_widget.dart';
 
 class ModuleProvider with ChangeNotifier {
   ModuleProvider(ChangeNotifierProviderRef<ModuleProvider> this.ref);
@@ -432,12 +428,12 @@ class ModuleProvider with ChangeNotifier {
       );
       moduleView = response.data;
       issues.projectView = moduleView['display_filters']['layout'] == 'list'
-          ? IssueLayout.list
+          ? IssuesLayout.list
           : moduleView['display_filters']['layout'] == 'calendar'
-              ? IssueLayout.calendar
+              ? IssuesLayout.calendar
               : moduleView['display_filters']['layout'] == 'spreadsheet'
-                  ? IssueLayout.spreadsheet
-                  : IssueLayout.kanban;
+                  ? IssuesLayout.spreadsheet
+                  : IssuesLayout.kanban;
       issues.showSubIssues = moduleView['display_filters']['sub_issue'] ?? true;
       issues.groupBY =
           Issues.toGroupBY(moduleView["display_filters"]["group_by"]);
@@ -460,7 +456,7 @@ class ModuleProvider with ChangeNotifier {
       showEmptyStates = moduleView["display_filters"]["show_empty_groups"];
 
       if (issues.groupBY == GroupBY.none) {
-        issues.projectView = IssueLayout.list;
+        issues.projectView = IssuesLayout.list;
       }
       if (reset) {
         updateModuleView();
@@ -469,7 +465,7 @@ class ModuleProvider with ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
-      issues.projectView = IssueLayout.kanban;
+      issues.projectView = IssuesLayout.kanban;
       moduleViewState = StateEnum.error;
       notifyListeners();
     }
@@ -508,11 +504,11 @@ class ModuleProvider with ChangeNotifier {
           "type": Issues.fromIssueType(issues.issueType),
           "show_empty_groups": showEmptyStates,
           if (!isArchive)
-            "layout": issues.projectView == IssueLayout.kanban
+            "layout": issues.projectView == IssuesLayout.kanban
                 ? 'kanban'
-                : issues.projectView == IssueLayout.list
+                : issues.projectView == IssuesLayout.list
                     ? 'list'
-                    : issues.projectView == IssueLayout.calendar
+                    : issues.projectView == IssuesLayout.calendar
                         ? 'calendar'
                         : 'spreadsheet',
           "sub_issue": false,
@@ -556,12 +552,12 @@ class ModuleProvider with ChangeNotifier {
         ref.read(ProviderList.projectProvider).projectMembers;
 
     final states = ref.read(ProviderList.statesProvider).projectStates;
-    filterIssues = IssueFilterHelper.organizeIssues(
-        moduleIssuesList, issues.groupBY, issues.orderBY,
-        labelIDs: labelIds,
-        memberIDs:
-            projectMembers.map((e) => e['member']['id'].toString()).toList(),
-        states: states);
+    // filterIssues = IssuesHelper.organizeIssues(
+    //     moduleIssuesList, issues.groupBY, issues.orderBY,
+    //     labelIDs: labelIds,
+    //     memberIDs:
+    //         projectMembers.map((e) => e['member']['id'].toString()).toList(),
+    //     states: states);
     notifyListeners();
   }
 
@@ -584,10 +580,7 @@ class ModuleProvider with ChangeNotifier {
     } else if (issues.groupBY == GroupBY.createdBY) {
       projectProvider.getProjectMembers(slug: slug, projId: projectId);
     } else if (issues.groupBY == GroupBY.state) {
-      statesProvider.getStates(
-        slug: slug,
-        projectId: projectId,
-      );
+      statesProvider.getStates();
     }
 
     String url;
@@ -596,7 +589,7 @@ class ModuleProvider with ChangeNotifier {
         .replaceAll('\$PROJECTID', projectId)
         .replaceAll('\$MODULEID', moduleID!)
         .replaceAll('\$TYPE', Issues.fromIssueType(issues.issueType));
-    url = '$url${IssueFilterHelper.getFilterQueryParams(issues.filters)}';
+    // url = '$url${IssuesHelper.getFilterQueryParams(issues.filters)}';
     url = '$url&sub_issue=${issues.showSubIssues}&show_empty_groups=true';
     try {
       final response = await DioConfig().dioServe(
@@ -606,14 +599,14 @@ class ModuleProvider with ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       moduleIssuesList = response.data;
-      final organizedIssues = IssueFilterHelper.organizeIssues(
-          moduleIssuesList, issues.groupBY, issues.orderBY,
-          labelIDs: labelNotifier.getLabelIds(),
-          memberIDs: projectProvider.projectMembers
-              .map((e) => e['member']['id'].toString())
-              .toList(),
-          states: states);
-      filterIssues = organizedIssues;
+      // final organizedIssues = IssuesHelper.organizeIssues(
+      //     moduleIssuesList, issues.groupBY, issues.orderBY,
+      //     labelIDs: labelNotifier.getLabelIds(),
+      //     memberIDs: projectProvider.projectMembers
+      //         .map((e) => e['member']['id'].toString())
+      //         .toList(),
+      //     states: states);
+      // filterIssues = organizedIssues;
       issuesResponse = [];
       isIssuesEmpty = true;
       if (issues.groupBY != GroupBY.none) {
@@ -652,7 +645,6 @@ class ModuleProvider with ChangeNotifier {
 
   List<BoardListsData> initializeBoard() {
     final themeProvider = ref!.read(ProviderList.themeProvider);
-    final issuesProvider = ref!.read(ProviderList.issuesProvider);
     final projectProvider = ref!.read(ProviderList.projectProvider);
     final states = ref!.read(ProviderList.statesProvider).projectStates;
     int count = 0;
@@ -663,17 +655,17 @@ class ModuleProvider with ChangeNotifier {
       final List<Widget> items = [];
       final groupedIssues = filterIssues.values.toList()[j];
       final groupID = filterIssues.keys.elementAt(j);
-      for (int i = 0; i < groupedIssues.length; i++) {
-        issuesResponse.add(groupedIssues[i]);
-        items.add(
-          IssueCardWidget(
-            from: PreviousScreen.modules,
-            cardIndex: count++,
-            listIndex: j,
-            issueCategory: IssueCategory.moduleIssues,
-          ),
-        );
-      }
+      // for (int i = 0; i < groupedIssues.length; i++) {
+      //   issuesResponse.add(groupedIssues[i]);
+      //   items.add(
+      //     IssueCardWidget(
+      //       from: PreviousScreen.modules,
+      //       cardIndex: count++,
+      //       listIndex: j,
+      //       issueCategory: IssueCategory.moduleIssues,
+      //     ),
+      //   );
+      // }
       String userName = '';
       bool userFound = false;
       final label =
@@ -701,7 +693,7 @@ class ModuleProvider with ChangeNotifier {
         items: items,
         shrink: shrinkStates[j],
         index: j,
-        width: issuesProvider.issues.projectView == IssueLayout.list
+        width: issues.projectView == IssuesLayout.list
             ? MediaQuery.of(Const.globalKey.currentContext!).size.width
             : 300,
         // shrink: shrinkissuesProvider.states[count++],
@@ -805,9 +797,7 @@ class ModuleProvider with ChangeNotifier {
                           // color: Color(int.parse(element.title)),
                           ),
                     )
-                  : issues.groupBY == GroupBY.stateGroups
-                      ? issuesProvider.defaultStatedetails[element.id]['icon']
-                      : issuesProvider.stateIcons[element.id];
+                  : Container();
 
       element.header = SizedBox(
         // margin: const EdgeInsets.only(bottom: 10),
@@ -862,13 +852,12 @@ class ModuleProvider with ChangeNotifier {
             ),
             GestureDetector(
               onTap: () {
-                issuesProvider.createIssuedata['state'] = element.id;
-                Navigator.push(
-                    Const.globalKey.currentContext!,
-                    MaterialPageRoute(
-                        builder: (ctx) => CreateIssue(
-                              cycleId: currentModule['id'],
-                            )));
+                // Navigator.push(
+                //     Const.globalKey.currentContext!,
+                //     MaterialPageRoute(
+                //         builder: (ctx) => CreateIssue(
+                //               cycleId: currentModule['id'],
+                //             )));
               },
               child: Icon(
                 Icons.add,

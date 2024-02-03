@@ -7,7 +7,7 @@ import 'package:plane/models/chart_model.dart';
 import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
-import 'package:plane/screens/project/cycles/cycle-detail/cycle_issues_page.dart';
+import 'package:plane/screens/project/cycles/cycle-detail/cycle_detail.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/extensions/list_extensions.dart';
 import 'package:plane/utils/extensions/string_extensions.dart';

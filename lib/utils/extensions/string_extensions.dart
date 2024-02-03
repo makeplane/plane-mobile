@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 extension StringExtension on String {
-  String fistLetterToUpper() {
+  String capitalize() {
     final String value = this;
     return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
   }

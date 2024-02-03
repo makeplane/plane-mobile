@@ -46,7 +46,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                   CustomText(
                     statesProvider.stateGroups.keys
                         .toList()[index]
-                        .fistLetterToUpper(),
+                        .capitalize(),
                     // values['group'].replaceFirst(values['group'][0], values['group'][0].toUpperCase()),
                     type: FontStyle.H5,
                     fontWeight: FontWeightt.Medium,
@@ -74,7 +74,7 @@ class _StatesPageState extends ConsumerState<StatesPage> {
                               groupIndex: index,
                               stateKey: statesProvider.stateGroups.keys
                                   .toList()[index]
-                                  .fistLetterToUpper(),
+                                  .capitalize(),
                               method: CRUD.create,
                               stateId: '',
                               name: '',

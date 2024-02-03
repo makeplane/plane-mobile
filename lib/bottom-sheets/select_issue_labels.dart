@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/models/Project/Label/label.model.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -14,10 +13,8 @@ import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectIssueLabels extends ConsumerStatefulWidget {
-  const SelectIssueLabels({this.issueId, required this.createIssue, super.key});
-  final bool createIssue;
-  final String? issueId;
-
+  SelectIssueLabels({required this.selectedLabels, super.key});
+  List<String> selectedLabels;
   @override
   ConsumerState<SelectIssueLabels> createState() => _SelectIssueLabelsState();
 }
@@ -25,31 +22,11 @@ class SelectIssueLabels extends ConsumerStatefulWidget {
 class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
   final labelContrtoller = TextEditingController();
   final colorController = TextEditingController();
-
-  List issueDetailsLabels = [];
   bool createNew = false;
   final showColorPallette = true;
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!widget.createIssue) getIssueLabels();
-    });
-    super.initState();
-  }
-
-  void getIssueLabels() {
-    final issueProvider = ref.read(ProviderList.issueProvider);
-    for (int i = 0;
-        i < issueProvider.issueDetails['label_details'].length;
-        i++) {
-      issueDetailsLabels
-          .add(issueProvider.issueDetails['label_details'][i]['id']);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final issuesProvider = ref.watch(ProviderList.issuesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final labelProvider = ref.watch(ProviderList.labelProvider);
     final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
@@ -101,30 +78,14 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                             return InkWell(
                               onTap: () {
                                 // setState(() {
-                                if (widget.createIssue) {
-                                  if (issuesProvider.selectedLabels
-                                      .contains(labelId)) {
-                                    issuesProvider.selectedLabels
-                                        .remove(labelId);
+
+                                setState(() {
+                                  if (widget.selectedLabels.contains(labelId)) {
+                                    widget.selectedLabels.remove(labelId);
                                   } else {
-                                    issuesProvider.selectedLabels.add(labelId);
+                                    widget.selectedLabels.add(labelId);
                                   }
-                                  final prov =
-                                      ref.watch(ProviderList.issuesProvider);
-                                  prov.createIssuedata['labels'] =
-                                      issuesProvider.selectedLabels.isEmpty
-                                          ? null
-                                          : issuesProvider.selectedLabels;
-                                  prov.setsState();
-                                } else {
-                                  setState(() {
-                                    if (issueDetailsLabels.contains(labelId)) {
-                                      issueDetailsLabels.remove(labelId);
-                                    } else {
-                                      issueDetailsLabels.add(labelId);
-                                    }
-                                  });
-                                }
+                                });
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -157,11 +118,13 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                                           ),
                                         ),
                                         const Spacer(),
-                                        widget.createIssue
-                                            ? createIssueSelectedIconsWidget(
-                                                label)
-                                            : issueDetailSelectedIconsWidget(
-                                                label),
+                                        widget.selectedLabels.contains(label.id)
+                                            ? const Icon(
+                                                Icons.done,
+                                                color: Color.fromRGBO(
+                                                    8, 171, 34, 1),
+                                              )
+                                            : const SizedBox(),
                                         const SizedBox(width: 10)
                                       ],
                                     ),
@@ -303,15 +266,6 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
                         ),
                       )
                     : Container(),
-                widget.createIssue
-                    ? const Column(
-                        children: [
-                          SizedBox(
-                            height: 60,
-                          )
-                        ],
-                      )
-                    : Container(),
               ],
             ),
           ),
@@ -425,24 +379,5 @@ class _SelectIssueLabelsState extends ConsumerState<SelectIssueLabels> {
         ],
       ),
     );
-  }
-
-  Widget createIssueSelectedIconsWidget(LabelModel label) {
-    var issuesProvider = ref.watch(ProviderList.issuesProvider);
-    return issuesProvider.selectedLabels.contains(label.id)
-        ? const Icon(
-            Icons.done,
-            color: Color.fromRGBO(8, 171, 34, 1),
-          )
-        : const SizedBox.shrink();
-  }
-
-  Widget issueDetailSelectedIconsWidget(LabelModel label) {
-    return issueDetailsLabels.contains(label.id)
-        ? const Icon(
-            Icons.done,
-            color: Color.fromRGBO(8, 171, 34, 1),
-          )
-        : const SizedBox();
   }
 }

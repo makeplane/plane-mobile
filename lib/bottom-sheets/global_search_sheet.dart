@@ -12,13 +12,12 @@ import 'package:plane/screens/import-export/import_export.dart';
 import 'package:plane/screens/profile/workpsace-settings/members.dart';
 import 'package:plane/screens/profile/workpsace-settings/workspace_general.dart';
 import 'package:plane/screens/project/create_project_screen.dart';
-import 'package:plane/screens/project/cycles/create_cycle.dart';
-import 'package:plane/screens/project/cycles/cycle-detail/cycle_issues_page.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
+import 'package:plane/screens/project/cycles/create-cycle/create_cycle.dart';
+import 'package:plane/screens/project/cycles/cycle-detail/cycle_detail.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
-import 'package:plane/screens/project/modules/create_module.dart';
+import 'package:plane/screens/project/modules/create-module/create_module.dart';
 import 'package:plane/screens/project/modules/module-detail/module_issues_page.dart';
-import 'package:plane/screens/project/project_detail.dart';
+import 'package:plane/screens/project/project-detail/project_detail.dart';
 import 'package:plane/screens/project/views/views_detail.dart';
 import 'package:plane/screens/create_view_screen.dart';
 import 'package:plane/screens/integrations.dart';
@@ -273,13 +272,13 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
           // await ref
           //     .read(ProviderList.projectProvider)
           //     .initializeProject(ref: ref);
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CreateIssue(
-                    projectId: ref
-                        .read(ProviderList.projectProvider)
-                        .projects[0]['id'],
-                    fromMyIssues: true,
-                  )));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => CreateIssue(
+          //           projectId: ref
+          //               .read(ProviderList.projectProvider)
+          //               .projects[0]['id'],
+          //           fromMyIssues: true,
+          //         )));
         },
         'icon': 'assets/images/global_search_icons/issue.png'
       },
@@ -646,11 +645,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         Navigator.of(Const.globalKey.currentContext!).push(
                           MaterialPageRoute(
                             builder: (context) => IssueDetail(
-                              from: PreviousScreen.globalSearch,
-                              appBarTitle:
-                                  globalSearchProvider.data!.issues[index].name,
-                              issueId:
-                                  globalSearchProvider.data!.issues[index].id,
+                             
                             ),
                           ),
                         );

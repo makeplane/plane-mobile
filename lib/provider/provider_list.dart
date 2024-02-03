@@ -10,16 +10,23 @@ import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/file_upload_provider.dart';
 import 'package:plane/provider/global_search_provider.dart';
 import 'package:plane/provider/issue_provider.dart';
-import 'package:plane/provider/label_provider.dart';
+import 'package:plane/provider/issues/cycle-issues/cycle_issues_notifier.dart';
+import 'package:plane/provider/issues/cycle-issues/cycle_issues_state.dart';
+import 'package:plane/provider/issues/project-issues/project_issues_state.dart';
+import 'package:plane/provider/issues/project-issues/project_issues_notifier.dart';
+import 'package:plane/provider/labels/labels_notifier.dart';
 import 'package:plane/provider/my_issues_provider.dart';
 import 'package:plane/provider/page_provider.dart';
 import 'package:plane/provider/notification_provider.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/search_issue_provider.dart';
-import 'package:plane/provider/project_state_provider.dart';
+import 'package:plane/provider/states/project_state_notifier.dart';
+import 'package:plane/provider/states/project_states_state.dart';
 import 'package:plane/provider/whats_new_provider.dart';
 import 'package:plane/provider/workspace_provider.dart';
+import 'package:plane/repository/issues/cycle_issues_repository.dart';
+import 'package:plane/repository/issues/project_issues.repository.dart';
 import 'package:plane/repository/project_state_service.dart';
 import 'package:plane/repository/labels.service.dart';
 import 'package:plane/services/shared_preference_service.dart';
@@ -29,7 +36,7 @@ import '../repository/workspace_service.dart';
 import '../services/dio_service.dart';
 import 'estimates_provider.dart';
 import 'integration_provider.dart';
-import 'issues_provider.dart';
+import 'labels/labels_state.dart';
 import 'member_profile_provider.dart';
 import 'modules_provider.dart';
 import 'theme_provider.dart';
@@ -57,9 +64,6 @@ class ProviderList {
   static ChangeNotifierProvider<FileUploadProvider> fileUploadProvider =
       ChangeNotifierProvider<FileUploadProvider>(
           (ref) => FileUploadProvider(ref));
-  // Issues Provider
-  static ChangeNotifierProvider<IssuesProvider> issuesProvider =
-      ChangeNotifierProvider<IssuesProvider>((ref) => IssuesProvider(ref));
   // Issue Provider
   static ChangeNotifierProvider<IssueProvider> issueProvider =
       ChangeNotifierProvider<IssueProvider>((ref) => IssueProvider(ref));
@@ -121,22 +125,29 @@ class ProviderList {
   static StateNotifierProvider<ConfigProvider, ConfigModel> configProvider =
       StateNotifierProvider<ConfigProvider, ConfigModel>(
           (ref) => ConfigProvider(ref));
-  
-  static StateNotifierProvider<StatesProvider, StatesData> statesProvider =
-      StateNotifierProvider<StatesProvider, StatesData>(
+
+  static StateNotifierProvider<StatesProvider, ProjectStatesState> statesProvider =
+      StateNotifierProvider<StatesProvider, ProjectStatesState>(
           (ref) => StatesProvider(ref, StatesService()));
   // Label Provider
   static StateNotifierProvider<LabelNotifier, LabelState> labelProvider =
       StateNotifierProvider<LabelNotifier, LabelState>(
           (ref) => LabelNotifier(ref, LabelsService()));
 
+  static StateNotifierProvider<ProjectIssuesNotifier, ProjectIssuesState>
+      projectIssuesProvider =
+      StateNotifierProvider<ProjectIssuesNotifier, ProjectIssuesState>(
+          (ref) => ProjectIssuesNotifier(ref, ProjectIssuesRepository()));
+  static StateNotifierProvider<CycleIssuesNotifier, CycleIssuesState>
+      cycleIssuesProvider =
+      StateNotifierProvider<CycleIssuesNotifier, CycleIssuesState>(
+          (ref) => CycleIssuesNotifier(ref, CycleIssuesRepository()));
+
   static void clear({required WidgetRef ref}) {
     ref.read(issueProvider).clear();
-    ref.read(issuesProvider).clear();
     ref.read(profileProvider).clear();
     ref.read(projectProvider).clear();
     ref.read(searchIssueProvider).clear();
-
     ref.read(workspaceProvider).clear();
     GoogleSignInApi.logout();
     SharedPrefrenceServices.instance.clear();

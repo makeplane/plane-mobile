@@ -7,7 +7,7 @@ class BottomSheetHelper {
     BoxConstraints? constraints,
     Color? barrierColor,
     ShapeBorder? shape,
-    bool? isScrollControlled = false,
+    bool? isScrollControlled = true,
     bool? isDismissible = true,
     bool? enableDrag = true,
   }) {
@@ -19,7 +19,7 @@ class BottomSheetHelper {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
-        isScrollControlled: isScrollControlled ?? false,
+        isScrollControlled: isScrollControlled ?? true,
         isDismissible: isDismissible ?? true,
         enableDrag: enableDrag ?? true,
         context: context,

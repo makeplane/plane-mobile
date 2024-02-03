@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:plane/models/project/issue-filter-and-properties/issue_filter_and_properties.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
 part 'view_model.freezed.dart';
 part 'view_model.g.dart';
 

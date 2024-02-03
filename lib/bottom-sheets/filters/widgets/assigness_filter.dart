@@ -21,12 +21,14 @@ class __AssigneesFilterState extends ConsumerState<_AssigneesFilter> {
             .map(
               (e) => GestureDetector(
                 onTap: () {
-                  if (widget.state.filters.assignees
-                      .contains(e['member']['id'])) {
-                    widget.state.filters.assignees.remove(e['member']['id']);
+                  List<String> assignees = widget.state.filters.assignees;
+                  if (assignees.contains(e['member']['id'])) {
+                    assignees.remove(e['member']['id']);
                   } else {
-                    widget.state.filters.assignees.add(e['member']['id']);
+                    assignees.add(e['member']['id']);
                   }
+                  widget.state.filters =
+                      widget.state.filters.copyWith(assignees: assignees);
                   widget.state.setState();
                 },
                 child: RectangularChip(

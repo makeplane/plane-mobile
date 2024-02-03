@@ -61,7 +61,7 @@ class Issues {
       required this.showSubIssues,
       required this.displayProperties});
   List<BoardListsData> issues = [];
-  IssueLayout projectView;
+  IssuesLayout projectView;
   GroupBY groupBY = GroupBY.state;
   OrderBY orderBY = OrderBY.manual;
   bool showSubIssues = true;
@@ -84,7 +84,7 @@ class Issues {
     return Issues(
       issues: [],
       showSubIssues: true,
-      projectView: IssueLayout.kanban,
+      projectView: IssuesLayout.kanban,
       groupBY: GroupBY.state,
       orderBY: OrderBY.lastCreated,
       issueType: IssueType.all,
@@ -131,9 +131,9 @@ class Issues {
       case "all":
         return IssueType.all;
       case "active":
-        return IssueType.activeIssues;
+        return IssueType.active;
       case "backlog":
-        return IssueType.backlogIssues;
+        return IssueType.backlog;
       default:
         return IssueType.all;
     }
@@ -143,9 +143,9 @@ class Issues {
     switch (issueType) {
       case IssueType.all:
         return "all";
-      case IssueType.activeIssues:
+      case IssueType.active:
         return "active";
-      case IssueType.backlogIssues:
+      case IssueType.backlog:
         return "backlog";
       default:
         return "all";

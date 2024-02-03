@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom-sheets/global_search_sheet.dart';
-import 'package:plane/bottom-sheets/views_and_layout_sheet.dart';
 import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
@@ -88,17 +86,17 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                   .watch(ProviderList.projectProvider)
                                   .projects[0];
                           ref.watch(ProviderList.projectProvider).setState();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateIssue(
-                                projectId: ref
-                                    .watch(ProviderList.projectProvider)
-                                    .projects[0]['id'],
-                                fromMyIssues: true,
-                              ),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CreateIssue(
+                          //       projectId: ref
+                          //           .watch(ProviderList.projectProvider)
+                          //           .projects[0]['id'],
+                          //       fromMyIssues: true,
+                          //     ),
+                          //   ),
+                          // );
                         }
                       },
                       child: CircleAvatar(
@@ -115,20 +113,20 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
-                  showModalBottomSheet(
-                      isScrollControlled: true,
-                      enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      )),
-                      context: context,
-                      builder: (ctx) {
-                        return const ViewsAndLayoutSheet(
-                          issueCategory: IssueCategory.myIssues,
-                        );
-                      });
+                  // showModalBottomSheet(
+                  //     isScrollControlled: true,
+                  //     enableDrag: true,
+                  //     shape: const RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.only(
+                  //       topLeft: Radius.circular(30),
+                  //       topRight: Radius.circular(30),
+                  //     )),
+                  //     context: context,
+                  //     builder: (ctx) {
+                  //       return const ViewsAndLayoutSheet(
+                  //         issueCategory: IssueCategory.myIssues, issuesProvider: null, issuesState: null,
+                  //       );
+                  //     });
                 },
                 child: CircleAvatar(
                   backgroundColor: themeProvider
@@ -444,7 +442,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     final projectProvider = ref.watch(ProviderList.projectProvider);
     final profileProvider = ref.watch(ProviderList.profileProvider);
     // log(issueProvider.issueState.name);
-    if (issueProvider.issues.projectView == IssueLayout.list) {
+    if (issueProvider.issues.projectView == IssuesLayout.list) {
       issueProvider.initializeBoard();
     }
 
@@ -453,7 +451,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
           issueProvider.myIssuesFilterState == StateEnum.loading,
       widgetClass: Container(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
-        padding: issueProvider.issues.projectView == IssueLayout.kanban
+        padding: issueProvider.issues.projectView == IssuesLayout.kanban
             ? const EdgeInsets.only(top: 15, left: 0)
             : null,
         child: issueProvider.myIssuesViewState == StateEnum.loading
@@ -482,7 +480,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                             ),
                     ],
                   )
-                : issueProvider.issues.projectView == IssueLayout.list
+                : issueProvider.issues.projectView == IssuesLayout.list
                     ? Container(
                         color: themeProvider
                             .themeManager.secondaryBackgroundDefaultColor,
@@ -587,25 +585,25 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                                                                   .projects[0];
                                                           projectProvider
                                                               .setState();
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute(
-                                                                  builder: (ctx) =>
-                                                                      CreateIssue(
-                                                                        assignee: issueProvider.pageIndex ==
-                                                                                0
-                                                                            ? {
-                                                                                profileProv.userProfile.id.toString(): {
-                                                                                  'display_name': profileProv.userProfile.displayName,
-                                                                                  'id': profileProv.userProfile.id,
-                                                                                  'avatar': profileProv.userProfile.avatar
-                                                                                }
-                                                                              }
-                                                                            : null,
-                                                                        projectId:
-                                                                            projectProvider.projects[0]['id'],
-                                                                        fromMyIssues:
-                                                                            true,
-                                                                      )));
+                                                          // Navigator.of(context).push(
+                                                          //     MaterialPageRoute(
+                                                          //         builder: (ctx) =>
+                                                          //             CreateIssue(
+                                                          //               assignee: issueProvider.pageIndex ==
+                                                          //                       0
+                                                          //                   ? {
+                                                          //                       profileProv.userProfile.id.toString(): {
+                                                          //                         'display_name': profileProv.userProfile.displayName,
+                                                          //                         'id': profileProv.userProfile.id,
+                                                          //                         'avatar': profileProv.userProfile.avatar
+                                                          //                       }
+                                                          //                     }
+                                                          //                   : null,
+                                                          //               projectId:
+                                                          //                   projectProvider.projects[0]['id'],
+                                                          //               fromMyIssues:
+                                                          //                   true,
+                                                          //             )));
                                                         },
                                                         icon: Icon(
                                                           Icons.add,

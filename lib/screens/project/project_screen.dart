@@ -5,10 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom-sheets/global_search_sheet.dart';
+import 'package:plane/models/current_route_detail.dart';
 import 'package:plane/provider/projects_provider.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/screens/project/create_project_screen.dart';
-import 'package:plane/screens/project/project_detail.dart';
+import 'package:plane/screens/project/project-detail/project_detail.dart';
 import 'package:plane/utils/color_manager.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -234,7 +235,10 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                           onTap: () {
                             if (projectProvider.currentProject !=
                                 projectProvider.projects[index]) {
-                              ref.read(ProviderList.issuesProvider).clearData();
+                              ref
+                                  .read(ProviderList
+                                      .projectIssuesProvider.notifier)
+                                  .resetState();
                             }
                             projectProvider.currentProject =
                                 projectProvider.projects[index];
@@ -436,9 +440,15 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                       ? Container()
                       : ListTile(
                           onTap: () {
+                            currentRouteDetails.update(
+                                projectId: projectProvider.projects[index]
+                                    ['id']);
                             if (projectProvider.currentProject !=
                                 projectProvider.projects[index]) {
-                              ref.read(ProviderList.issuesProvider).clearData();
+                              ref
+                                  .read(ProviderList
+                                      .projectIssuesProvider.notifier)
+                                  .resetState();
                             }
                             projectProvider.currentProject =
                                 projectProvider.projects[index];
@@ -669,9 +679,15 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                       ? Container()
                       : ListTile(
                           onTap: () {
+                            currentRouteDetails.update(
+                                projectId: projectProvider.projects[index]
+                                    ['id']);
                             if (projectProvider.currentProject !=
                                 projectProvider.projects[index]) {
-                              ref.read(ProviderList.issuesProvider).clearData();
+                              ref
+                                  .read(ProviderList
+                                      .projectIssuesProvider.notifier)
+                                  .resetState();
                             }
                             projectProvider.currentProject =
                                 projectProvider.projects[index];
@@ -863,9 +879,15 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                       ? Container()
                       : ListTile(
                           onTap: () {
+                            currentRouteDetails.update(
+                                projectId: projectProvider.projects[index]
+                                    ['id']);
                             if (projectProvider.currentProject !=
                                 projectProvider.projects[index]) {
-                              ref.read(ProviderList.issuesProvider).clearData();
+                              ref
+                                  .read(ProviderList
+                                      .projectIssuesProvider.notifier)
+                                  .resetState();
                             }
                             projectProvider.currentProject =
                                 projectProvider.projects[index];

@@ -19,12 +19,14 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.targetLastWeek) {
-                widget.state.filters.targetDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: []);
               } else {
-                widget.state.filters.targetDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: [
                   '${DateTime.now().subtract(const Duration(days: 7)).toString().split(' ')[0]};after',
                   '${DateTime.now().toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.targetDatesEnabled();
               widget.state.setState();
@@ -48,12 +50,14 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.targetTwoWeeks) {
-                widget.state.filters.targetDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: []);
               } else {
-                widget.state.filters.targetDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: [
                   '${DateTime.now().toString().split(' ')[0]};after',
                   '${DateTime.now().add(const Duration(days: 14)).toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.targetDatesEnabled();
               widget.state.setState();
@@ -77,12 +81,14 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.targetOneMonth) {
-                widget.state.filters.targetDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: []);
               } else {
-                widget.state.filters.targetDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: [
                   '${DateTime.now().toString().split(' ')[0]};after',
                   '${DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0]};before'
-                ];
+                ]);
               }
 
               widget.state.targetDatesEnabled();
@@ -107,12 +113,14 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
           GestureDetector(
             onTap: () {
               if (widget.state.targetTwoMonths) {
-                widget.state.filters.targetDate = [];
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: []);
               } else {
-                widget.state.filters.targetDate = [
+                widget.state.filters =
+                    widget.state.filters.copyWith(target_date: [
                   '${DateTime.now().toString().split(' ')[0]};after',
                   '${DateTime.now().add(const Duration(days: 60)).toString().split(' ')[0]};before'
-                ];
+                ]);
               }
               widget.state.targetDatesEnabled();
               widget.state.setState();
@@ -217,7 +225,8 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
                                   color: themeProvider.themeManager
                                       .primaryBackgroundDefaultColor,
                                   ontap: () {
-                                    widget.state.filters.targetDate = [];
+                                    widget.state.filters = widget.state.filters
+                                        .copyWith(target_date: []);
                                     widget.state.targetDatesEnabled();
                                     widget.state.setState();
                                     Navigator.pop(context);
@@ -242,10 +251,11 @@ class __DueDateFilterState extends ConsumerState<_DueDateFilter> {
                                       return;
                                     }
 
-                                    widget.state.filters.targetDate = [
+                                    widget.state.filters = widget.state.filters
+                                        .copyWith(target_date: [
                                       '${widget.state._targetRangeDatePickerValueWithDefaultValue[0].toString().split(' ')[0]};after',
                                       '${widget.state._targetRangeDatePickerValueWithDefaultValue[1].toString().split(' ')[0]};before'
-                                    ];
+                                    ]);
                                     widget.state.targetDatesEnabled();
 
                                     widget.state.setState();

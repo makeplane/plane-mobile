@@ -27,7 +27,6 @@ class _IssueDetailMoudlesListState
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final issueProvider = ref.watch(ProviderList.issueProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    final issuesProvider = ref.read(ProviderList.issuesProvider);
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     return Container(
@@ -103,10 +102,6 @@ class _IssueDetailMoudlesListState
                           projectId: projectProvider.currentProject['id'],
                           ref: ref
                         );
-                        issuesProvider.filterIssues(
-                            slug: workspaceProvider
-                                .selectedWorkspace.workspaceSlug,
-                            projID: projectProvider.currentProject['id']);
                       });
                       Navigator.of(context).pop();
                     },

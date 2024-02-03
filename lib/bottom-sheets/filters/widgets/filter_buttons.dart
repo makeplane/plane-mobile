@@ -7,17 +7,7 @@ Widget _clearFilterButton(
       ref.read(ProviderList.themeProvider).themeManager;
   return GestureDetector(
     onTap: () {
-      state.filters = Filters(
-        priorities: [],
-        states: [],
-        assignees: [],
-        createdBy: [],
-        labels: [],
-        targetDate: [],
-        startDate: [],
-        stateGroup: [],
-        subscriber: [],
-      );
+      state.filters = const FiltersModel();
       state._applyFilters(context: ref.context);
     },
     child: Container(
@@ -95,9 +85,7 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
 }
 
 Widget _applyFilterButton(
-    {required _FilterState state,
-    required BuildContext context,
-    String? cycleOrModuleId}) {
+    {required _FilterState state, required BuildContext context}) {
   return Container(
     height: 50,
     width: state.fromCreateView || state.issueCategory == IssueCategory.myIssues
@@ -107,7 +95,7 @@ Widget _applyFilterButton(
     child: Button(
       text: state.fromCreateView ? 'Add Filter' : 'Apply Filter',
       ontap: () {
-        state._applyFilters(context:context, cycleOrModuleId: cycleOrModuleId ?? '');
+        state._applyFilters(context: context);
       },
       textColor: Colors.white,
     ),

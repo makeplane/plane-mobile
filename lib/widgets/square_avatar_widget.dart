@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,8 +11,8 @@ import '../utils/enums.dart';
 
 class SquareAvatarWidget extends ConsumerStatefulWidget {
   const SquareAvatarWidget(
-      {required this.details, this.borderRadius = 5, super.key});
-  final List details;
+      {required this.member_ids, this.borderRadius = 5, super.key});
+  final List<String> member_ids;
   final double borderRadius;
 
   @override
@@ -18,15 +20,29 @@ class SquareAvatarWidget extends ConsumerStatefulWidget {
 }
 
 class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
+  List<Map<String, dynamic>> members = [];
+  @override
+  void initState() {
+    final workspaceMembers =
+        ref.read(ProviderList.workspaceProvider).workspaceMembers;
+
+    for (final member in workspaceMembers) {
+      if (widget.member_ids.contains(member['member']['id'])) {
+        members.add(member['member']);
+      }
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return SizedBox(
-      width: widget.details.length == 1
+      width: widget.member_ids.length == 1
           ? 30
-          : widget.details.length == 2
+          : widget.member_ids.length == 2
               ? 50
-              : widget.details.length == 3
+              : widget.member_ids.length == 3
                   ? 70
                   : 90,
       child: Stack(
@@ -42,53 +58,53 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                   border: Border.all(
                       color: themeProvider.themeManager.borderSubtle01Color,
                       width: 1),
-                  color: widget.details[0]['avatar'] != "" &&
-                          widget.details[0]['avatar'] != null
-                      ? Colors.transparent
-                      : const Color.fromRGBO(55, 65, 80, 1),
+                  color:
+                      members[0]['avatar'] != "" && members[0]['avatar'] != null
+                          ? Colors.transparent
+                          : const Color.fromRGBO(55, 65, 80, 1),
                 ),
-                child: widget.details[0]['avatar'] != "" &&
-                        widget.details[0]['avatar'] != null
-                    ? ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(widget.borderRadius),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.details[0]['avatar'],
-                          placeholder: (context, url) =>
-                              const ShimmerEffectWidget(
-                            height: 30,
-                            width: 30,
-                            borderRadius: 5,
-                          ),
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) {
-                            return Container(
-                              color: const Color.fromRGBO(55, 65, 80, 1),
-                              child: Center(
-                                child: CustomText(
-                                  widget.details[0]['display_name'][0]
-                                      .toString()
-                                      .toUpperCase(),
-                                  type: FontStyle.Small,
-                                  color: Colors.white,
-                                  //  color: Colors.white,
-                                ),
+                child:
+                    members[0]['avatar'] != "" && members[0]['avatar'] != null
+                        ? ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(widget.borderRadius),
+                            child: CachedNetworkImage(
+                              imageUrl: members[0]['avatar'],
+                              placeholder: (context, url) =>
+                                  const ShimmerEffectWidget(
+                                height: 30,
+                                width: 30,
+                                borderRadius: 5,
                               ),
-                            );
-                          },
-                        ))
-                    : Center(
-                        child: CustomText(
-                          widget.details[0]['display_name'][0]
-                              .toString()
-                              .toUpperCase(),
-                          type: FontStyle.Small,
-                          color: Colors.white,
-                          //  color: Colors.white,
-                        ),
-                      )),
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, error) {
+                                return Container(
+                                  color: const Color.fromRGBO(55, 65, 80, 1),
+                                  child: Center(
+                                    child: CustomText(
+                                      members[0]['display_name'][0]
+                                          .toString()
+                                          .toUpperCase(),
+                                      type: FontStyle.Small,
+                                      color: Colors.white,
+                                      //  color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ))
+                        : Center(
+                            child: CustomText(
+                              members[0]['display_name'][0]
+                                  .toString()
+                                  .toUpperCase(),
+                              type: FontStyle.Small,
+                              color: Colors.white,
+                              //  color: Colors.white,
+                            ),
+                          )),
           ),
-          widget.details.length >= 2
+          widget.member_ids.length >= 2
               ? Positioned(
                   left: 20,
                   child: Container(
@@ -101,18 +117,18 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
-                        color: widget.details[1]['avatar'] != "" &&
-                                widget.details[1]['avatar'] != null
+                        color: members[1]['avatar'] != "" &&
+                                members[1]['avatar'] != null
                             ? Colors.transparent
                             : const Color.fromRGBO(55, 65, 80, 1),
                       ),
-                      child: widget.details[1]['avatar'] != "" &&
-                              widget.details[1]['avatar'] != null
+                      child: members[1]['avatar'] != "" &&
+                              members[1]['avatar'] != null
                           ? ClipRRect(
                               borderRadius:
                                   BorderRadius.circular(widget.borderRadius),
                               child: CachedNetworkImage(
-                                imageUrl: widget.details[1]['avatar'],
+                                imageUrl: members[1]['avatar'],
                                 placeholder: (context, url) =>
                                     const ShimmerEffectWidget(
                                   height: 30,
@@ -125,7 +141,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                     color: const Color.fromRGBO(55, 65, 80, 1),
                                     child: Center(
                                       child: CustomText(
-                                        widget.details[1]['display_name'][0]
+                                        members[1]['display_name'][0]
                                             .toString()
                                             .toUpperCase(),
                                         type: FontStyle.Small,
@@ -138,7 +154,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                               ))
                           : Center(
                               child: CustomText(
-                                widget.details[1]['display_name'][0]
+                                members[1]['display_name'][0]
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
@@ -147,7 +163,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             )),
                 )
               : Container(),
-          widget.details.length >= 3
+          widget.member_ids.length >= 3
               ? Positioned(
                   left: 40,
                   child: Container(
@@ -160,18 +176,18 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             color:
                                 themeProvider.themeManager.borderSubtle01Color,
                             width: 1),
-                        color: widget.details[2]['avatar'] != "" &&
-                                widget.details[2]['avatar'] != null
+                        color: members[2]['avatar'] != "" &&
+                                members[2]['avatar'] != null
                             ? Colors.transparent
                             : const Color.fromRGBO(55, 65, 80, 1),
                       ),
-                      child: widget.details[2]['avatar'] != "" &&
-                              widget.details[2]['avatar'] != null
+                      child: members[2]['avatar'] != "" &&
+                              members[2]['avatar'] != null
                           ? ClipRRect(
                               borderRadius:
                                   BorderRadius.circular(widget.borderRadius),
                               child: CachedNetworkImage(
-                                  imageUrl: widget.details[2]['avatar'],
+                                  imageUrl: members[2]['avatar'],
                                   placeholder: (context, url) =>
                                       const ShimmerEffectWidget(
                                         height: 30,
@@ -184,7 +200,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                           const Color.fromRGBO(55, 65, 80, 1),
                                       child: Center(
                                         child: CustomText(
-                                          widget.details[2]['display_name'][0]
+                                          members[2]['display_name'][0]
                                               .toString()
                                               .toUpperCase(),
                                           type: FontStyle.Small,
@@ -196,7 +212,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                                   fit: BoxFit.cover))
                           : Center(
                               child: CustomText(
-                                widget.details[2]['display_name'][0]
+                                members[2]['display_name'][0]
                                     .toString()
                                     .toUpperCase(),
                                 type: FontStyle.Small,
@@ -205,7 +221,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                             )),
                 )
               : Container(),
-          widget.details.length >= 4
+          widget.member_ids.length >= 4
               ? Positioned(
                   left: 60,
                   child: Container(
@@ -220,7 +236,7 @@ class _SquareAvatarWidgetState extends ConsumerState<SquareAvatarWidget> {
                     ),
                     child: Center(
                       child: CustomText(
-                        '+${widget.details.length - 3}',
+                        '+${widget.member_ids.length - 3}',
                         type: FontStyle.Small,
                         color: themeProvider.themeManager.placeholderTextColor,
                       ),

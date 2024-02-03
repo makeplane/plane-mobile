@@ -66,7 +66,7 @@ class StatesService {
       required String slug,
       required String projectId}) async {
     try {
-      final response = await DioConfig().dioServe(
+      final response = await dio.dioServe(
           hasAuth: true,
           url: APIs.states
               .replaceFirst('\$SLUG', slug)
@@ -87,7 +87,7 @@ class StatesService {
       required String projectId,
       required String stateId}) async {
     try {
-      final response = await DioConfig().dioServe(
+      final response = await dio.dioServe(
           hasAuth: true,
           url:
               '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$stateId/',
@@ -106,14 +106,14 @@ class StatesService {
       required String projectId,
       required String stateId}) async {
     try {
-      final response = await DioConfig().dioServe(
+      await dio.dioServe(
         hasAuth: true,
         url:
             '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$stateId/',
         hasBody: true,
         httpMethod: HttpMethod.delete,
       );
-      return Left(response.data);
+      return const Left(null);
     } on DioException catch (err) {
       log(err.response.toString());
       return Right(err);

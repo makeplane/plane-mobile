@@ -2,16 +2,15 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/screens/Activity/activity.dart';
 import 'package:plane/screens/project/create_project_screen.dart';
-import 'package:plane/screens/project/cycles/create_cycle.dart';
-import 'package:plane/screens/project/issues/create_issue.dart';
-import 'package:plane/screens/project/modules/create_module.dart';
+import 'package:plane/screens/project/cycles/create-cycle/create_cycle.dart';
+import 'package:plane/screens/project/modules/create-module/create_module.dart';
 import 'package:plane/screens/create_state.dart';
 import 'package:plane/screens/home_screen.dart';
 import 'package:plane/screens/onboarding/on_boarding_screen.dart';
 import 'package:plane/screens/onboarding/auth/setup_profile_screen.dart';
 import 'package:plane/screens/onboarding/auth/setup_workspace.dart';
 import 'package:plane/screens/onboarding/auth/sign_in.dart';
-import 'package:plane/utils/page_route_builder.dart';
+import 'package:plane/routers/page_route_builder.dart';
 import 'routes_path.dart';
 
 class GeneratedRoutes {
@@ -35,7 +34,7 @@ class GeneratedRoutes {
         );
       case RoutesPaths.createIssue:
         return PageRoutesBuilder.sharedAxis(
-          const CreateIssue(),
+          Container(),
           SharedAxisTransitionType.horizontal,
         );
       case RoutesPaths.createProject:

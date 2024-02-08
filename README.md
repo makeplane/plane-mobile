@@ -30,7 +30,7 @@ Meet [Plane](https://plane.so). An open-source software development tool to mana
 
 > Plane Mobile is still in its early days, not everything will be perfect yet, and hiccups may happen. Please let us know of any suggestions, ideas, or bugs that you encounter on our [Discord](https://discord.com/invite/A92xrEGCge) or GitHub issues, and we will use your feedback to improve on our upcoming releases.
 
-Introducing Plane Mobile, the ultimate tool at your fingertips for managing critical tasks. Our mobile app allows you to effortlessly perform the project-related tasks and effectively manage your projects. Plane Mobile is developed using the latest and most suitable tech stack, which includes Flutter and Dart for the front-end, and Python with Django for the back-end. We rely on PostgreSQL as our primary database and leverage Redis for efficient background task management. To begin using Plane Mobile, get started by exploring our setup section below.
+Introducing Plane Mobile, the ultimate tool at your fingertips for managing critical tasks. Our mobile app allows you to effortlessly perform project-related tasks and effectively manage your projects. Plane Mobile is developed using the latest and most suitable tech stack, which includes Flutter and Dart for the front-end, and Python with Django for the back-end. We rely on PostgreSQL as our primary database and leverage Redis for efficient background task management. To begin using Plane Mobile, get started by exploring our setup section below.
 ## 💻 Setting Up the App
 
 **Step 1: Install the Required Tools**
@@ -43,7 +43,7 @@ __For macOS:__ Install Xcode, Homebrew, JDK, Flutter, Dart, and Cocoapods. To le
 
 **Step 3: Create the .env file**
 1. Create a file named `.env` in the project's root directory.
-2. Define the variables BASE_API (required) and UNSPLASH_API_KEY (optional) in the `.env` file and initialize them.
+2. Define the variables BASE_API (required) and UNSPLASH_API_KEY (optional) in the `.env` file and initialize them. [Samples](#example)
 
 ## 🚀 Features
 * **Issue Planning and Tracking**: Quickly create issues and add details using a powerful rich text editor that supports file uploads. Add sub-properties and references to issues for better organization and tracking.
@@ -108,4 +108,34 @@ Our [Code of Conduct](https://github.com/makeplane/plane/blob/master/CODE_OF_CON
 ## ⛓️ Security
 
 If you believe you have found a security vulnerability in Plane, we encourage you to responsibly disclose this and not open a public issue. We will investigate all legitimate reports. Email engineering@plane.so to disclose any security vulnerabilities.
+
+## Example
+
+Once the docker setup is completed and APIs are live locally, update your `.env` file, 
+
+For Android devices 
+
+- Android Emulator:
+  
+Locally hosted API can be accessed at default AVD `10.0.2.2` followed by `PORT` number
+( Setup the emulator proxy settings if not working by default ) 
+
+
+```
+BASE_API=http://10.0.2.2:80
+```
+
+- Physical Android Device:
+  
+Where at the physical device, API can be accessed by providing your IP Address, followed by the `PORT` number   
+
+```
+BASE_API=http://192.168.1.86:80
+```
+
+For IOS devices
+
+```
+BASE_API=http://localhost:80
+```
 

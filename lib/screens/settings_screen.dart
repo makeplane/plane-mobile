@@ -18,7 +18,6 @@ import 'package:plane/widgets/loading_widget.dart';
 
 import 'project/settings/integrations_page.dart';
 
-
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
 
@@ -221,7 +220,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen>
               )
             : Container(),
         body: LoadingWidget(
-          loading: projectprovider.deleteProjectState == StateEnum.loading,
+          loading: projectprovider.deleteProjectState == DataState.loading,
           widgetClass: SizedBox(
             height: height,
             child: Column(

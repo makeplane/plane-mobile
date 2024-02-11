@@ -14,33 +14,7 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
 
   StateModel? getStateById(String stateId) {
     return state.projectStates[stateId];
-  }
-
-  Future getStates() async {
-    state = state.copyWith(statesState: StateEnum.loading);
-    final projectId =
-        ref.read(ProviderList.projectProvider).currentProject['id'];
-    final slug = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace
-        .workspaceSlug;
-    final states =
-        await statesService.getStates(slug: slug, projectId: projectId);
-    states.fold(
-      (states) {
-        state = state.copyWith(states: states, statesState: StateEnum.success);
-        getGroupedStates();
-      },
-      (err) {
-        if (err.response!.statusCode == 403) {
-          state = state.copyWith(statesState: StateEnum.restricted);
-        } else {
-          state = state.copyWith(statesState: StateEnum.error);
-        }
-      },
-    );
-  }
-
+  }  
   void getGroupedStates() {
     state = state.copyWith(stateGroups: {
       for (final stateGroup in defaultStateGroups)
@@ -50,6 +24,28 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
     });
   }
 
+  Future getStates() async {
+    state = state.copyWith(statesState: DataState.loading);
+    final projectId =
+        ref.read(ProviderList.projectProvider).currentProject['id'];
+    final slug = ref.read(ProviderList.workspaceProvider).slug;
+    final states =
+        await statesService.getStates(slug: slug, projectId: projectId);
+    states.fold(
+      (states) {
+        state = state.copyWith(states: states, statesState: DataState.success);
+        getGroupedStates();
+      },
+      (err) {
+        if (err.response!.statusCode == 403) {
+          state = state.copyWith(statesState: DataState.restricted);
+        } else {
+          state = state.copyWith(statesState: DataState.error);
+        }
+      },
+    );
+  }
+
   Future createState({required Map data}) async {
     final projectId =
         ref.read(ProviderList.projectProvider).currentProject['id'];
@@ -57,7 +53,7 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
-    state = state.copyWith(createStateLoading: StateEnum.loading);
+    state = state.copyWith(createStateLoading: DataState.loading);
     final newState = await statesService.createState(
         data: data, slug: slug, projectId: projectId);
     newState.fold((addedState) {
@@ -72,10 +68,10 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
       state = state.copyWith(
           stateGroups: newStateGroupData,
           states: projectStates,
-          createStateLoading: StateEnum.success);
+          createStateLoading: DataState.success);
     }, (err) {
       log(err.response.toString());
-      state = state.copyWith(createStateLoading: StateEnum.error);
+      state = state.copyWith(createStateLoading: DataState.error);
     });
   }
 
@@ -85,7 +81,7 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
     required String projectId,
     required String stateId,
   }) async {
-    state = state.copyWith(updateState: StateEnum.loading);
+    state = state.copyWith(updateState: DataState.loading);
     final response = await statesService.updateState(
         data: data, slug: slug, projectId: projectId, stateId: stateId);
     response.fold((updateState) {
@@ -105,17 +101,17 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
           state = state.copyWith(
               states: projectStates,
               stateGroups: updatedGroups,
-              updateState: StateEnum.success);
+              updateState: DataState.success);
         }
       }
     }, (err) {
-      state = state.copyWith(updateState: StateEnum.error);
+      state = state.copyWith(updateState: DataState.error);
       log(err.response.toString());
     });
   }
 
   Future deleteState({required String stateId}) async {
-    state = state.copyWith(deleteState: StateEnum.loading);
+    state = state.copyWith(deleteState: DataState.loading);
     final delete = await statesService.deleteState(
       slug: ref
           .watch(ProviderList.workspaceProvider)
@@ -142,9 +138,9 @@ class StatesProvider extends StateNotifier<ProjectStatesState> {
       state = state.copyWith(
           states: projectStates,
           stateGroups: updatedGroups,
-          deleteState: StateEnum.success);
+          deleteState: DataState.success);
     }, (err) {
-      state = state.copyWith(deleteState: StateEnum.error);
+      state = state.copyWith(deleteState: DataState.error);
       log(err.response.toString());
     });
   }

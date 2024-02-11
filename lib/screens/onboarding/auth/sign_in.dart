@@ -255,7 +255,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                         .sendMagicCode(email: email.text)
                                         .then((value) {
                                       if (authProvider.sendCodeState ==
-                                          StateEnum.error) {
+                                          DataState.error) {
                                         CustomToast.showToast(context,
                                             message:
                                                 'Something went wrong, please try again.',
@@ -277,9 +277,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                         .then(
                                       (value) async {
                                         if (authProvider.validateCodeState ==
-                                                StateEnum.success &&
+                                                DataState.success &&
                                             profileProvider.getProfileState ==
-                                                StateEnum.success) {
+                                                DataState.success) {
                                           if (profileProvider
                                               .userProfile.isOnboarded!) {
                                             postHogService(
@@ -337,8 +337,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                           const SizedBox(
                             height: 30,
                           ),
-                          (Platform.isIOS && Config.googleServerClientId == null) ||
-                                  (Platform.isAndroid && Config.googleClientId == null)
+                          (Platform.isIOS &&
+                                      Config.googleServerClientId == null) ||
+                                  (Platform.isAndroid &&
+                                      Config.googleClientId == null)
                               ? Container()
                               : Column(
                                   children: [
@@ -358,11 +360,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                     ),
                                   ],
                                 ),
-                          (Platform.isIOS && Config.googleServerClientId == null) ||
-                                  (Platform.isAndroid && Config.googleClientId == null)
+                          (Platform.isIOS &&
+                                      Config.googleServerClientId == null) ||
+                                  (Platform.isAndroid &&
+                                      Config.googleClientId == null)
                               ? Container()
                               : (authProvider.googleAuthState ==
-                                      StateEnum.loading
+                                      DataState.loading
                                   ? SizedBox(
                                       width: width,
                                       child: Center(
@@ -411,16 +415,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen>
                                           ref
                                               .watch(ProviderList.authProvider)
                                               .googleAuth(data: {
-                                            "clientId": Config.googleServerClientId,
+                                            "clientId":
+                                                Config.googleServerClientId,
                                             "credential": googleAuth.idToken,
                                             "medium": "google"
                                           }, context: context, ref: ref).then(
                                                   (value) {
                                             if (authProvider.googleAuthState ==
-                                                    StateEnum.success &&
+                                                    DataState.success &&
                                                 profileProvider
                                                         .getProfileState ==
-                                                    StateEnum.success) {
+                                                    DataState.success) {
                                               if (profileProvider
                                                   .userProfile.isOnboarded!) {
                                                 Navigator.pushAndRemoveUntil(

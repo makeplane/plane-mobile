@@ -5,17 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom-sheets/assignee_sheet.dart';
-import 'package:plane/models/chart_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/widgets/assignee_widget.dart';
 import 'package:plane/screens/project/widgets/links_widget.dart';
-import 'package:plane/core/components/cycle_module_widgets/progress_chart_section.dart';
-import 'package:plane/core/components/cycle_module_widgets/states_section.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
-import 'package:plane/widgets/completion_percentage.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
+import 'package:plane/core/components/cycle_module_widgets/completion_percentage.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
@@ -23,7 +20,7 @@ class ModuleDetailsPage extends ConsumerStatefulWidget {
   const ModuleDetailsPage(
       {super.key, required this.moduleId, required this.chartData});
   final String moduleId;
-  final List<ChartData> chartData;
+  final List<dynamic> chartData;
 
   @override
   ConsumerState<ModuleDetailsPage> createState() => _ModuleDetailsPageState();
@@ -38,7 +35,7 @@ class _ModuleDetailsPageState extends ConsumerState<ModuleDetailsPage> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
 
-    if (modulesProvider.moduleDetailState == StateEnum.loading) {
+    if (modulesProvider.moduleDetailState == DataState.loading) {
       return Center(
         child: SizedBox(
           width: 30,
@@ -59,13 +56,13 @@ class _ModuleDetailsPageState extends ConsumerState<ModuleDetailsPage> {
           const SizedBox(height: 30),
           detailsWidget(),
           const SizedBox(height: 30),
-          ProgressChartSection(chartData: widget.chartData),
+          // ProgressChartSection(chartData: widget.chartData),
           const SizedBox(height: 30),
           // assigneesWidget(
           //     ref: ref,
           //     detailData: modulesProvider.moduleDetailsData['distribution']),
           const SizedBox(height: 30),
-          StatesSection(stateIssuesInfo: modulesProvider.moduleDetailsData),
+          // StatesSection(stateIssuesInfo: modulesProvider.moduleDetailsData),
           const SizedBox(height: 30),
           labelsWidget(),
           const SizedBox(height: 30),

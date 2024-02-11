@@ -3,48 +3,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/const.dart';
+import 'package:plane/models/cycle/cycle_detail.model.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/provider/cycles_provider.dart';
-import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/widgets/custom_button.dart';
-
 import '../mixins/widget_state_mixin.dart';
 import '../utils/enums.dart';
 import '../widgets/custom_text.dart';
 
 class SelectCycleSheet extends ConsumerStatefulWidget {
-  const SelectCycleSheet({super.key});
-
+  const SelectCycleSheet({required this.cycles, super.key});
+  final List<CycleDetailModel> cycles;
   @override
   ConsumerState<SelectCycleSheet> createState() => _SelectCycleSheetState();
 }
 
 class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
     with WidgetStateMixin {
-  List<dynamic> cycles = [];
+  List<CycleDetailModel> cycles = [];
   int? selected;
+
+  Future<void> handleTransferIssues() async {
+    if (selected == null) {
+      return;
+    }
+    final cycleNotifier = ref.read(ProviderList.cycleProvider.notifier);
+    await cycleNotifier.transferIssues(
+        cycles[selected!].id, cycles[selected!].id);
+    Navigator.pop(Const.globalKey.currentContext!);
+  }
+
   @override
   void initState() {
-    final CyclesProvider cyclesProvider = ref.read(ProviderList.cyclesProvider);
-    cycles = List.from(cyclesProvider.cyclesAllData);
-    cycles.removeWhere((element) =>
-        DateTime.parse(element['end_date']).isBefore(DateTime.now()));
-
+    cycles = widget.cycles;
+    cycles.removeWhere((cycle) =>
+        cycle.end_date != null &&
+        DateTime.parse(cycle.end_date!).isBefore(DateTime.now()));
     super.initState();
   }
 
   @override
-  LoadingType getLoading(WidgetRef ref) {
-    return setWidgetState([
-      ref.read(ProviderList.cyclesProvider).transferIssuesState,
-    ], loadingType: LoadingType.wrap);
-  }
-
-  @override
   Widget render(BuildContext context) {
-    final CyclesProvider cyclesProvider =
-        ref.watch(ProviderList.cyclesProvider);
-    final ThemeProvider themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeManager = ref.read(ProviderList.themeProvider).themeManager;
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Wrap(
@@ -55,14 +54,14 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
                 CustomText('Transfer Issues',
                     type: FontStyle.H4,
                     fontWeight: FontWeightt.Semibold,
-                    color: themeProvider.themeManager.primaryTextColor),
+                    color: themeManager.primaryTextColor),
                 IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     icon: Icon(
                       Icons.close,
-                      color: themeProvider.themeManager.placeholderTextColor,
+                      color: themeManager.placeholderTextColor,
                     ))
               ],
             ),
@@ -85,15 +84,14 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
                                 margin:
                                     const EdgeInsets.only(top: 5, bottom: 5),
                                 child: CustomText(
-                                  cycles[index]['name'],
+                                  cycles[index].name,
                                   type: FontStyle.Medium,
                                 )),
                             const Spacer(),
                             selected == index
                                 ? Icon(
                                     Icons.done,
-                                    color: themeProvider
-                                        .themeManager.textSuccessColor,
+                                    color: themeManager.textSuccessColor,
                                   )
                                 : const SizedBox()
                           ],
@@ -113,18 +111,7 @@ class _SelectCycleSheetState extends ConsumerState<SelectCycleSheet>
                     ),
                   ),
             cycles.isNotEmpty
-                ? Button(
-                    text: 'Tranfer Issues',
-                    ontap: () async {
-                      if (selected == null) {
-                        return;
-                      }
-                      await cyclesProvider.transferIssues(
-                          newCycleID: cycles[selected!]['id'],
-                          context: context);
-                      Navigator.of(Const.globalKey.currentContext!).pop();
-                    },
-                  )
+                ? Button(text: 'Tranfer Issues', ontap: handleTransferIssues)
                 : const SizedBox()
           ],
         ));

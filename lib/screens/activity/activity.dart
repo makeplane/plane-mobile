@@ -54,8 +54,8 @@ class _ActivityState extends ConsumerState<Activity> {
           text: "Activity"),
 
       body: LoadingWidget(
-          loading: activityProvider.getActivityState == StateEnum.loading,
-          widgetClass: activityProvider.getActivityState == StateEnum.success
+          loading: activityProvider.getActivityState == DataState.loading,
+          widgetClass: activityProvider.getActivityState == DataState.success
               ? SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -82,11 +82,10 @@ class _ActivityState extends ConsumerState<Activity> {
                                                 ["comment"]
                                             .toString()
                                             .contains("created the issue")) {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (_) => IssueDetail(
-                                                       
-                                                      )));
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      IssueDetail()));
                                         } else if (activityProvider.data[index]
                                                 ["comment"]
                                             .toString()
@@ -225,10 +224,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                             TextSpan(
                                                                               recognizer: TapGestureRecognizer()
                                                                                 ..onTap = () {
-                                                                                  Navigator.of(context).push(MaterialPageRoute(
-                                                                                      builder: (_) => IssueDetail(
-                                                                                          
-                                                                                          )));
+                                                                                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => IssueDetail()));
                                                                                 },
                                                                               text: activityProvider.data[index]['issue_detail'] != null ? ' ${activityProvider.data[index]['project_detail']['identifier']} - ${activityProvider.data[index]['issue_detail']['sequence_id']}' : '',
                                                                               style: TextStyle(
@@ -440,9 +436,7 @@ class _ActivityState extends ConsumerState<Activity> {
                                                                               ..onTap = () {
                                                                                 Navigator.of(context).push(
                                                                                   MaterialPageRoute(
-                                                                                    builder: (_) => IssueDetail(
-                                                                                   
-                                                                                    ),
+                                                                                    builder: (_) => IssueDetail(),
                                                                                   ),
                                                                                 );
                                                                               },

@@ -52,7 +52,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
       if (input.text.isEmpty) {
         prov.clear();
       } else {
-        log("HERE");
         prov.getGlobalData(
           slug: ref
               .read(ProviderList.workspaceProvider)
@@ -187,11 +186,11 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                       child: ref
                                       .watch(ProviderList.workspaceProvider)
                                       .selectWorkspaceState ==
-                                  StateEnum.loading ||
+                                  DataState.loading ||
                               ref
                                       .watch(ProviderList.projectProvider)
                                       .projectState ==
-                                  StateEnum.loading
+                                  DataState.loading
                           ? Center(
                               child: SizedBox(
                                 width: 30,
@@ -607,7 +606,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget issuesList() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(
@@ -635,18 +634,17 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                     return InkWell(
                       onTap: () async {
                         ref
-                                .watch(ProviderList.projectProvider)
+                                .read(ProviderList.projectProvider)
                                 .currentProject['id'] =
                             globalSearchProvider.data!.issues[index].projectId;
                         await ref
                             .read(ProviderList.projectProvider)
-                            .initializeProject(ref: ref);
+                            .initializeProject(globalSearchProvider
+                                .data!.issues[index].projectId);
 
                         Navigator.of(Const.globalKey.currentContext!).push(
                           MaterialPageRoute(
-                            builder: (context) => IssueDetail(
-                             
-                            ),
+                            builder: (context) => const IssueDetail(),
                           ),
                         );
                       },
@@ -687,7 +685,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(
@@ -771,7 +769,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final workspaceProv = ref.watch(ProviderList.workspaceProvider);
     final profileProvider = ref.watch(ProviderList.profileProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(
@@ -806,7 +804,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                         )
                             .then(
                           (value) async {
-                            ref.watch(ProviderList.cyclesProvider).clearData();
                             ref.watch(ProviderList.modulesProvider).clearData();
                             ref.watch(ProviderList.projectProvider).getProjects(
                                 slug: ref
@@ -881,7 +878,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget cyclesListWidget() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(
@@ -925,10 +922,6 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
                             builder: (context) => CycleDetail(
                               cycleId:
                                   globalSearchProvider.data!.cycles[index].id,
-                              cycleName:
-                                  globalSearchProvider.data!.cycles[index].name,
-                              projId: globalSearchProvider
-                                  .data!.cycles[index].projectId,
                             ),
                           ),
                         );
@@ -970,7 +963,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget modulesListWidget() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(
@@ -1052,7 +1045,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget viewsListWidget() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(
@@ -1135,7 +1128,7 @@ class _GlobalSearchSheetState extends ConsumerState<GlobalSearchSheet> {
   Widget pagesListWidget() {
     final globalSearchProvider = ref.watch(ProviderList.globalSearchProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
-    if (globalSearchProvider.globalSearchState == StateEnum.loading) {
+    if (globalSearchProvider.globalSearchState == DataState.loading) {
       return Container();
     } else {
       return Column(

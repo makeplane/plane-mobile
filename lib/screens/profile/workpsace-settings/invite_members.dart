@@ -61,8 +61,8 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
         ),
         body: LoadingWidget(
           loading: !widget.isProject
-              ? workspaceProvider.workspaceInvitationState == StateEnum.loading
-              : projectProvider.projectInvitationState == StateEnum.loading,
+              ? workspaceProvider.workspaceInvitationState == DataState.loading
+              : projectProvider.projectInvitationState == DataState.loading,
           widgetClass: LayoutBuilder(builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
@@ -454,7 +454,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
 
                           if (!widget.isProject &&
                               workspaceProvider.workspaceInvitationState ==
-                                  StateEnum.success) {
+                                  DataState.success) {
                             postHogService(
                                 eventName: 'WORKSPACE_USER_INVITE',
                                 properties: {
@@ -464,7 +464,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                                 userID: profileProvider.userProfile.id!);
 
                             if (workspaceProvider.workspaceInvitationState ==
-                                StateEnum.success) {
+                                DataState.success) {
                               CustomToast.showToast(mainBuildContext,
                                   message: 'Invitation sent successfully',
                                   toastType: ToastType.success);
@@ -479,7 +479,7 @@ class _InviteMembersState extends ConsumerState<InviteMembers> {
                           }
                           if (widget.isProject &&
                               projectProvider.projectInvitationState ==
-                                  StateEnum.success) {
+                                  DataState.success) {
                             //show success snackbar
                             CustomToast.showToast(mainBuildContext,
                                 message: 'Invitation sent successfully',

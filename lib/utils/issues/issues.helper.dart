@@ -6,19 +6,19 @@ import 'package:plane/provider/issues/base-classes/base_issue_state.dart';
 import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/list_extensions.dart';
+import 'package:plane/core/extensions/list_extensions.dart';
 import 'package:plane/utils/issues/group_by_issues.dart';
 import 'package:plane/utils/issues/order_by_issues.dart';
 
 class IssuesHelper {
   static ABaseIssuesProvider getIssuesProvider(
-      WidgetRef ref, IssueCategory issueCategory) {
+      WidgetRef ref, IssuesCategory issueCategory) {
     switch (issueCategory) {
-      case IssueCategory.myIssues:
+      case IssuesCategory.GLOBAL:
         return ref.read(ProviderList.projectIssuesProvider.notifier);
-      case IssueCategory.moduleIssues:
+      case IssuesCategory.MODULE:
         return ref.read(ProviderList.projectIssuesProvider.notifier);
-      case IssueCategory.cycleIssues:
+      case IssuesCategory.CYCLE:
         return ref.read(ProviderList.projectIssuesProvider.notifier);
       default:
         return ref.read(ProviderList.projectIssuesProvider.notifier);
@@ -26,13 +26,13 @@ class IssuesHelper {
   }
 
   static ABaseIssuesState getIssuesState(
-      WidgetRef ref, IssueCategory issueCategory) {
+      WidgetRef ref, IssuesCategory issueCategory) {
     switch (issueCategory) {
-      case IssueCategory.myIssues:
+      case IssuesCategory.GLOBAL:
         return ref.read(ProviderList.projectIssuesProvider);
-      case IssueCategory.moduleIssues:
+      case IssuesCategory.MODULE:
         return ref.read(ProviderList.projectIssuesProvider);
-      case IssueCategory.cycleIssues:
+      case IssuesCategory.CYCLE:
         return ref.read(ProviderList.projectIssuesProvider);
       default:
         return ref.read(ProviderList.projectIssuesProvider);
@@ -73,5 +73,4 @@ class IssuesHelper {
         IssuesOrderBYHelper.orderIssues(groupedIssues, orderBY);
     return organizedIssues;
   }
-
 }

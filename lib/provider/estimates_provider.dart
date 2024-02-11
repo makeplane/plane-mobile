@@ -4,17 +4,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/config/apis.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class EstimatesProvider with ChangeNotifier {
   List estimates = [];
-  StateEnum estimateState = StateEnum.idle;
+  DataState estimateState = DataState.idle;
 
   Future getEstimates({required String slug, required String projID}) async {
     try {
-      estimateState = StateEnum.loading;
-      final response = await DioConfig().dioServe(
+      estimateState = DataState.loading;
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.listEstimates
             .replaceAll("\$SLUG", slug)
@@ -23,12 +23,12 @@ class EstimatesProvider with ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       estimates = response.data;
-      estimateState = StateEnum.success;
+      estimateState = DataState.success;
       //  log('get estimates${response.data}');
 
       notifyListeners();
     } on DioException catch (e) {
-      estimateState = StateEnum.error;
+      estimateState = DataState.error;
       log('Error in Estimates  ${e.message}');
       log(e.error.toString());
       notifyListeners();
@@ -38,8 +38,8 @@ class EstimatesProvider with ChangeNotifier {
   Future createEstimates(
       {required String slug, required String projID, required Map body}) async {
     try {
-      estimateState = StateEnum.loading;
-      await DioConfig().dioServe(
+      estimateState = DataState.loading;
+      await DioClient().request(
         hasAuth: true,
         url: APIs.listEstimates
             .replaceAll("\$SLUG", slug)
@@ -51,7 +51,7 @@ class EstimatesProvider with ChangeNotifier {
 
       getEstimates(slug: slug, projID: projID);
     } on DioException catch (e) {
-      estimateState = StateEnum.error;
+      estimateState = DataState.error;
       log('Error in Estimates  ${e.message}');
       log(e.error.toString());
       notifyListeners();
@@ -65,8 +65,8 @@ class EstimatesProvider with ChangeNotifier {
       required Map body}) async {
     try {
       log('${APIs.listEstimates.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID)}$estimateID/');
-      estimateState = StateEnum.loading;
-      await DioConfig().dioServe(
+      estimateState = DataState.loading;
+      await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.listEstimates.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID)}$estimateID/',
@@ -77,7 +77,7 @@ class EstimatesProvider with ChangeNotifier {
 
       getEstimates(slug: slug, projID: projID);
     } on DioException catch (e) {
-      estimateState = StateEnum.error;
+      estimateState = DataState.error;
       log('Error in Estimates  ${e.message}');
       log(e.error.toString());
       notifyListeners();
@@ -89,8 +89,8 @@ class EstimatesProvider with ChangeNotifier {
       required String projID,
       required String estimateID}) async {
     try {
-      estimateState = StateEnum.loading;
-      await DioConfig().dioServe(
+      estimateState = DataState.loading;
+      await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.listEstimates.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID)}$estimateID/',
@@ -100,7 +100,7 @@ class EstimatesProvider with ChangeNotifier {
 
       getEstimates(slug: slug, projID: projID);
     } on DioException catch (e) {
-      estimateState = StateEnum.error;
+      estimateState = DataState.error;
       log('Error in Estimates  ${e.message}');
       log(e.error.toString());
       notifyListeners();

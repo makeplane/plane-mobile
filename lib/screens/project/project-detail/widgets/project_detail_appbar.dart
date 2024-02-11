@@ -24,7 +24,7 @@ PreferredSizeWidget ProjectDetailAppbar(
       (projectProvider.currentProject['archive_in'] > 0 &&
               (projectProvider.role == Role.admin ||
                   projectProvider.role == Role.member) &&
-              (statesProvider.statesState == StateEnum.success))
+              (statesProvider.statesState == DataState.success))
           ? IconButton(
               onPressed: () {
                 // Navigator.of(context).push(
@@ -38,7 +38,7 @@ PreferredSizeWidget ProjectDetailAppbar(
                 color: themeProvider.themeManager.placeholderTextColor,
               ))
           : Container(),
-      (statesProvider.statesState == StateEnum.success)
+      (statesProvider.statesState == DataState.success)
           ? IconButton(
               onPressed: () {
                 Navigator.push(
@@ -50,7 +50,7 @@ PreferredSizeWidget ProjectDetailAppbar(
                   settingsOntap();
                 });
               },
-              icon: statesProvider.statesState == StateEnum.restricted
+              icon: statesProvider.statesState == DataState.restricted
                   ? Container()
                   : Icon(
                       Icons.settings_outlined,

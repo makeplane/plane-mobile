@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:plane/bottom-sheets/global_search_sheet.dart';
 import 'package:plane/bottom-sheets/select_workspace.dart';
 import 'package:plane/models/user_profile_model.dart';
-import 'package:plane/models/Workspace/workspace_model.dart';
+import 'package:plane/models/workspace/workspace_model.dart';
 import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/global_search_provider.dart';
 import 'package:plane/provider/profile_provider.dart';
@@ -57,7 +57,7 @@ void main() {
         .thenReturn(SearchModal.initialize());
 
     when(() => mockWorkspaceProvider.selectWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockWorkspaceProvider.workspaces).thenReturn([]);
     when(() => mockWorkspaceProvider.selectedWorkspace)
         .thenReturn(WorkspaceModel.initialize(workspaceName: 'TESTER'));
@@ -68,7 +68,7 @@ void main() {
     ).thenReturn([]);
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
     when(() => mockDashBoardProvider.hideGithubBlock).thenReturn(false);
     when(
       () => mockDashBoardProvider.dashboardData,
@@ -87,11 +87,11 @@ void main() {
 
   testWidgets('Navigation Test', (tester) async {
     when(() => mockWorkspaceProvider.checkWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockWorkspaceProvider.createWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockWorkspaceProvider.selectWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockWorkspaceProvider.companySize).thenReturn('');
 
     await tester.pumpWidget(

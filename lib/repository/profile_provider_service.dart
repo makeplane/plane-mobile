@@ -4,18 +4,18 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:plane/models/user_profile_model.dart';
 import 'package:plane/models/user_setting_model.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 
 import '../config/apis.dart';
 import '../utils/enums.dart';
 
 class ProfileService {
   ProfileService(this.dio);
-  DioConfig dio;
+  DioClient dio;
 
   Future<Either<UserProfile, DioException>> getProfile() async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
         hasAuth: true,
         url: APIs.profile,
         hasBody: false,
@@ -30,7 +30,7 @@ class ProfileService {
 
   Future<Either<UserSettingModel, DioException>> getProfileSetting() async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
         hasAuth: true,
         url: '${APIs.profile}settings/',
         hasBody: false,
@@ -46,7 +46,7 @@ class ProfileService {
   Future<Either<UserProfile, DioException>> updateProfile(
       {required Map data}) async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
           hasAuth: true,
           url: APIs.profile,
           hasBody: true,

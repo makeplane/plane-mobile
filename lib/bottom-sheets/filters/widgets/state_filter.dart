@@ -1,100 +1,86 @@
-part of '../filter_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:plane/core/icons/state_group_icon.dart';
+import 'package:plane/models/project/state/state_model.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
+import 'package:plane/widgets/custom_expansion_tile.dart';
+import 'package:plane/widgets/rectangular_chip.dart';
 
-class _StateFilter extends ConsumerStatefulWidget {
-  const _StateFilter({required this.state});
-  final _FilterState state;
+class StateFilter extends ConsumerStatefulWidget {
+  const StateFilter({required this.states, required this.onChange, super.key});
+  final List<StateModel> states;
+  final Function(String labelId) onChange;
 
   @override
-  ConsumerState<_StateFilter> createState() => __StateFilterState();
+  ConsumerState<StateFilter> createState() => _StateFilterState();
 }
 
-class __StateFilterState extends ConsumerState<_StateFilter> {
+class _StateFilterState extends ConsumerState<StateFilter> {
   List<StateModel> stateGroups = [
     StateModel.initialize().copyWith(
         group: 'backlog',
         name: 'Backlog',
         color: '#5e6ad2',
-        stateIcon: stateGroupIcon('backlog')),
+        stateIcon: StateGroupIcon('backlog')),
     StateModel.initialize().copyWith(
         group: 'unstarted',
         name: 'Unstarted',
         color: '#eb5757',
-        stateIcon: stateGroupIcon('unstarted')),
+        stateIcon: StateGroupIcon('unstarted')),
     StateModel.initialize().copyWith(
         group: 'started',
         name: 'Started',
         color: '#26b5ce',
-        stateIcon: stateGroupIcon('started')),
+        stateIcon: StateGroupIcon('started')),
     StateModel.initialize().copyWith(
         group: 'completed',
         name: 'Completed',
         color: '#f2c94c',
-        stateIcon: stateGroupIcon('completed')),
+        stateIcon: StateGroupIcon('completed')),
     StateModel.initialize().copyWith(
         group: 'cancelled',
         name: 'Cancelled',
         color: '#4cb782',
-        stateIcon: stateGroupIcon('cancelled'))
+        stateIcon: StateGroupIcon('cancelled'))
   ];
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
-    final statesProvider = ref.read(ProviderList.statesProvider);
+    final themeManager = ref.read(ProviderList.themeProvider).themeManager;
     return CustomExpansionTile(
       title: 'State',
       child: Wrap(
-
-          /// if issue category is archived issues then we will not show [backlog], [unstarted] and [started] states.
-          /// if issue category is global-issues then we will show [state-groups] only.
-          children: (widget.state.issueCategory == IssueCategory.myIssues
-                  ? stateGroups
-                  : statesProvider.projectStates.values)
-              .map((state) {
-        return (widget.state.issueCategory == IssueCategory.archivedIssues &&
-                (state.group == 'backlog' ||
-                    state.group == 'unstarted' ||
-                    state.group == 'started'))
-            ? Container()
-            : GestureDetector(
-                onTap: () {
-                  List<String> states = widget.state.filters.state;
-                  if (states.contains(state.group)) {
-                    states.remove(state.group);
-                  } else {
-                    states.add(state.group);
-                  }
-                  widget.state.filters =
-                      widget.state.filters.copyWith(state: states);
-                  widget.state.setState();
-                },
-                child: RectangularChip(
-                  ref: ref,
-                  icon: SvgPicture.asset(
-                    state.group == 'backlog'
-                        ? 'assets/svg_images/circle.svg'
-                        : state.group == 'cancelled'
-                            ? 'assets/svg_images/cancelled.svg'
-                            : state.group == 'started'
-                                ? 'assets/svg_images/in_progress.svg'
-                                : state.group == 'completed'
-                                    ? 'assets/svg_images/done.svg'
-                                    : 'assets/svg_images/unstarted.svg',
-                    colorFilter: ColorFilter.mode(
-                        widget.state.filters.state.contains(state.group)
-                            ? (Colors.white)
-                            : state.color.toColor(),
-                        BlendMode.srcIn),
-                    height: 20,
-                    width: 20,
-                  ),
-                  text: state.name,
-                  color: widget.state.filters.state.contains(state.group)
-                      ? themeProvider.themeManager.primaryColour
-                      : themeProvider
-                          .themeManager.secondaryBackgroundDefaultColor,
-                  selected: widget.state.filters.state.contains(state.group),
-                ),
-              );
+          children: widget.states.map((state) {
+        return GestureDetector(
+          onTap: () => widget.onChange(state.id),
+          child: RectangularChip(
+            ref: ref,
+            icon: SvgPicture.asset(
+              state.group == 'backlog'
+                  ? 'assets/svg_images/circle.svg'
+                  : state.group == 'cancelled'
+                      ? 'assets/svg_images/cancelled.svg'
+                      : state.group == 'started'
+                          ? 'assets/svg_images/in_progress.svg'
+                          : state.group == 'completed'
+                              ? 'assets/svg_images/done.svg'
+                              : 'assets/svg_images/unstarted.svg',
+              colorFilter: ColorFilter.mode(
+                  widget.states.contains(state.id)
+                      ? (Colors.white)
+                      : state.color.toColor(),
+                  BlendMode.srcIn),
+              height: 20,
+              width: 20,
+            ),
+            text: state.name,
+            color: widget.states.contains(state.id)
+                ? themeManager.primaryColour
+                : themeManager.secondaryBackgroundDefaultColor,
+            selected: widget.states.contains(state.id),
+          ),
+        );
       }).toList()),
     );
   }

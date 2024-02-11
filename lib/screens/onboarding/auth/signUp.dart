@@ -42,9 +42,9 @@ class _SignUpState extends ConsumerState<SignUp> {
           child: Form(
             key: gkey,
             child: LoadingWidget(
-              loading: authProvider.signUpState == StateEnum.loading ||
+              loading: authProvider.signUpState == DataState.loading ||
                   workspaceProvider.workspaceInvitationState ==
-                      StateEnum.loading,
+                      DataState.loading,
               widgetClass: SizedBox(
                 // height: height,
                 child: SafeArea(
@@ -212,9 +212,9 @@ class _SignUpState extends ConsumerState<SignUp> {
                                       ref: ref)
                                   .then((value) {
                                 if (authProvider.signUpState ==
-                                        StateEnum.success &&
+                                        DataState.success &&
                                     profileProvider.getProfileState ==
-                                        StateEnum.success) {
+                                        DataState.success) {
                                   if (profileProvider
                                       .userProfile.isOnboarded!) {
                                     Navigator.push(

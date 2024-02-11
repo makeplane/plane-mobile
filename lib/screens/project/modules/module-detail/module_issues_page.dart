@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
-import 'package:plane/models/chart_model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/screens/project/modules/module-detail/module_detail_page.dart';
@@ -17,7 +16,6 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
-import '../../../../../bottom-sheets/select_cycle_sheet.dart';
 
 class ModuleDetail extends ConsumerStatefulWidget {
   const ModuleDetail(
@@ -32,7 +30,7 @@ class ModuleDetail extends ConsumerStatefulWidget {
 }
 
 class _ModuleDetailState extends ConsumerState<ModuleDetail> {
-  List<ChartData> chartData = [];
+  List<dynamic> chartData = [];
   PageController? pageController = PageController();
   List tempIssuesList = [];
 
@@ -49,7 +47,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
 
   Future getModuleData() async {
     final modulesProvider = ref.read(ProviderList.modulesProvider);
-    modulesProvider.moduleDetailState = StateEnum.loading;
+    modulesProvider.moduleDetailState = DataState.loading;
     pageController = PageController(
         initialPage: modulesProvider.moduleDetailSelectedIndex,
         keepPage: true,
@@ -85,8 +83,8 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
 
   Future getChartData(Map<String, dynamic> data) async {
     data.forEach((key, value) {
-      chartData.add(ChartData(
-          DateTime.parse(key), value != null ? value.toDouble() : 0.0));
+      // chartData.add(ChartData(
+      //     DateTime.parse(key), value != null ? value.toDouble() : 0.0));
     });
   }
 
@@ -101,7 +99,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
       },
       child: Scaffold(
         floatingActionButton: modulesProvider.moduleIssueState ==
-                    StateEnum.loading &&
+                    DataState.loading &&
                 (modulesProvider.moduleDetailsData['backlog_issues'] != 0 &&
                     modulesProvider.moduleDetailsData['started_issues'] != 0 &&
                     modulesProvider.moduleDetailsData['unstarted_issues'] != 0)
@@ -120,7 +118,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                       )),
                       context: context,
                       builder: (ctx) {
-                        return const SelectCycleSheet();
+                        return Container();
                       });
                 },
                 child: Container(
@@ -145,7 +143,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
               return;
             }
             modulesProvider.changeTabIndex(0);
-            modulesProvider.changeState(StateEnum.empty);
+            modulesProvider.changeState(DataState.empty);
             Navigator.pop(context);
           },
           text: widget.projId == null
@@ -275,270 +273,256 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
                   Column(
                     children: [
                       Expanded(
-                        child:
-                            (modulesProvider.moduleIssueState ==
-                                            StateEnum.loading ||
-                                        modulesProvider.moduleDetailState ==
-                                            StateEnum.loading) ||
-                                    modulesProvider.moduleViewState ==
-                                        StateEnum.loading
-                                ? Center(
-                                    child: SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: LoadingIndicator(
-                                          indicatorType:
-                                              Indicator.lineSpinFadeLoader,
-                                          colors: [
-                                            themeProvider
-                                                .themeManager.primaryTextColor
-                                          ],
-                                          strokeWidth: 1.0,
-                                          backgroundColor: themeProvider
-                                              .themeManager
-                                              .primaryBackgroundDefaultColor,
-                                        )),
-                                  )
-                                : (modulesProvider.isIssuesEmpty)
-                                    ? EmptyPlaceholder.emptyIssues(context,
-                                        moduleId: widget.moduleId,
-                                        projectId: widget.projId,
-                                        type: IssueCategory.cycleIssues,
-                                        ref: ref)
-                                    : (modulesProvider.issues.projectView ==
-                                            IssuesLayout.list)
-                                        ? Container(
-                                            color: themeProvider.themeManager
-                                                .secondaryBackgroundDefaultColor,
-                                            margin:
-                                                const EdgeInsets.only(top: 5),
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: modulesProvider
-                                                      .issues.issues
-                                                      .map((state) => state
-                                                                  .items
-                                                                  .isEmpty &&
-                                                              !modulesProvider
-                                                                  .showEmptyStates
-                                                          ? Container()
-                                                          : SizedBox(
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Container(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        left:
-                                                                            15),
-                                                                    margin: const EdgeInsets
-                                                                        .only(
-                                                                        bottom:
-                                                                            10),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        state.leading ??
-                                                                            Container(),
-                                                                        Container(
-                                                                          padding:
-                                                                              const EdgeInsets.only(
-                                                                            left:
+                          child:
+                              (modulesProvider.moduleIssueState ==
+                                              DataState.loading ||
+                                          modulesProvider.moduleDetailState ==
+                                              DataState.loading) ||
+                                      modulesProvider.moduleViewState ==
+                                          DataState.loading
+                                  ? Center(
+                                      child: SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: LoadingIndicator(
+                                            indicatorType:
+                                                Indicator.lineSpinFadeLoader,
+                                            colors: [
+                                              themeProvider
+                                                  .themeManager.primaryTextColor
+                                            ],
+                                            strokeWidth: 1.0,
+                                            backgroundColor: themeProvider
+                                                .themeManager
+                                                .primaryBackgroundDefaultColor,
+                                          )),
+                                    )
+                                  : (modulesProvider.isIssuesEmpty)
+                                      ? EmptyPlaceholder.emptyIssues(context,
+                                          moduleId: widget.moduleId,
+                                          projectId: widget.projId,
+                                          type: IssuesCategory.CYCLE,
+                                          ref: ref)
+                                      : (modulesProvider.issues.projectView ==
+                                              IssuesLayout.list)
+                                          ? Container(
+                                              color: themeProvider.themeManager
+                                                  .secondaryBackgroundDefaultColor,
+                                              margin:
+                                                  const EdgeInsets.only(top: 5),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: modulesProvider
+                                                        .issues.issues
+                                                        .map((state) => state
+                                                                    .items
+                                                                    .isEmpty &&
+                                                                !modulesProvider
+                                                                    .showEmptyStates
+                                                            ? Container()
+                                                            : SizedBox(
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Container(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              15),
+                                                                      margin: const EdgeInsets
+                                                                          .only(
+                                                                          bottom:
+                                                                              10),
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          state.leading ??
+                                                                              Container(),
+                                                                          Container(
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              left: 10,
+                                                                            ),
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width * 0.6,
+                                                                            child:
+                                                                                CustomText(
+                                                                              state.title!,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              maxLines: 1,
+                                                                              type: FontStyle.Small,
+                                                                              fontWeight: FontWeightt.Medium,
+                                                                            ),
+                                                                          ),
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            margin:
+                                                                                const EdgeInsets.only(
+                                                                              left: 15,
+                                                                            ),
+                                                                            decoration:
+                                                                                BoxDecoration(borderRadius: BorderRadius.circular(15), color: themeProvider.themeManager.secondaryBackgroundDefaultColor),
+                                                                            height:
+                                                                                25,
+                                                                            width:
+                                                                                30,
+                                                                            child:
+                                                                                CustomText(
+                                                                              state.items.length.toString(),
+                                                                              type: FontStyle.Medium,
+                                                                            ),
+                                                                          ),
+                                                                          const Spacer(),
+                                                                          IconButton(
+                                                                              onPressed: () {},
+                                                                              icon: Icon(
+                                                                                Icons.add,
+                                                                                color: themeProvider.themeManager.primaryColour,
+                                                                              )),
+                                                                          const SizedBox(
+                                                                            width:
                                                                                 10,
                                                                           ),
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.6,
-                                                                          child:
-                                                                              CustomText(
-                                                                            state.title!,
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            maxLines:
-                                                                                1,
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            fontWeight:
-                                                                                FontWeightt.Medium,
-                                                                          ),
-                                                                        ),
-                                                                        Container(
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          margin:
-                                                                              const EdgeInsets.only(
-                                                                            left:
-                                                                                15,
-                                                                          ),
-                                                                          decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.circular(15),
-                                                                              color: themeProvider.themeManager.secondaryBackgroundDefaultColor),
-                                                                          height:
-                                                                              25,
-                                                                          width:
-                                                                              30,
-                                                                          child:
-                                                                              CustomText(
-                                                                            state.items.length.toString(),
-                                                                            type:
-                                                                                FontStyle.Medium,
-                                                                          ),
-                                                                        ),
-                                                                        const Spacer(),
-                                                                        IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                             
-                                                                            },
-                                                                            icon:
-                                                                                Icon(
-                                                                              Icons.add,
-                                                                              color: themeProvider.themeManager.primaryColour,
-                                                                            )),
-                                                                        const SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                      ],
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                  Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: state
-                                                                          .items
-                                                                          .map((e) =>
-                                                                              e)
-                                                                          .toList()),
-                                                                  state.items
-                                                                          .isEmpty
-                                                                      ? Container(
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
-                                                                          width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width,
-                                                                          color: themeProvider
-                                                                              .themeManager
-                                                                              .primaryBackgroundDefaultColor,
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              top: 15,
-                                                                              bottom: 15,
-                                                                              left: 15),
-                                                                          child:
-                                                                              const CustomText(
-                                                                            'No issues.',
-                                                                            type:
-                                                                                FontStyle.Small,
-                                                                            maxLines:
-                                                                                10,
-                                                                            textAlign:
-                                                                                TextAlign.start,
-                                                                          ),
-                                                                        )
-                                                                      : Container(
-                                                                          margin: const EdgeInsets
-                                                                              .only(
-                                                                              bottom: 10),
-                                                                        )
-                                                                ],
-                                                              ),
-                                                            ))
-                                                      .toList()),
-                                            ),
-                                          )
-                                        : modulesProvider.issues.projectView ==
-                                                IssuesLayout.kanban
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8),
-                                                child: KanbanBoard(
-                                                  modulesProvider
-                                                      .initializeBoard(),
-                                                  boardID: 'cycle-board',
-                                                  onItemReorder: (
-                                                      {newCardIndex,
-                                                      newListIndex,
-                                                      oldCardIndex,
-                                                      oldListIndex}) {
+                                                                    Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment
+                                                                                .start,
+                                                                        children: state
+                                                                            .items
+                                                                            .map((e) =>
+                                                                                e)
+                                                                            .toList()),
+                                                                    state.items
+                                                                            .isEmpty
+                                                                        ? Container(
+                                                                            margin:
+                                                                                const EdgeInsets.only(bottom: 10),
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                            color:
+                                                                                themeProvider.themeManager.primaryBackgroundDefaultColor,
+                                                                            padding: const EdgeInsets.only(
+                                                                                top: 15,
+                                                                                bottom: 15,
+                                                                                left: 15),
+                                                                            child:
+                                                                                const CustomText(
+                                                                              'No issues.',
+                                                                              type: FontStyle.Small,
+                                                                              maxLines: 10,
+                                                                              textAlign: TextAlign.start,
+                                                                            ),
+                                                                          )
+                                                                        : Container(
+                                                                            margin:
+                                                                                const EdgeInsets.only(bottom: 10),
+                                                                          )
+                                                                  ],
+                                                                ),
+                                                              ))
+                                                        .toList()),
+                                              ),
+                                            )
+                                          : modulesProvider
+                                                      .issues.projectView ==
+                                                  IssuesLayout.kanban
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8),
+                                                  child: KanbanBoard(
                                                     modulesProvider
-                                                        .reorderIssue(
-                                                      newCardIndex:
-                                                          newCardIndex!,
-                                                      newListIndex:
-                                                          newListIndex!,
-                                                      oldCardIndex:
-                                                          oldCardIndex!,
-                                                      oldListIndex:
-                                                          oldListIndex!,
-                                                    )
-                                                        .catchError(
-                                                      (err) {
-                                                        log(err.toString());
-                                                        CustomToast.showToast(
-                                                          context,
-                                                          message:
-                                                              'Failed to update issue',
-                                                          toastType:
-                                                              ToastType.failure,
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                  isCardsDraggable: false,
-                                                  groupEmptyStates:
-                                                      !modulesProvider
-                                                          .showEmptyStates,
-                                                  cardPlaceHolderColor:
-                                                      themeProvider.themeManager
-                                                          .primaryBackgroundDefaultColor,
-                                                  cardPlaceHolderDecoration:
-                                                      BoxDecoration(
-                                                    color: themeProvider
-                                                        .themeManager
-                                                        .primaryBackgroundDefaultColor,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        blurRadius: 2,
-                                                        color: themeProvider
-                                                            .themeManager
-                                                            .borderSubtle01Color,
-                                                        spreadRadius: 0,
+                                                        .initializeBoard(),
+                                                    boardID: 'cycle-board',
+                                                    onItemReorder: (
+                                                        {newCardIndex,
+                                                        newListIndex,
+                                                        oldCardIndex,
+                                                        oldListIndex}) {
+                                                      modulesProvider
+                                                          .reorderIssue(
+                                                        newCardIndex:
+                                                            newCardIndex!,
+                                                        newListIndex:
+                                                            newListIndex!,
+                                                        oldCardIndex:
+                                                            oldCardIndex!,
+                                                        oldListIndex:
+                                                            oldListIndex!,
                                                       )
-                                                    ],
+                                                          .catchError(
+                                                        (err) {
+                                                          log(err.toString());
+                                                          CustomToast.showToast(
+                                                            context,
+                                                            message:
+                                                                'Failed to update issue',
+                                                            toastType: ToastType
+                                                                .failure,
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    isCardsDraggable: false,
+                                                    groupEmptyStates:
+                                                        !modulesProvider
+                                                            .showEmptyStates,
+                                                    cardPlaceHolderColor:
+                                                        themeProvider
+                                                            .themeManager
+                                                            .primaryBackgroundDefaultColor,
+                                                    cardPlaceHolderDecoration:
+                                                        BoxDecoration(
+                                                      color: themeProvider
+                                                          .themeManager
+                                                          .primaryBackgroundDefaultColor,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          blurRadius: 2,
+                                                          color: themeProvider
+                                                              .themeManager
+                                                              .borderSubtle01Color,
+                                                          spreadRadius: 0,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    backgroundColor: themeProvider
+                                                        .themeManager
+                                                        .secondaryBackgroundDefaultColor,
+                                                    listScrollConfig:
+                                                        ScrollConfig(
+                                                            offset: 65,
+                                                            duration:
+                                                                const Duration(
+                                                              milliseconds: 100,
+                                                            ),
+                                                            curve:
+                                                                Curves.linear),
+                                                    listTransitionDuration:
+                                                        const Duration(
+                                                            milliseconds: 200),
+                                                    cardTransitionDuration:
+                                                        const Duration(
+                                                            milliseconds: 400),
+                                                    textStyle: TextStyle(
+                                                        fontSize: 19,
+                                                        height: 1.3,
+                                                        color: Colors
+                                                            .grey.shade800,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
-                                                  backgroundColor: themeProvider
-                                                      .themeManager
-                                                      .secondaryBackgroundDefaultColor,
-                                                  listScrollConfig:
-                                                      ScrollConfig(
-                                                          offset: 65,
-                                                          duration:
-                                                              const Duration(
-                                                            milliseconds: 100,
-                                                          ),
-                                                          curve: Curves.linear),
-                                                  listTransitionDuration:
-                                                      const Duration(
-                                                          milliseconds: 200),
-                                                  cardTransitionDuration:
-                                                      const Duration(
-                                                          milliseconds: 400),
-                                                  textStyle: TextStyle(
-                                                      fontSize: 19,
-                                                      height: 1.3,
-                                                      color:
-                                                          Colors.grey.shade800,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              )
-                                            : Container()
+                                                )
+                                              : Container()
 //                                             modulesProvider
 //                                                         .issues.projectView ==
 //                                                     IssuesLayout.calendar
@@ -552,7 +536,7 @@ class _ModuleDetailState extends ConsumerState<ModuleDetail> {
 //                                                     issueCategory: IssueCategory
 //                                                         .cycleIssues,
 //                                                   ),
-                      ),
+                          ),
                       // IssuesLayoutBottomActions(issuesProvider: issuesProvider, issuesState: issuesState, selectedTab: selectedTab)
                     ],
                   ),

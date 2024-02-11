@@ -71,7 +71,7 @@ class ThemeProvider extends ChangeNotifier {
     if (!fromLogout) {
       final profileProv = ref.read(ProviderList.profileProvider);
       profileProv.updateProfile(data: data).then((value) {
-        if (profileProv.updateProfileState == StateEnum.success &&
+        if (profileProv.updateProfileState == DataState.success &&
             context != null) {
           CustomToast.showToast(context,
               message: 'Theme updated!', toastType: ToastType.success);

@@ -14,20 +14,19 @@ Widget FLActionButton(
 }) {
   final themeProvider = ref.watch(ProviderList.themeProvider);
   final projectProvider = ref.watch(ProviderList.projectProvider);
-  final cycleProvider = ref.watch(ProviderList.cyclesProvider);
   final moduleProvider = ref.watch(ProviderList.modulesProvider);
   final viewsProvider = ref.watch(ProviderList.viewsProvider);
 
   return selected != 0 &&
           (projectProvider.role == Role.admin ||
               projectProvider.role == Role.member) &&
-          ((selected == 1 && cycleProvider.showAddFloatingButton()) ||
+          ((selected == 1) ||
               (selected == 2 &&
-                  moduleProvider.moduleState != StateEnum.loading &&
+                  moduleProvider.moduleState != DataState.loading &&
                   (moduleProvider.modules.isNotEmpty ||
                       moduleProvider.favModules.isNotEmpty)) ||
               (selected == 3 &&
-                  viewsProvider.viewsState != StateEnum.loading &&
+                  viewsProvider.viewsState != DataState.loading &&
                   viewsProvider.views.isNotEmpty))
       ? FloatingActionButton(
           backgroundColor: themeProvider.themeManager.primaryColour,

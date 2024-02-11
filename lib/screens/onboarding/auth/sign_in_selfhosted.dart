@@ -40,9 +40,9 @@ class _SignInSelfHostedState extends ConsumerState<SignInSelfHosted> {
           child: Form(
             key: gkey,
             child: LoadingWidget(
-              loading: authProvider.signInState == StateEnum.loading ||
+              loading: authProvider.signInState == DataState.loading ||
                   workspaceProvider.workspaceInvitationState ==
-                      StateEnum.loading,
+                      DataState.loading,
               widgetClass: SizedBox(
                 // height: height,
                 child: SafeArea(
@@ -190,13 +190,12 @@ class _SignInSelfHostedState extends ConsumerState<SignInSelfHosted> {
                                       email: email.text,
                                       password: password.text,
                                       context: context,
-                                      ref: ref
-                                      );
+                                      ref: ref);
 
                               if (authProvider.signInState ==
-                                      StateEnum.success &&
+                                      DataState.success &&
                                   profileProvider.getProfileState ==
-                                      StateEnum.success) {
+                                      DataState.success) {
                                 if (profileProvider.userProfile.isOnboarded!) {
                                   // Navigator.push(
                                   //   context,

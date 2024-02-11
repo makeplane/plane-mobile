@@ -50,8 +50,8 @@ class _JoinWorkspacesState extends ConsumerState<JoinWorkspaces> {
           : null,
       body: SafeArea(
         child: LoadingWidget(
-          loading: prov.workspaceInvitationState == StateEnum.loading ||
-              prov.joinWorkspaceState == StateEnum.loading,
+          loading: prov.workspaceInvitationState == DataState.loading ||
+              prov.joinWorkspaceState == DataState.loading,
           widgetClass: SizedBox(
             height: height,
             child: Padding(

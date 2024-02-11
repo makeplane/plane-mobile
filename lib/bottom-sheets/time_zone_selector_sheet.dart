@@ -96,9 +96,7 @@ class _TimeZoneSelectorSheetState extends ConsumerState<TimeZoneSelectorSheet> {
                   ),
                 );
               },
-              separatorBuilder: (context, index) => CustomDivider(
-                themeProvider: themeProvider,
-              ),
+              separatorBuilder: (context, index) => const CustomDivider(),
             ),
           ),
         ],

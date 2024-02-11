@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 class SelectIssuePriority extends ConsumerStatefulWidget {
@@ -84,8 +84,8 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                         Navigator.pop(context);
                       },
                       icon: Icon(Icons.close,
-                          color: themeProvider
-                              .themeManager.placeholderTextColor))
+                          color:
+                              themeProvider.themeManager.placeholderTextColor))
                 ],
               ),
               Container(
@@ -104,7 +104,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                         padding: const EdgeInsets.symmetric(
                           vertical: 10,
                         ),
-    
+
                         child: Column(
                           children: [
                             Row(
@@ -122,8 +122,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
                                 Container(
                                   width: 10,
                                 ),
-                                CustomText(
-                                    priorities[index]['name'].toString(),
+                                CustomText(priorities[index]['name'].toString(),
                                     type: FontStyle.Medium,
                                     fontWeight: FontWeightt.Regular,
                                     color: themeProvider
@@ -176,7 +175,7 @@ class _SelectIssuePriorityState extends ConsumerState<SelectIssuePriority> {
             Icons.done,
             color: Color.fromRGBO(8, 171, 34, 1),
           )
-        : issueProvider.updateIssueState == StateEnum.loading &&
+        : issueProvider.updateIssueState == DataState.loading &&
                 issueDetailSelectedPriorityItem == priorities[idx]['name']
             ? const SizedBox(
                 height: 20,

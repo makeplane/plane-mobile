@@ -7,7 +7,7 @@ import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -57,7 +57,7 @@ class _CreateStateState extends ConsumerState<CreateState> {
         text: 'Create State',
       ),
       body: LoadingWidget(
-        loading: statesProvider.statesState == StateEnum.loading,
+        loading: statesProvider.statesState == DataState.loading,
         widgetClass: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -401,12 +401,11 @@ class _CreateStateState extends ConsumerState<CreateState> {
                           text: 'Create State',
                           ontap: () async {
                             if (!formKey.currentState!.validate()) return;
-                            await statesNotifier.createState(
-                                data: {
-                                  "name": name.text,
-                                  "color": "#${colorController.text}",
-                                  "group": selectedState.toLowerCase(),
-                                });
+                            await statesNotifier.createState(data: {
+                              "name": name.text,
+                              "color": "#${colorController.text}",
+                              "group": selectedState.toLowerCase(),
+                            });
                             Navigator.pop(context);
                           }),
                     ),

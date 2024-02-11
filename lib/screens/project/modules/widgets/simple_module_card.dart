@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:plane/bottom-sheets/delete_cycle_sheet.dart';
 import 'package:plane/screens/project/modules/module-detail/module_issues_page.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/string_manager.dart';
 import '/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
@@ -227,35 +227,9 @@ class _SimpleModuleCardState extends ConsumerState<SimpleModuleCard> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.50),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              ),
-                            ),
-                            context: context,
-                            builder: (ctx) {
-                              return DeleteCycleSheet(
-                                id: widget.isFav
-                                    ? modulesProvider.favModules[widget.index]
-                                        ['id']
-                                    : modulesProvider.modules[widget.index]
-                                        ['id'],
-                                name: widget.isFav
-                                    ? modulesProvider.favModules[widget.index]
-                                        ['name']
-                                    : modulesProvider.modules[widget.index]
-                                        ['name'],
-                                type: 'Module',
-                              );
-                            },
-                          );
+                          //TODO: add delete module bottom sheet
+                          BottomSheetHelper.showBottomSheet(
+                              context, Container());
                         },
                         child: Icon(
                           LucideIcons.trash2,

@@ -3,16 +3,16 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/config/apis.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class ActivityProvider extends ChangeNotifier {
-  StateEnum getActivityState = StateEnum.loading;
+  DataState getActivityState = DataState.loading;
   List<dynamic> data = [];
 
   void clear() {
     data = [];
-    getActivityState = StateEnum.loading;
+    getActivityState = DataState.loading;
     notifyListeners();
   }
 
@@ -23,22 +23,22 @@ class ActivityProvider extends ChangeNotifier {
   void getAcivity({
     required String slug,
   }) async {
-    getActivityState = StateEnum.loading;
+    getActivityState = DataState.loading;
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.activity.replaceAll('\$SLUG', slug),
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
       data = response.data['results'];
-      getActivityState = StateEnum.success;
+      getActivityState = DataState.success;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
         log(e.response.toString());
       }
-      getActivityState = StateEnum.error;
+      getActivityState = DataState.error;
       notifyListeners();
     }
   }

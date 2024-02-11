@@ -5,23 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/config/apis.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class IntegrationProvider extends ChangeNotifier {
   IntegrationProvider(ChangeNotifierProviderRef<IntegrationProvider> this.ref);
   Ref ref;
-  StateEnum getIntegrationState = StateEnum.empty;
-  StateEnum getInstalledIntegrationState = StateEnum.empty;
+  DataState getIntegrationState = DataState.empty;
+  DataState getInstalledIntegrationState = DataState.empty;
 
   final integrations = {};
   dynamic githubIntegration;
   dynamic slackIntegration;
 
   Future getAllAvailableIntegrations() async {
-    getIntegrationState = StateEnum.loading;
+    getIntegrationState = DataState.loading;
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.integrations,
         hasBody: false,
@@ -34,7 +34,7 @@ class IntegrationProvider extends ChangeNotifier {
         integrations[element['provider']]["installed"] = false;
       });
       await getInstalledIntegrations();
-      getIntegrationState = StateEnum.success;
+      getIntegrationState = DataState.success;
       //  log(response.data.toString());
       notifyListeners();
     } catch (e) {
@@ -42,15 +42,15 @@ class IntegrationProvider extends ChangeNotifier {
         log(e.response.toString());
       }
       log(e.toString());
-      getIntegrationState = StateEnum.error;
+      getIntegrationState = DataState.error;
       notifyListeners();
     }
   }
 
   Future getInstalledIntegrations() async {
-    getInstalledIntegrationState = StateEnum.loading;
+    getInstalledIntegrationState = DataState.loading;
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.wokspaceIntegrations.replaceAll(
             '\$SLUG',
@@ -68,7 +68,7 @@ class IntegrationProvider extends ChangeNotifier {
       for (final element in installed) {
         integrations[element]["installed"] = true;
       }
-      getInstalledIntegrationState = StateEnum.success;
+      getInstalledIntegrationState = DataState.success;
       //  log(response.data.toString());
       notifyListeners();
     } catch (e) {
@@ -76,7 +76,7 @@ class IntegrationProvider extends ChangeNotifier {
         log(e.response.toString());
       }
       log(e.toString());
-      getInstalledIntegrationState = StateEnum.error;
+      getInstalledIntegrationState = DataState.error;
       notifyListeners();
     }
   }
@@ -89,7 +89,7 @@ class IntegrationProvider extends ChangeNotifier {
     githubIntegration = null;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.retrieveGithubIntegrations
             .replaceAll('\$SLUG', slug)
@@ -115,7 +115,7 @@ class IntegrationProvider extends ChangeNotifier {
     slackIntegration = null;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.retrieveSlackIntegrations
             .replaceAll('\$SLUG', slug)

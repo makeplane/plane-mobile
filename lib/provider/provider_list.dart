@@ -5,7 +5,6 @@ import 'package:plane/provider/activity_provider.dart';
 import 'package:plane/provider/auth_provider.dart';
 import 'package:plane/provider/bottom_nav_provider.dart';
 import 'package:plane/provider/config_provider.dart';
-import 'package:plane/provider/cycles_provider.dart';
 import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/file_upload_provider.dart';
 import 'package:plane/provider/global_search_provider.dart';
@@ -25,15 +24,18 @@ import 'package:plane/provider/states/project_state_notifier.dart';
 import 'package:plane/provider/states/project_states_state.dart';
 import 'package:plane/provider/whats_new_provider.dart';
 import 'package:plane/provider/workspace_provider.dart';
+import 'package:plane/repository/cycle.repository.dart';
 import 'package:plane/repository/issues/cycle_issues_repository.dart';
 import 'package:plane/repository/issues/project_issues.repository.dart';
 import 'package:plane/repository/project_state_service.dart';
-import 'package:plane/repository/labels.service.dart';
+import 'package:plane/repository/labels.repository.dart';
 import 'package:plane/services/shared_preference_service.dart';
 import '../repository/dashboard_service.dart';
 import '../repository/profile_provider_service.dart';
 import '../repository/workspace_service.dart';
-import '../services/dio_service.dart';
+import '../core/dio/dio_service.dart';
+import 'cycle/cycle_notifier.dart';
+import 'cycle/cycle_state.dart';
 import 'estimates_provider.dart';
 import 'integration_provider.dart';
 import 'labels/labels_state.dart';
@@ -49,11 +51,11 @@ class ProviderList {
   // Profile Provider
   static ChangeNotifierProvider<ProfileProvider> profileProvider =
       ChangeNotifierProvider<ProfileProvider>(
-          (_) => ProfileProvider(profileService: ProfileService(DioConfig())));
+          (_) => ProfileProvider(profileService: ProfileService(DioClient())));
   // Workspace Provider
   static ChangeNotifierProvider<WorkspaceProvider> workspaceProvider =
       ChangeNotifierProvider<WorkspaceProvider>((ref) => WorkspaceProvider(
-          ref: ref, workspaceService: WorkspaceService(DioConfig())));
+          ref: ref, workspaceService: WorkspaceService(DioClient())));
   // Theme Provider
   static ChangeNotifierProvider<ThemeProvider> themeProvider =
       ChangeNotifierProvider<ThemeProvider>((ref) => ThemeProvider(ref));
@@ -74,8 +76,8 @@ class ProviderList {
   static ChangeNotifierProvider<BottomNavProvider> bottomNavProvider =
       ChangeNotifierProvider<BottomNavProvider>((_) => BottomNavProvider());
   // Cycles Provider
-  static ChangeNotifierProvider<CyclesProvider> cyclesProvider =
-      ChangeNotifierProvider<CyclesProvider>((ref) => CyclesProvider(ref));
+  static final cycleProvider = StateNotifierProvider<CycleNotifier, CycleState>(
+      (ref) => CycleNotifier(ref, CycleRepository()));
   // Modules Provider
   static ChangeNotifierProvider<ModuleProvider> modulesProvider =
       ChangeNotifierProvider<ModuleProvider>((ref) => ModuleProvider(ref));
@@ -91,7 +93,7 @@ class ProviderList {
   // Dashboard Provider
   static ChangeNotifierProvider<DashBoardProvider> dashboardProvider =
       ChangeNotifierProvider<DashBoardProvider>((ref) => DashBoardProvider(
-          ref: ref, dashboardService: DashboardService(DioConfig())));
+          ref: ref, dashboardService: DashboardService(DioClient())));
   // Integration Provider
   static ChangeNotifierProvider<IntegrationProvider> integrationProvider =
       ChangeNotifierProvider<IntegrationProvider>(
@@ -118,28 +120,26 @@ class ProviderList {
       StateNotifierProvider<MemberProfileProvider, MemberProfileStateModel>(
           (ref) => MemberProfileProvider(ref));
   // Whats New Provider
-  static StateNotifierProvider<WhatsNewNotifier, WhatsNew> whatsNewProvider =
+  static final whatsNewProvider =
       StateNotifierProvider<WhatsNewNotifier, WhatsNew>(
           (ref) => WhatsNewNotifier(WhatsNew(null)));
   // Config Provider
-  static StateNotifierProvider<ConfigProvider, ConfigModel> configProvider =
+  static final configProvider =
       StateNotifierProvider<ConfigProvider, ConfigModel>(
           (ref) => ConfigProvider(ref));
-
-  static StateNotifierProvider<StatesProvider, ProjectStatesState> statesProvider =
+  // Project states provider
+  static final statesProvider =
       StateNotifierProvider<StatesProvider, ProjectStatesState>(
           (ref) => StatesProvider(ref, StatesService()));
   // Label Provider
-  static StateNotifierProvider<LabelNotifier, LabelState> labelProvider =
-      StateNotifierProvider<LabelNotifier, LabelState>(
-          (ref) => LabelNotifier(ref, LabelsService()));
-
-  static StateNotifierProvider<ProjectIssuesNotifier, ProjectIssuesState>
-      projectIssuesProvider =
+  static final labelProvider = StateNotifierProvider<LabelNotifier, LabelState>(
+      (ref) => LabelNotifier(ref, LabelRepository()));
+  // Project issues provider
+  static final projectIssuesProvider =
       StateNotifierProvider<ProjectIssuesNotifier, ProjectIssuesState>(
           (ref) => ProjectIssuesNotifier(ref, ProjectIssuesRepository()));
-  static StateNotifierProvider<CycleIssuesNotifier, CycleIssuesState>
-      cycleIssuesProvider =
+  // Cycle issues provider
+  static final cycleIssuesProvider =
       StateNotifierProvider<CycleIssuesNotifier, CycleIssuesState>(
           (ref) => CycleIssuesNotifier(ref, CycleIssuesRepository()));
 

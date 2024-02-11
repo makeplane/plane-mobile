@@ -9,21 +9,27 @@ import 'package:plane/widgets/member_logo_widget.dart';
 
 class LeadSheet extends ConsumerStatefulWidget {
   const LeadSheet({
+    this.selectedLeadId,
+    required this.onLeadSelect,
     super.key,
-    this.fromModuleDetail = false,
-    this.fromCycleDetail = false,
   });
-  final bool fromModuleDetail;
-  final bool fromCycleDetail;
-
+  final VoidCallback onLeadSelect;
+  final String? selectedLeadId;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LeadSheetState();
 }
 
 class _LeadSheetState extends ConsumerState<LeadSheet> {
+  String? selectedLeadId;
+
+  @override
+  void initState() {
+    selectedLeadId = widget.selectedLeadId;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final modulesProvider = ref.watch(ProviderList.modulesProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
@@ -34,7 +40,6 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
             topLeft: Radius.circular(50), topRight: Radius.circular(50)),
       ),
       width: double.infinity,
-      //height: height * 0.5,
       child: Stack(
         children: [
           Padding(
@@ -75,57 +80,7 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () async {
-                          if (widget.fromCycleDetail) {
-                            ref
-                                .read(ProviderList.cyclesProvider)
-                                .cycleDetailsCrud(
-                              slug: ref
-                                  .read(ProviderList.workspaceProvider)
-                                  .selectedWorkspace
-                                  .workspaceSlug,
-                              projectId: ref
-                                  .read(ProviderList.projectProvider)
-                                  .currentProject["id"],
-                              method: CRUD.update,
-                              cycleId: ref
-                                  .read(ProviderList.cyclesProvider)
-                                  .currentCycle["id"],
-                              data: {
-                                'owned_by': projectProvider
-                                    .projectMembers[index]['member']
-                              },
-                            );
-
-                            return;
-                          }
-
-                          if (widget.fromModuleDetail) {
-                            modulesProvider.updateModules(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace
-                                    .workspaceSlug,
-                                projId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject["id"],
-                                moduleId: ref
-                                    .read(ProviderList.modulesProvider)
-                                    .currentModule["id"],
-                                data: {
-                                  'lead': projectProvider.projectMembers[index]
-                                      ['member']['id']
-                                },
-                                ref: ref);
-                            Navigator.pop(context);
-                            return;
-                          }
-
-                          modulesProvider.createModule['lead'] = projectProvider
-                              .projectMembers[index]['member']['id'];
-                          modulesProvider.setState();
-                          Navigator.pop(context);
-                        },
+                        onTap: widget.onLeadSelect,
                         child: Container(
                           height: 40,
                           padding: const EdgeInsets.only(
@@ -167,9 +122,13 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
                                 type: FontStyle.Small,
                               ),
                               const Spacer(),
-                              modulesProvider.currentModule['lead_detail'] !=
-                                      null
-                                  ? createIsseuSelectedMembersWidget(index)
+                              selectedLeadId ==
+                                      projectProvider.projectMembers[index]
+                                          ['member']['id']
+                                  ? const Icon(
+                                      Icons.done,
+                                      color: Color.fromRGBO(8, 171, 34, 1),
+                                    )
                                   : Container(),
                               const SizedBox(
                                 width: 10,
@@ -187,25 +146,5 @@ class _LeadSheetState extends ConsumerState<LeadSheet> {
         ],
       ),
     );
-  }
-
-  Widget createIsseuSelectedMembersWidget(int idx) {
-    final modulesProvider = ref.watch(ProviderList.modulesProvider);
-    final projectProvider = ref.watch(ProviderList.projectProvider);
-    return (widget.fromCycleDetail
-            ? (ref.read(ProviderList.cyclesProvider).currentCycle['owned_by']
-                    ['id'] ==
-                projectProvider.projectMembers[idx]['member']['id'])
-            : widget.fromModuleDetail
-                ? (modulesProvider.currentModule['lead_detail']['id'] ==
-                    projectProvider.projectMembers[idx]['member']['id'])
-                : modulesProvider.createModule['lead'] != null &&
-                    modulesProvider.createModule['lead'] ==
-                        projectProvider.projectMembers[idx]['member']['id'])
-        ? const Icon(
-            Icons.done,
-            color: Color.fromRGBO(8, 171, 34, 1),
-          )
-        : const SizedBox();
   }
 }

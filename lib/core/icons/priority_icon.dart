@@ -1,7 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-Icon priorityIcon(String priority) {
+Icon PriorityIcon(String priority) {
   priority = priority.toLowerCase();
   switch (priority) {
     case 'urgent':

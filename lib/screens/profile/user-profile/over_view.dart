@@ -12,7 +12,7 @@ import 'package:plane/screens/project/modules/module-detail/module_issues_page.d
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/list_extensions.dart';
+import 'package:plane/core/extensions/list_extensions.dart';
 import 'package:plane/utils/string_manager.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -35,7 +35,7 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
       color: themeProvider.themeManager.primaryBackgroundDefaultColor,
       child: Container(
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
-        child: userProfileProvider.getUserStatsState == StateEnum.loading
+        child: userProfileProvider.getUserStatsState == DataState.loading
             ? Center(
                 child: SizedBox(
                   width: 30,
@@ -511,20 +511,10 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                         Const.globalKey.currentContext!,
                         MaterialPageRoute(
                             builder: (context) => CycleDetail(
-                                  projId: userProfileProvider.userActivity
-                                      .results![index].projectDetail!.id,
                                   cycleId: userProfileProvider.userActivity
                                           .results![index].newIdentifier ??
                                       userProfileProvider.userActivity
-                                          .results![index].oldIdentifier,
-                                  cycleName: userProfileProvider.userActivity
-                                              .results![index].newValue !=
-                                          ''
-                                      ? userProfileProvider
-                                          .userActivity.results![index].newValue
-                                      : userProfileProvider.userActivity
-                                              .results![index].oldValue ??
-                                          '',
+                                          .results![index].oldIdentifier!,
                                 )),
                       );
                     }
@@ -563,9 +553,7 @@ class _OverViewScreenState extends ConsumerState<OverViewScreen> {
                     Navigator.push(
                       Const.globalKey.currentContext!,
                       MaterialPageRoute(
-                        builder: (context) => IssueDetail(
-                         
-                        ),
+                        builder: (context) => IssueDetail(),
                       ),
                     );
                   }

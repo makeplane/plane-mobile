@@ -64,10 +64,10 @@ void main() {
       return const Left([]);
     });
     final getWorkspaces = workspaceProvider.getWorkspaces();
-    expect(workspaceProvider.workspaceInvitationState, StateEnum.loading);
+    expect(workspaceProvider.workspaceInvitationState, DataState.loading);
     await getWorkspaces;
 
-    expect(workspaceProvider.workspaceInvitationState, StateEnum.error);
+    expect(workspaceProvider.workspaceInvitationState, DataState.error);
   });
 
   // testWidgets('GET Workspaces List', (tester) async {
@@ -144,10 +144,10 @@ void main() {
         ChangeNotifierProvider((ref) => profileProvider);
     await profileProvider.getProfile();
     final getWorkspaces = workspaceProvider.getWorkspaceMembers();
-    expect(workspaceProvider.getMembersState, StateEnum.loading);
+    expect(workspaceProvider.getMembersState, DataState.loading);
     await getWorkspaces;
     expect(workspaceProvider.role.name == 'none', false);
-    expect(workspaceProvider.getMembersState, StateEnum.success);
+    expect(workspaceProvider.getMembersState, DataState.success);
   });
 
   testWidgets('Select Workspaces', (widgetTester) async {});

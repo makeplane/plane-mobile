@@ -21,19 +21,19 @@ class ProjectStatesState {
   factory ProjectStatesState.initialize() {
     return ProjectStatesState(
         projectStates: {},
-        statesState: StateEnum.empty,
-        createStateLoading: StateEnum.empty,
-        updateState: StateEnum.empty,
-        deleteState: StateEnum.empty,
+        statesState: DataState.empty,
+        createStateLoading: DataState.empty,
+        updateState: DataState.empty,
+        deleteState: DataState.empty,
         stateGroups: {});
   }
 
   ProjectStatesState copyWith(
       {Map<String, StateModel>? states,
-      StateEnum? statesState,
-      StateEnum? createStateLoading,
-      StateEnum? updateState,
-      StateEnum? deleteState,
+      DataState? statesState,
+      DataState? createStateLoading,
+      DataState? updateState,
+      DataState? deleteState,
       Map<String, List<StateModel>>? stateGroups}) {
     return ProjectStatesState(
         projectStates: states ?? projectStates,
@@ -46,8 +46,8 @@ class ProjectStatesState {
 
   Map<String, StateModel> projectStates = {};
   Map<String, List<StateModel>> stateGroups = {};
-  StateEnum statesState = StateEnum.empty;
-  StateEnum createStateLoading = StateEnum.empty;
-  StateEnum updateState = StateEnum.empty;
-  StateEnum deleteState = StateEnum.empty;
+  DataState statesState = DataState.empty;
+  DataState createStateLoading = DataState.empty;
+  DataState updateState = DataState.empty;
+  DataState deleteState = DataState.empty;
 }

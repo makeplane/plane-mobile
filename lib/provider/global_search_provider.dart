@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/models/global_search_modal.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class SearchModal {
@@ -12,13 +12,13 @@ class SearchModal {
   factory SearchModal.initialize() {
     return SearchModal(
         data: GlobalSearchModal.initialize(),
-        globalSearchState: StateEnum.empty);
+        globalSearchState: DataState.empty);
   }
-  StateEnum globalSearchState = StateEnum.loading;
+  DataState globalSearchState = DataState.loading;
   GlobalSearchModal? data;
 
   SearchModal copyWith(
-      {StateEnum? globalSearchState, GlobalSearchModal? data}) {
+      {DataState? globalSearchState, GlobalSearchModal? data}) {
     return SearchModal(
         data: data,
         globalSearchState: globalSearchState ?? this.globalSearchState);
@@ -28,7 +28,7 @@ class SearchModal {
 class GlobalSearchProvider extends StateNotifier<SearchModal> {
   GlobalSearchProvider(
       StateNotifierProviderRef<GlobalSearchProvider, SearchModal> this.ref)
-      : super(SearchModal(data: null, globalSearchState: StateEnum.empty));
+      : super(SearchModal(data: null, globalSearchState: DataState.empty));
   Ref ref;
 
   Future getGlobalData({required String slug, String? input}) async {
@@ -36,7 +36,7 @@ class GlobalSearchProvider extends StateNotifier<SearchModal> {
         '${APIs.globalSearch.replaceFirst('\$SLUG', slug)}?search=$input&workspace_search=true';
     log("REQUEST URL: $url");
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -47,13 +47,13 @@ class GlobalSearchProvider extends StateNotifier<SearchModal> {
       // state.copyWith(data: null);
       state = state.copyWith(
           data: GlobalSearchModal.fromJson(response.data),
-          globalSearchState: StateEnum.success);
+          globalSearchState: DataState.success);
     } catch (e) {
       if (e is DioException) {
         log(e.error.toString());
       }
       log(e.toString());
-      state = state.copyWith(globalSearchState: StateEnum.error);
+      state = state.copyWith(globalSearchState: DataState.error);
     }
   }
 

@@ -7,7 +7,7 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -70,13 +70,13 @@ class ModuleProvider with ChangeNotifier {
   bool isIssuesEmpty = false;
   int moduleDetailSelectedIndex = 0;
 
-  StateEnum createModuleState = StateEnum.empty;
-  StateEnum moduleState = StateEnum.empty;
-  StateEnum moduleDetailState = StateEnum.empty;
-  StateEnum moduleIssueState = StateEnum.loading;
-  StateEnum deleteModuleState = StateEnum.empty;
-  StateEnum moduleLinkState = StateEnum.empty;
-  StateEnum moduleViewState = StateEnum.empty;
+  DataState createModuleState = DataState.empty;
+  DataState moduleState = DataState.empty;
+  DataState moduleDetailState = DataState.empty;
+  DataState moduleIssueState = DataState.loading;
+  DataState deleteModuleState = DataState.empty;
+  DataState moduleLinkState = DataState.empty;
+  DataState moduleViewState = DataState.empty;
 
   void changeIndex(int index) {
     statusIndex = index;
@@ -103,8 +103,8 @@ class ModuleProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeState(StateEnum state) {
-    state = StateEnum.loading;
+  void changeState(DataState state) {
+    state = DataState.loading;
     notifyListeners();
   }
 
@@ -113,12 +113,12 @@ class ModuleProvider with ChangeNotifier {
       required String projId,
       bool disableLoading = false}) async {
     if (!disableLoading) {
-      moduleState = StateEnum.loading;
+      moduleState = DataState.loading;
       notifyListeners();
     }
 
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.listModules
             .replaceAll('\$SLUG', slug)
@@ -136,11 +136,11 @@ class ModuleProvider with ChangeNotifier {
         }
       });
 
-      moduleState = StateEnum.success;
+      moduleState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.error.toString());
-      moduleState = StateEnum.error;
+      moduleState = DataState.error;
       notifyListeners();
     }
   }
@@ -150,13 +150,13 @@ class ModuleProvider with ChangeNotifier {
       required String projId,
       String? moduleId,
       required WidgetRef ref}) async {
-    createModuleState = StateEnum.loading;
+    createModuleState = DataState.loading;
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     final profileProvider = ref.read(ProviderList.profileProvider);
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.listModules
             .replaceAll('\$SLUG', slug)
@@ -165,15 +165,15 @@ class ModuleProvider with ChangeNotifier {
         httpMethod: HttpMethod.post,
         data: createModule,
       );
-      createModuleState = StateEnum.success;
+      createModuleState = DataState.success;
       postHogService(
           eventName: 'MODULE_CREATE',
           properties: {
             'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
             'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
-            'PROJECT_ID': projectProvider.projectDetailModel!.id,
-            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PROJECT_ID': projectProvider.currentprojectDetails!.id,
+            'PROJECT_NAME': projectProvider.currentprojectDetails!.name,
             'MODULE_ID': response.data['id']
           },
           userEmail: profileProvider.userProfile.email!,
@@ -184,7 +184,7 @@ class ModuleProvider with ChangeNotifier {
     } on DioException catch (e) {
       log('Create Module Error  ===> ${e.error.toString()}');
 
-      createModuleState = StateEnum.error;
+      createModuleState = DataState.error;
       notifyListeners();
     }
   }
@@ -200,12 +200,12 @@ class ModuleProvider with ChangeNotifier {
     final projectProvider = ref.read(ProviderList.projectProvider);
     final profileProvider = ref.read(ProviderList.profileProvider);
     if (!disableLoading) {
-      moduleDetailState = StateEnum.loading;
+      moduleDetailState = DataState.loading;
       notifyListeners();
     }
 
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/',
@@ -213,15 +213,15 @@ class ModuleProvider with ChangeNotifier {
         httpMethod: HttpMethod.patch,
         data: data,
       );
-      moduleDetailState = StateEnum.success;
+      moduleDetailState = DataState.success;
       postHogService(
           eventName: 'MODULE_UPDATE',
           properties: {
             'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
             'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
             'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
-            'PROJECT_ID': projectProvider.projectDetailModel!.id,
-            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PROJECT_ID': projectProvider.currentprojectDetails!.id,
+            'PROJECT_NAME': projectProvider.currentprojectDetails!.name,
             'MODULE_ID': response.data['id']
           },
           userEmail: profileProvider.userProfile.email!,
@@ -234,7 +234,7 @@ class ModuleProvider with ChangeNotifier {
       notifyListeners();
     } on DioException catch (e) {
       log(e.error.toString());
-      moduleDetailState = StateEnum.error;
+      moduleDetailState = DataState.error;
       notifyListeners();
     }
   }
@@ -248,7 +248,7 @@ class ModuleProvider with ChangeNotifier {
     // moduleState = StateEnum.loading;
     // notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: isFav
             ? '${APIs.favouriteModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/'
@@ -259,13 +259,13 @@ class ModuleProvider with ChangeNotifier {
         data: isFav ? null : {'module': moduleId},
         httpMethod: isFav ? HttpMethod.delete : HttpMethod.post,
       );
-      moduleState = StateEnum.success;
+      moduleState = DataState.success;
       getModules(slug: slug, projId: projId, disableLoading: true);
       notifyListeners();
       log('Favourite Module  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log(e.error.toString());
-      moduleState = StateEnum.error;
+      moduleState = DataState.error;
       notifyListeners();
     }
   }
@@ -275,23 +275,23 @@ class ModuleProvider with ChangeNotifier {
     required String projId,
     required String moduleId,
   }) async {
-    deleteModuleState = StateEnum.loading;
+    deleteModuleState = DataState.loading;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/',
         hasBody: false,
         httpMethod: HttpMethod.delete,
       );
-      deleteModuleState = StateEnum.success;
+      deleteModuleState = DataState.success;
       getModules(slug: slug, projId: projId);
       notifyListeners();
       log('Delete Module  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log(e.error.toString());
-      deleteModuleState = StateEnum.error;
+      deleteModuleState = DataState.error;
       notifyListeners();
     }
   }
@@ -303,12 +303,12 @@ class ModuleProvider with ChangeNotifier {
     bool disableLoading = false,
   }) async {
     if (!disableLoading) {
-      moduleDetailState = StateEnum.loading;
+      moduleDetailState = DataState.loading;
       notifyListeners();
     }
-    moduleDetailState = StateEnum.loading;
+    moduleDetailState = DataState.loading;
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.listModules.replaceAll('\$SLUG', slug).replaceAll('\$PROJECTID', projId)}$moduleId/',
@@ -316,12 +316,12 @@ class ModuleProvider with ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       moduleDetailsData = response.data;
-      moduleDetailState = StateEnum.success;
+      moduleDetailState = DataState.success;
       currentModule = response.data;
       notifyListeners();
     } on DioException catch (e) {
       log(e.error.toString());
-      moduleDetailState = StateEnum.error;
+      moduleDetailState = DataState.error;
       notifyListeners();
     }
   }
@@ -331,7 +331,7 @@ class ModuleProvider with ChangeNotifier {
       required String projID,
       required List<String> issues,
       String? moduleId}) async {
-    moduleIssueState = StateEnum.loading;
+    moduleIssueState = DataState.loading;
     notifyListeners();
     final data = {
       'issues': issues,
@@ -339,7 +339,7 @@ class ModuleProvider with ChangeNotifier {
     log(data.toString());
     //1a6b5ed6-63af-4584-8d73-d7d3cf1a5eef
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.moduleIssues
             .replaceAll(
@@ -358,13 +358,13 @@ class ModuleProvider with ChangeNotifier {
         data: data,
         httpMethod: HttpMethod.post,
       );
-      moduleIssueState = StateEnum.success;
+      moduleIssueState = DataState.success;
       notifyListeners();
       log('Create Module Issues  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log('Create Module Issues Error  ===> ');
       log(e.error.toString());
-      moduleIssueState = StateEnum.error;
+      moduleIssueState = DataState.error;
       notifyListeners();
     }
   }
@@ -374,10 +374,10 @@ class ModuleProvider with ChangeNotifier {
       required String projID,
       required String issueId,
       String? moduleId}) async {
-    moduleIssueState = StateEnum.loading;
+    moduleIssueState = DataState.loading;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: '${APIs.moduleIssues.replaceAll(
               '\$SLUG',
@@ -392,20 +392,20 @@ class ModuleProvider with ChangeNotifier {
         hasBody: false,
         httpMethod: HttpMethod.delete,
       );
-      moduleIssueState = StateEnum.success;
+      moduleIssueState = DataState.success;
       notifyListeners();
       log('Delete Module Issues  ===> ${response.data.toString()}');
     } on DioException catch (e) {
       log('Delete Module Issues Error  ===> ');
       log(e.error.toString());
 
-      moduleIssueState = StateEnum.error;
+      moduleIssueState = DataState.error;
       notifyListeners();
     }
   }
 
   Future getModuleView({bool reset = false, required String moduleId}) async {
-    moduleViewState = StateEnum.loading;
+    moduleViewState = DataState.loading;
     if (reset) {
       notifyListeners();
     }
@@ -420,7 +420,7 @@ class ModuleProvider with ChangeNotifier {
           .replaceAll('\$PROJECTID',
               ref!.read(ProviderList.projectProvider).currentProject['id'])
           .replaceAll('\$MODULEID', moduleId);
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -461,12 +461,12 @@ class ModuleProvider with ChangeNotifier {
       if (reset) {
         updateModuleView();
       }
-      moduleViewState = StateEnum.success;
+      moduleViewState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
       issues.projectView = IssuesLayout.kanban;
-      moduleViewState = StateEnum.error;
+      moduleViewState = DataState.error;
       notifyListeners();
     }
   }
@@ -519,7 +519,7 @@ class ModuleProvider with ChangeNotifier {
       view['default_props'] = view['view_props'];
     }
     try {
-      await DioConfig().dioServe(
+      await DioClient().request(
         hasAuth: true,
         url: APIs.moduleIssueView
             .replaceAll(
@@ -535,19 +535,18 @@ class ModuleProvider with ChangeNotifier {
         data: view,
         httpMethod: HttpMethod.patch,
       );
-      moduleViewState = StateEnum.success;
+      moduleViewState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
-      moduleViewState = StateEnum.error;
+      moduleViewState = DataState.error;
       notifyListeners();
     }
     notifyListeners();
   }
 
   void applyModuleIssuesView({required WidgetRef ref}) {
-    final labelIds =
-        ref.read(ProviderList.labelProvider.notifier).getLabelIds();
+    final labelIds = ref.read(ProviderList.labelProvider.notifier).getLabelIds;
     final projectMembers =
         ref.read(ProviderList.projectProvider).projectMembers;
 
@@ -568,7 +567,7 @@ class ModuleProvider with ChangeNotifier {
       required WidgetRef ref
       // required Map<String, dynamic> data,
       }) async {
-    moduleIssueState = StateEnum.loading;
+    moduleIssueState = DataState.loading;
     notifyListeners();
     final projectProvider = ref.read(ProviderList.projectProvider);
     final statesProvider = ref.read(ProviderList.statesProvider.notifier);
@@ -592,7 +591,7 @@ class ModuleProvider with ChangeNotifier {
     // url = '$url${IssuesHelper.getFilterQueryParams(issues.filters)}';
     url = '$url&sub_issue=${issues.showSubIssues}&show_empty_groups=true';
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -634,11 +633,11 @@ class ModuleProvider with ChangeNotifier {
       }
 
       initializeBoard();
-      moduleIssueState = StateEnum.success;
+      moduleIssueState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());
-      moduleIssueState = StateEnum.error;
+      moduleIssueState = DataState.error;
       notifyListeners();
     }
   }
@@ -887,7 +886,7 @@ class ModuleProvider with ChangeNotifier {
 
       notifyListeners();
       final issue = filterIssues[stateOrdering[newListIndex]][newCardIndex];
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
           hasAuth: true,
           url: APIs.issueDetails
               .replaceAll(
@@ -959,11 +958,11 @@ class ModuleProvider with ChangeNotifier {
       required HttpMethod method,
       required BuildContext context,
       String? linkID}) async {
-    moduleLinkState = StateEnum.loading;
+    moduleLinkState = DataState.loading;
 
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.moduleLinks
                 .replaceAll(
@@ -997,7 +996,7 @@ class ModuleProvider with ChangeNotifier {
         moduleDetailsData['link_module'].add(response.data);
       }
 
-      moduleLinkState = StateEnum.success;
+      moduleLinkState = DataState.success;
       CustomToast.showToast(context,
           message: 'Sucess', toastType: ToastType.success);
       if (method != HttpMethod.delete) {
@@ -1010,7 +1009,7 @@ class ModuleProvider with ChangeNotifier {
       log(err.response.toString());
       CustomToast.showToast(context,
           message: err.response!.data['error'], toastType: ToastType.failure);
-      moduleLinkState = StateEnum.failed;
+      moduleLinkState = DataState.failed;
       notifyListeners();
     }
   }

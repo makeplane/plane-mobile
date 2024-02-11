@@ -31,7 +31,7 @@ class CreatePage extends ConsumerWidget {
         ),
         body: LayoutBuilder(builder: (context, constraints) {
           return LoadingWidget(
-            loading: pageProvider.pagesListState == StateEnum.loading,
+            loading: pageProvider.pagesListState == DataState.loading,
             widgetClass: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),

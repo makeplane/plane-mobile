@@ -7,7 +7,7 @@ import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/provider/workspace_provider.dart';
-import 'package:plane/screens/Activity/activity.dart';
+import 'package:plane/screens/activity/activity.dart';
 import 'package:plane/screens/import-export/import_export.dart';
 import 'package:plane/screens/profile/profile-settings/profile_detail_screen.dart';
 import 'package:plane/screens/profile/user-profile/user_profile.dart';
@@ -599,8 +599,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           }
                         },
                       ),
-                      CustomDivider(
-                        themeProvider: themeProvider,
+                      const CustomDivider(
                         width: 8,
                       ),
                     ],

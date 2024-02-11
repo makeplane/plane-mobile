@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/bottom-sheets/assignee_sheet.dart';
-import 'package:plane/bottom-sheets/lead_sheet.dart';
 import 'package:plane/bottom-sheets/status_sheet.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -45,7 +45,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
       },
       child: Material(
         child: LoadingWidget(
-          loading: modulesProvider.createModuleState == StateEnum.loading,
+          loading: modulesProvider.createModuleState == DataState.loading,
           widgetClass: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -414,23 +414,9 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                   )),
                               GestureDetector(
                                 onTap: () {
-                                  //open bottom sheet
-                                  showModalBottomSheet(
-                                    constraints: BoxConstraints(
-                                      maxHeight:
-                                          MediaQuery.of(context).size.height *
-                                              0.8,
-                                    ),
-                                    isScrollControlled: true,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                      ),
-                                    ),
-                                    context: context,
-                                    builder: (context) => const LeadSheet(),
-                                  );
+                                  //TODO: add lead sheet
+                                  BottomSheetHelper.showBottomSheet(
+                                      context, Container());
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(
@@ -651,7 +637,7 @@ class _CreateModuleState extends ConsumerState<CreateModule> {
                                   context: mainContext,
                                   isSuccess:
                                       modulesProvider.createModuleState ==
-                                          StateEnum.success,
+                                          DataState.success,
                                   sucessMessage: "Module creates sucessfully");
 
                               Navigator.pop(mainContext);

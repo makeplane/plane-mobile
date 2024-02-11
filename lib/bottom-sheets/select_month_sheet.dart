@@ -83,15 +83,14 @@ class _SelectMonthSheetState extends ConsumerState<SelectMonthSheet> {
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.only(bottom: bottomSheetConstBottomPadding),
-                separatorBuilder: (context, index) =>
-                    CustomDivider(themeProvider: themeProvider),
+                separatorBuilder: (context, index) => CustomDivider(),
                 itemCount: monthList.length,
                 itemBuilder: (context, index) => InkWell(
                   onTap: () async {
                     selectedMonth = index;
                     await dashboardProvider.getIssuesClosedByMonth(index + 1);
                     if (dashboardProvider.getIssuesClosedThisMonthState ==
-                        StateEnum.error) {
+                        DataState.error) {
                       CustomToast.showToast(context,
                           message: 'Something went wrong!',
                           toastType: ToastType.failure);

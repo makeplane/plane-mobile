@@ -18,22 +18,22 @@ import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/config/apis.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../utils/global_functions.dart';
 
 class IssueProvider with ChangeNotifier {
   IssueProvider(ChangeNotifierProviderRef<IssueProvider> this.ref);
   Ref ref;
-  StateEnum issueDetailState = StateEnum.empty;
-  StateEnum issueActivityState = StateEnum.empty;
-  StateEnum subscriptionState = StateEnum.empty;
-  StateEnum cookiesState = StateEnum.empty;
-  StateEnum updateIssueState = StateEnum.empty;
-  StateEnum attachmentState = StateEnum.empty;
-  StateEnum addLinkState = StateEnum.empty;
-  StateEnum getSubIssueState = StateEnum.empty;
-  StateEnum addSubIssueState = StateEnum.empty;
+  DataState issueDetailState = DataState.empty;
+  DataState issueActivityState = DataState.empty;
+  DataState subscriptionState = DataState.empty;
+  DataState cookiesState = DataState.empty;
+  DataState updateIssueState = DataState.empty;
+  DataState attachmentState = DataState.empty;
+  DataState addLinkState = DataState.empty;
+  DataState getSubIssueState = DataState.empty;
+  DataState addSubIssueState = DataState.empty;
   Map<String, dynamic> issueDetails = {};
   List<dynamic> issueActivity = [];
   // Map<String, dynamic> subIssues = {};
@@ -42,15 +42,15 @@ class IssueProvider with ChangeNotifier {
   List modulesList = [];
 
   void clear() {
-    issueDetailState = StateEnum.empty;
-    issueActivityState = StateEnum.empty;
-    updateIssueState = StateEnum.empty;
-    attachmentState = StateEnum.empty;
-    subscriptionState = StateEnum.empty;
-    addSubIssueState = StateEnum.empty;
+    issueDetailState = DataState.empty;
+    issueActivityState = DataState.empty;
+    updateIssueState = DataState.empty;
+    attachmentState = DataState.empty;
+    subscriptionState = DataState.empty;
+    addSubIssueState = DataState.empty;
     //updateIssueState = StateEnum.empty;
-    addLinkState = StateEnum.empty;
-    getSubIssueState = StateEnum.empty;
+    addLinkState = DataState.empty;
+    getSubIssueState = DataState.empty;
     issueDetails = {};
     // subIssues = {};
     issueActivity = [];
@@ -138,8 +138,8 @@ class IssueProvider with ChangeNotifier {
       required String projID,
       required String issueID}) async {
     try {
-      issueActivityState = StateEnum.loading;
-      final response = await DioConfig().dioServe(
+      issueActivityState = DataState.loading;
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}history/',
@@ -147,11 +147,11 @@ class IssueProvider with ChangeNotifier {
         httpMethod: HttpMethod.get,
       );
       issueActivity = response.data;
-      issueActivityState = StateEnum.success;
+      issueActivityState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.response!.data.toString());
-      issueActivityState = StateEnum.error;
+      issueActivityState = DataState.error;
       notifyListeners();
     }
   }
@@ -163,9 +163,9 @@ class IssueProvider with ChangeNotifier {
     required HttpMethod httpMethod,
   }) async {
     try {
-      subscriptionState = StateEnum.loading;
+      subscriptionState = DataState.loading;
       notifyListeners();
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.issueDetails.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projID).replaceAll('\$ISSUEID', issueID)}subscribe/',
@@ -178,12 +178,12 @@ class IssueProvider with ChangeNotifier {
           : httpMethod == HttpMethod.post
               ? true
               : false;
-      subscriptionState = StateEnum.success;
+      subscriptionState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       //  print('===== ERROR ');
       log(e.response.toString());
-      subscriptionState = StateEnum.error;
+      subscriptionState = DataState.error;
       notifyListeners();
       return null;
     }
@@ -200,9 +200,9 @@ class IssueProvider with ChangeNotifier {
     final projectProvider = refs.watch(ProviderList.projectProvider);
     final profileProvider = refs.watch(ProviderList.profileProvider);
     try {
-      updateIssueState = StateEnum.loading;
+      updateIssueState = DataState.loading;
       notifyListeners();
-      await DioConfig().dioServe(
+      await DioClient().request(
           hasAuth: true,
           url: APIs.issueDetails
               .replaceAll("\$SLUG", slug)
@@ -211,7 +211,7 @@ class IssueProvider with ChangeNotifier {
           hasBody: true,
           httpMethod: HttpMethod.patch,
           data: data);
-      updateIssueState = StateEnum.success;
+      updateIssueState = DataState.success;
       postHogService(
           eventName: 'ISSUE_UPDATE',
           properties: {
@@ -249,7 +249,7 @@ class IssueProvider with ChangeNotifier {
       }
 
       log('Error : issue_provider : upDateIssue : ${e.message.toString()}');
-      updateIssueState = StateEnum.error;
+      updateIssueState = DataState.error;
       notifyListeners();
     }
   }
@@ -261,9 +261,9 @@ class IssueProvider with ChangeNotifier {
       required String attachmentId,
       required int index}) async {
     try {
-      updateIssueState = StateEnum.loading;
+      updateIssueState = DataState.loading;
       notifyListeners();
-      await DioConfig().dioServe(
+      await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.issueAttachments.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projectId).replaceAll('\$ISSUEID', issueId)}$attachmentId/',
@@ -275,7 +275,7 @@ class IssueProvider with ChangeNotifier {
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
       // ref.read(ProviderList.issuesProvider).issuesResponse[index] =
       //     issueDetails;
-      updateIssueState = StateEnum.success;
+      updateIssueState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
@@ -284,7 +284,7 @@ class IssueProvider with ChangeNotifier {
           content: Text('Something went wrong, please try again!'),
         ),
       );
-      updateIssueState = StateEnum.error;
+      updateIssueState = DataState.error;
       notifyListeners();
     }
   }
@@ -296,7 +296,7 @@ class IssueProvider with ChangeNotifier {
       required String issueId,
       required int fileSize}) async {
     try {
-      attachmentState = StateEnum.loading;
+      attachmentState = DataState.loading;
       notifyListeners();
       log(File(filePath).toString());
       final String fileName = filePath.split('/').last;
@@ -337,7 +337,7 @@ class IssueProvider with ChangeNotifier {
       // );
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
-      attachmentState = StateEnum.success;
+      attachmentState = DataState.success;
       // ref.read(ProviderList.issuesProvider).issuesResponse[ref
       //     .read(ProviderList.issuesProvider)
       //     .issuesResponse
@@ -354,7 +354,7 @@ class IssueProvider with ChangeNotifier {
               : Text(e.response.toString()),
         ),
       );
-      attachmentState = StateEnum.error;
+      attachmentState = DataState.error;
       notifyListeners();
     }
   }
@@ -368,7 +368,7 @@ class IssueProvider with ChangeNotifier {
       required String linkId,
       BuildContext? buildContext}) async {
     try {
-      addLinkState = StateEnum.loading;
+      addLinkState = DataState.loading;
       notifyListeners();
       final url = linkId == ''
           ? APIs.issuelinks
@@ -376,14 +376,14 @@ class IssueProvider with ChangeNotifier {
               .replaceAll('\$PROJECTID', projectId)
               .replaceAll('\$ISSUEID', issueId)
           : '${APIs.issuelinks.replaceAll("\$SLUG", slug).replaceAll('\$PROJECTID', projectId).replaceAll('\$ISSUEID', issueId)}$linkId/';
-      await DioConfig().dioServe(
+      await DioClient().request(
           hasAuth: true,
           url: url,
           hasBody: true,
           httpMethod:
               method == CRUD.create ? HttpMethod.post : HttpMethod.delete,
           data: data);
-      addLinkState = StateEnum.success;
+      addLinkState = DataState.success;
       await getIssueDetails(slug: slug, projID: projectId, issueID: issueId);
       await getIssueActivity(slug: slug, projID: projectId, issueID: issueId);
       // ref.read(ProviderList.issuesProvider).issuesResponse[ref
@@ -406,7 +406,7 @@ class IssueProvider with ChangeNotifier {
           content: Text('Something went wrong, please try again!'),
         ),
       );
-      addLinkState = StateEnum.error;
+      addLinkState = DataState.error;
       notifyListeners();
     }
   }
@@ -416,7 +416,7 @@ class IssueProvider with ChangeNotifier {
     required String slug,
     required String issueId,
   }) async {
-    getSubIssueState = StateEnum.loading;
+    getSubIssueState = DataState.loading;
     notifyListeners();
     try {
       //updateIssueState = StateEnum.loading;
@@ -425,7 +425,7 @@ class IssueProvider with ChangeNotifier {
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projectId)
           .replaceAll('\$ISSUEID', issueId);
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -433,7 +433,7 @@ class IssueProvider with ChangeNotifier {
       );
       subIssues.clear();
       subIssues = (response.data as Map).entries.first.value;
-      getSubIssueState = StateEnum.success;
+      getSubIssueState = DataState.success;
       // if(fromMyIssues) {
       // ref.read(ProviderList.issuesProvider).issuesResponse[index] =
       //     issueDetails;
@@ -453,7 +453,7 @@ class IssueProvider with ChangeNotifier {
           ),
         );
       }
-      getSubIssueState = StateEnum.error;
+      getSubIssueState = DataState.error;
       notifyListeners();
     }
   }
@@ -476,7 +476,7 @@ class IssueProvider with ChangeNotifier {
 
   Future initCookies({String data = ""}) async {
     try {
-      cookiesState = StateEnum.loading;
+      cookiesState = DataState.loading;
       final cookieManager = CookieManager.instance();
       cookieManager.deleteAllCookies();
       final Uri baseWebUrl = Uri.parse(Config.webUrl!);
@@ -500,11 +500,11 @@ class IssueProvider with ChangeNotifier {
       // await cookieManager.getCookies(url: baseWebUrl).then((value) {
       //   log(value.toString());
       // });
-      cookiesState = StateEnum.success;
+      cookiesState = DataState.success;
       notifyListeners();
     } catch (e) {
       log(e.toString());
-      cookiesState = StateEnum.error;
+      cookiesState = DataState.error;
       notifyListeners();
     }
   }
@@ -521,7 +521,7 @@ class IssueProvider with ChangeNotifier {
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projectId)
           .replaceAll('\$ISSUEID', issueId);
-      await DioConfig().dioServe(
+      await DioClient().request(
           hasAuth: true,
           url: url,
           hasBody: true,
@@ -550,13 +550,13 @@ class IssueProvider with ChangeNotifier {
     required Map data,
   }) async {
     try {
-      addSubIssueState = StateEnum.loading;
+      addSubIssueState = DataState.loading;
       notifyListeners();
       final url = APIs.subIssues
           .replaceAll("\$SLUG", slug)
           .replaceAll('\$PROJECTID', projectId)
           .replaceAll('\$ISSUEID', issueId);
-      await DioConfig().dioServe(
+      await DioClient().request(
           hasAuth: true,
           url: url,
           hasBody: true,
@@ -567,7 +567,7 @@ class IssueProvider with ChangeNotifier {
         slug: slug,
         issueId: issueId,
       );
-      addSubIssueState = StateEnum.success;
+      addSubIssueState = DataState.success;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
@@ -578,16 +578,16 @@ class IssueProvider with ChangeNotifier {
           content: Text('Something went wrong, please try again!'),
         ),
       );
-      addSubIssueState = StateEnum.error;
+      addSubIssueState = DataState.error;
       notifyListeners();
     }
   }
 
   void clearData() {
-    issueDetailState = StateEnum.loading;
-    issueActivityState = StateEnum.loading;
-    updateIssueState = StateEnum.empty;
-    addSubIssueState = StateEnum.empty;
+    issueDetailState = DataState.loading;
+    issueActivityState = DataState.loading;
+    updateIssueState = DataState.empty;
+    addSubIssueState = DataState.empty;
     issueDetails = {};
     issueActivity = [];
     notifyListeners();
@@ -606,10 +606,7 @@ class IssueProvider with ChangeNotifier {
         context,
         MaterialPageRoute(
           builder: (context) => CycleDetail(
-            from: previousScreen,
             cycleId: data['cycle_id'],
-            projId: data['project_id'],
-            cycleName: data['cycle_name'],
           ),
         ),
       );
@@ -628,10 +625,8 @@ class IssueProvider with ChangeNotifier {
       );
     } else if (msg.message.startsWith("issue")) {
       final Map data = json.decode(msg.message.substring(5));
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => IssueDetail(
-             
-              )));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => IssueDetail()));
     } else if (msg.message.startsWith("toast")) {
       final Map data = json.decode(msg.message.substring(5));
 

@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/provider/theme_provider.dart';
 import 'package:plane/utils/constants.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
 
@@ -249,7 +249,7 @@ class _CustomThemeState extends ConsumerState<CustomTheme> {
               ),
             ),
           ),
-          profileProvider.updateProfileState == StateEnum.loading
+          profileProvider.updateProfileState == DataState.loading
               ? Container(
                   alignment: Alignment.center,
                   color: themeProvider.theme == THEME.dark ||

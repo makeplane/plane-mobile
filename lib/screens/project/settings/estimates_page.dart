@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:plane/bottom-sheets/create_estimate.dart';
-import 'package:plane/bottom-sheets/delete_estimate_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_estimate_sheet.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -31,8 +31,8 @@ class _EstimatsPageState extends ConsumerState<EstimatsPage> {
     final projectProvider = ref.watch(ProviderList.projectProvider);
 
     return LoadingWidget(
-      loading: (projectProvider.updateProjectState == StateEnum.loading ||
-          estimatesProvider.estimateState == StateEnum.loading),
+      loading: (projectProvider.updateProjectState == DataState.loading ||
+          estimatesProvider.estimateState == DataState.loading),
       widgetClass: Container(
         width: MediaQuery.of(context).size.width,
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,

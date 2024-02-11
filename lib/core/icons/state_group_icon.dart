@@ -1,7 +1,9 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-Widget stateGroupIcon(String? group) {
+Widget StateGroupIcon(String? group, [Color? color]) {
   switch (group) {
     case 'backlog':
       return SvgPicture.asset(
@@ -9,7 +11,9 @@ Widget stateGroupIcon(String? group) {
         height: 22,
         width: 22,
         colorFilter: ColorFilter.mode(
-            Color(int.parse("FF${"#A3A3A3".replaceAll('#', '')}", radix: 16)),
+            color ??
+                Color(
+                    int.parse("FF${"#A3A3A3".replaceAll('#', '')}", radix: 16)),
             BlendMode.srcIn),
       );
     case 'unstarted':
@@ -18,7 +22,9 @@ Widget stateGroupIcon(String? group) {
         height: 22,
         width: 22,
         colorFilter: ColorFilter.mode(
-            Color(int.parse("FF${"#3A3A3A".replaceAll('#', '')}", radix: 16)),
+            color ??
+                Color(
+                    int.parse("FF${"#3A3A3A".replaceAll('#', '')}", radix: 16)),
             BlendMode.srcIn),
       );
     case 'started':
@@ -27,7 +33,9 @@ Widget stateGroupIcon(String? group) {
         height: 22,
         width: 22,
         colorFilter: ColorFilter.mode(
-            Color(int.parse("FF${"#F59E0B".replaceAll('#', '')}", radix: 16)),
+            color ??
+                Color(
+                    int.parse("FF${"#F59E0B".replaceAll('#', '')}", radix: 16)),
             BlendMode.srcIn),
       );
     case 'completed':
@@ -36,7 +44,9 @@ Widget stateGroupIcon(String? group) {
         height: 22,
         width: 22,
         colorFilter: ColorFilter.mode(
-            Color(int.parse("FF${"#16A34A".replaceAll('#', '')}", radix: 16)),
+            color ??
+                Color(
+                    int.parse("FF${"#16A34A".replaceAll('#', '')}", radix: 16)),
             BlendMode.srcIn),
       );
 
@@ -46,7 +56,9 @@ Widget stateGroupIcon(String? group) {
         height: 22,
         width: 22,
         colorFilter: ColorFilter.mode(
-            Color(int.parse("FF${"#DC2626".replaceAll('#', '')}", radix: 16)),
+            color ??
+                Color(
+                    int.parse("FF${"#DC2626".replaceAll('#', '')}", radix: 16)),
             BlendMode.srcIn),
       );
     default:
@@ -55,7 +67,9 @@ Widget stateGroupIcon(String? group) {
         height: 22,
         width: 22,
         colorFilter: ColorFilter.mode(
-            Color(int.parse("FF${"#A3A3A3".replaceAll('#', '')}", radix: 16)),
+            color ??
+                Color(
+                    int.parse("FF${"#A3A3A3".replaceAll('#', '')}", radix: 16)),
             BlendMode.srcIn),
       );
   }

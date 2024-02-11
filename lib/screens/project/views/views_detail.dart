@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -10,8 +11,7 @@ import '../../../../../widgets/custom_text.dart';
 
 class ViewsDetail extends ConsumerStatefulWidget {
   const ViewsDetail(
-      {
-        required this.index,
+      {required this.index,
       this.fromGlobalSearch = false,
       this.viewID,
       this.projId,
@@ -60,15 +60,15 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
             //       issuesProvider.tempProjectView;
             //   log(issuesProvider.tempProjectView.toString());
             //   issuesProvider.issues.groupBY = issuesProvider.tempGroupBy;
-    
+
             //   issuesProvider.issues.orderBY = issuesProvider.tempOrderBy;
             //   issuesProvider.issues.issueType = issuesProvider.tempIssueType;
-    
+
             //   issuesProvider.issues.filters = issuesProvider.tempFilters;
-    
+
             //   issuesProvider.showEmptyStates = issuesProvider
             //       .issueView['display_filters']['show_empty_groups'];
-    
+
             //   issuesProvider.setsState();
             //   issuesProvider.filterIssues(
             //       slug: ref
@@ -77,19 +77,18 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
             //           .workspaceSlug,
             //       projID: projectProvider.currentProject['id']);
             // }
-    
+
             Navigator.pop(context);
           },
-          text:
-              ref.read(ProviderList.projectProvider).currentProject['name']),
+          text: ref.read(ProviderList.projectProvider).currentProject['name']),
       body: LoadingWidget(
-        loading: 
-        // issuesProvider.issuePropertyState == StateEnum.loading ||
-        //     issuesProvider.issueState == StateEnum.loading ||
-        //     statesProvider.statesState == StateEnum.loading ||
-        //     issuesProvider.projectViewState == StateEnum.loading ||
-        //     issuesProvider.orderByState == StateEnum.loading ||
-            viewsProv.viewsState == StateEnum.loading,
+        loading:
+            // issuesProvider.issuePropertyState == StateEnum.loading ||
+            //     issuesProvider.issueState == StateEnum.loading ||
+            //     statesProvider.statesState == StateEnum.loading ||
+            //     issuesProvider.projectViewState == StateEnum.loading ||
+            //     issuesProvider.orderByState == StateEnum.loading ||
+            viewsProv.viewsState == DataState.loading,
         widgetClass: Column(
           children: [
             Container(
@@ -158,15 +157,14 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                                           //         .issues.filters.startDate,
                                         }
                                       },
-                                      fromGlobalSearch:
-                                          widget.fromGlobalSearch,
+                                      fromGlobalSearch: widget.fromGlobalSearch,
                                       index: widget.index,
                                     )
                                     .then((value) {
                                   viewData = value;
                                   countFilters();
                                   if (viewsProv.viewsState !=
-                                      StateEnum.success) {
+                                      DataState.success) {
                                     CustomToast.showToast(context,
                                         message: 'Soething went wrong ',
                                         toastType: ToastType.failure);
@@ -179,8 +177,7 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                               },
                               child: CustomText(
                                 'Update',
-                                color:
-                                    themeProvider.themeManager.primaryColour,
+                                color: themeProvider.themeManager.primaryColour,
                                 fontSize: 17,
                                 fontWeight: FontWeightt.Medium,
                               ),
@@ -248,8 +245,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                 decoration: BoxDecoration(
                     color: themeProvider
                         .themeManager.primaryBackgroundDefaultColor,
-                    boxShadow: themeProvider
-                        .themeManager.shadowBottomControlButtons),
+                    boxShadow:
+                        themeProvider.themeManager.shadowBottomControlButtons),
                 child: Row(
                   children: [
                     projectProvider.role == Role.admin
@@ -382,24 +379,8 @@ class _ViewsDetailState extends ConsumerState<ViewsDetail> {
                     Expanded(
                         child: InkWell(
                       onTap: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height *
-                                        0.85),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            )),
-                            context: context,
-                            builder: (ctx) {
-                              return FilterSheet(
-                                issueCategory: IssueCategory.views,
-                              );
-                            });
+                        //TODO: add Filtersheet
+                        BottomSheetHelper.showBottomSheet(context, Container());
                       },
                       child: SizedBox.expand(
                         child: Row(

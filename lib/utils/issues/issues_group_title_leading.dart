@@ -4,7 +4,7 @@ import 'package:plane/core/icons/priority_icon.dart';
 import 'package:plane/core/icons/state_group_icon.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 String getIssuesGroupTitle({
@@ -56,9 +56,9 @@ Widget getIssueGroupLeadingIcon({
 }) {
   final label =
       ref.read(ProviderList.labelProvider.notifier).getLabelById(groupID);
-       
+
   return groupBY == GroupBY.priority
-      ? priorityIcon(groupID)
+      ? PriorityIcon(groupID)
       : groupBY == GroupBY.createdBY || groupBY == GroupBY.assignees
           ? Container(
               height: 22,
@@ -87,11 +87,11 @@ Widget getIssueGroupLeadingIcon({
                           label == null ? Colors.black : label.color.toColor()),
                 )
               : groupBY == GroupBY.state
-                  ? stateGroupIcon(ref
+                  ? StateGroupIcon(ref
                       .read(ProviderList.statesProvider.notifier)
                       .getStateById(groupID)
                       ?.group)
                   : groupBY == GroupBY.stateGroups
-                      ? stateGroupIcon(groupID)
+                      ? StateGroupIcon(groupID)
                       : Container();
 }

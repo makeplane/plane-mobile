@@ -107,7 +107,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          CustomDivider(themeProvider: themeProvider),
+          const CustomDivider(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -125,7 +125,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          CustomDivider(themeProvider: themeProvider),
+          CustomDivider(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -143,7 +143,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          CustomDivider(themeProvider: themeProvider),
+          CustomDivider(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -161,7 +161,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          CustomDivider(themeProvider: themeProvider),
+          CustomDivider(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,
@@ -179,7 +179,7 @@ class _SnoozeTimeSheetState extends ConsumerState<SnoozeTimeSheet> {
               ),
             ),
           ),
-          CustomDivider(themeProvider: themeProvider),
+          CustomDivider(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 50,

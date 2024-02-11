@@ -7,21 +7,19 @@ import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/issues.dart';
-import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
-
 class MyIssuesProvider extends ChangeNotifier {
   MyIssuesProvider(ChangeNotifierProviderRef<MyIssuesProvider> this.ref);
   Ref? ref;
-  StateEnum getMyIssuesState = StateEnum.empty;
-  StateEnum myIssuesViewState = StateEnum.empty;
-  StateEnum myIssuesFilterState = StateEnum.empty;
-  StateEnum labelState = StateEnum.empty;
+  DataState getMyIssuesState = DataState.empty;
+  DataState myIssuesViewState = DataState.empty;
+  DataState myIssuesFilterState = DataState.empty;
+  DataState labelState = DataState.empty;
   Map groupByResponse = {};
   List<dynamic> data = [];
   List labels = [];
@@ -98,10 +96,10 @@ class MyIssuesProvider extends ChangeNotifier {
   }
 
   Future getMyIssues({required String slug}) async {
-    getMyIssuesState = StateEnum.loading;
+    getMyIssuesState = DataState.loading;
     // notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.myIssues.replaceFirst('\$SLUG', slug),
         hasBody: false,
@@ -109,22 +107,22 @@ class MyIssuesProvider extends ChangeNotifier {
       );
       data.clear();
       data = response.data;
-      getMyIssuesState = StateEnum.success;
+      getMyIssuesState = DataState.success;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
         log(e.message.toString());
       }
       log(e.toString());
-      getMyIssuesState = StateEnum.error;
+      getMyIssuesState = DataState.error;
       notifyListeners();
     }
   }
 
   Future getMyIssuesView() async {
-    myIssuesViewState = StateEnum.loading;
+    myIssuesViewState = DataState.loading;
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: APIs.myIssuesView.replaceAll(
             "\$SLUG",
@@ -187,18 +185,18 @@ class MyIssuesProvider extends ChangeNotifier {
 
       // log("My Issues view=>${myIssueView.toString()}");
 
-      myIssuesViewState = StateEnum.success;
+      myIssuesViewState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log("MY ISSUES:${e.response}");
       issues.projectView = IssuesLayout.kanban;
-      myIssuesViewState = StateEnum.error;
+      myIssuesViewState = DataState.error;
       notifyListeners();
     }
   }
 
   Future getLabels() async {
-    labelState = StateEnum.loading;
+    labelState = DataState.loading;
     // notifyListeners();
     final slug = ref!
         .read(ProviderList.workspaceProvider)
@@ -206,20 +204,20 @@ class MyIssuesProvider extends ChangeNotifier {
         .workspaceSlug;
 
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: '${APIs.baseApi}/api/workspaces/$slug/labels/',
         hasBody: false,
         httpMethod: HttpMethod.get,
       );
       labels = response.data;
-      labelState = StateEnum.success;
+      labelState = DataState.success;
 
       notifyListeners();
     } on DioException catch (e) {
       log('Error in getLabels  ${e.message}');
       log(e.error.toString());
-      labelState = StateEnum.error;
+      labelState = DataState.error;
       notifyListeners();
     }
   }
@@ -233,7 +231,7 @@ class MyIssuesProvider extends ChangeNotifier {
         .selectedWorkspace
         .workspaceSlug;
 
-    myIssuesFilterState = StateEnum.loading;
+    myIssuesFilterState = DataState.loading;
     notifyListeners();
 
     issues.filters.assignees = [];
@@ -364,7 +362,7 @@ class MyIssuesProvider extends ChangeNotifier {
     // dynamic temp;
     log('URL======>: $url');
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -419,12 +417,12 @@ class MyIssuesProvider extends ChangeNotifier {
       shrinkStates = List.generate(stateOrdering.length, (index) => false);
       // }
 
-      myIssuesFilterState = StateEnum.success;
+      myIssuesFilterState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log('filter myIssue issue error');
       log(e.message.toString());
-      myIssuesFilterState = StateEnum.error;
+      myIssuesFilterState = DataState.error;
       notifyListeners();
     }
   }
@@ -432,7 +430,6 @@ class MyIssuesProvider extends ChangeNotifier {
   List<BoardListsData> initializeBoard() {
     final themeProvider = ref!.read(ProviderList.themeProvider);
     final projectProvider = ref!.read(ProviderList.projectProvider);
-    int count = 0;
     //   log(issues.groupBY.name);
     issues.issues = [];
     issuesResponse = [];
@@ -478,7 +475,7 @@ class MyIssuesProvider extends ChangeNotifier {
           break;
         }
       }
-      if (myIssuesFilterState == StateEnum.success) {
+      if (myIssuesFilterState == DataState.success) {
         var title = issues.groupBY == GroupBY.priority
             ? stateOrdering[j]
             : issues.groupBY == GroupBY.project
@@ -711,9 +708,6 @@ class MyIssuesProvider extends ChangeNotifier {
                         'de3c90cd-25cd-42ec-ac6c-a66caf8029bc';
                     // createIssuedata['s'] = element.id;
                   }
-                  final ProfileProvider profileProv =
-                      ref!.read(ProviderList.profileProvider);
-
                   ref!.read(ProviderList.projectProvider).currentProject =
                       ref!.read(ProviderList.projectProvider).projects[0];
                   ref!.read(ProviderList.projectProvider).setState();
@@ -771,7 +765,7 @@ class MyIssuesProvider extends ChangeNotifier {
           groupByResponse[stateOrdering[oldListIndex]].removeAt(oldCardIndex));
       notifyListeners();
       final issue = groupByResponse[stateOrdering[newListIndex]][newCardIndex];
-      await DioConfig().dioServe(
+      await DioClient().request(
           hasAuth: true,
           url: APIs.issueDetails
               .replaceAll(
@@ -825,7 +819,7 @@ class MyIssuesProvider extends ChangeNotifier {
 
   Future updateMyIssueView() async {
     try {
-      await DioConfig().dioServe(
+      await DioClient().request(
         hasAuth: true,
         url: APIs.updateMyIssuesView.replaceAll(
             "\$SLUG",

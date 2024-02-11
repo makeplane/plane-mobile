@@ -40,9 +40,8 @@ class _LayoutTabState extends ConsumerState<LayoutTab> {
     LayoutPropertiesModel layoutProperties =
         widget.issuesProvider.state.layoutProperties;
     layoutProperties = layoutProperties.copyWith(
-            display_filters: layoutProperties.display_filters
-                .copyWith(
-                    layout: IssuesConverter.fromIssuesLayoutToString(layout)));
+        display_filters: layoutProperties.display_filters.copyWith(
+            layout: IssuesConverter.fromIssuesLayoutToString(layout)));
     widget.issuesProvider.updateLayoutProperties(layoutProperties);
     Navigator.pop(context);
   }
@@ -84,7 +83,7 @@ class _LayoutTabState extends ConsumerState<LayoutTab> {
                   shrinkWrap: true,
                   itemCount: layoutList.length,
                   itemBuilder: (ctx, index) {
-                    if (widget.issueCategory == IssueCategory.myIssues &&
+                    if (widget.issueCategory == IssuesCategory.GLOBAL &&
                         index > 1) return Container();
                     return Column(
                       children: [

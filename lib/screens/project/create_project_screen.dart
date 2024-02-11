@@ -85,7 +85,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
           fontType: FontStyle.H6,
         ),
         body: LoadingWidget(
-          loading: projectProvider.createProjectState == StateEnum.loading,
+          loading: projectProvider.createProjectState == DataState.loading,
           widgetClass: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
             return SingleChildScrollView(
@@ -536,7 +536,7 @@ class _CreateProjectState extends ConsumerState<CreateProject> {
                                 },
                                 ref: ref);
                             if (projectProvider.createProjectState ==
-                                StateEnum.success) {
+                                DataState.success) {
                               Navigator.pop(Const.globalKey.currentContext!);
                             }
                             //Navigator.pop(Const.globalKey.currentContext!);

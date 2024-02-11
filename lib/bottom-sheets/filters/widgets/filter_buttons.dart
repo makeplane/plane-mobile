@@ -1,15 +1,23 @@
-// ignore_for_file: library_private_types_in_public_api
-part of '../filter_sheet.dart';
+// ignore_for_file: library_private_types_in_public_api, non_constant_identifier_names
 
-Widget _clearFilterButton(
-    {required _FilterState state, required WidgetRef ref}) {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/constants.dart';
+import 'package:plane/utils/enums.dart';
+import 'package:plane/utils/theme_manager.dart';
+import 'package:plane/widgets/custom_text.dart';
+
+Widget ClearFilterButton(
+    {required VoidCallback onClick, required WidgetRef ref}) {
   final ThemeManager themeManager =
       ref.read(ProviderList.themeProvider).themeManager;
   return GestureDetector(
-    onTap: () {
-      state.filters = const FiltersModel();
-      state._applyFilters(context: ref.context);
-    },
+    onTap: onClick,
+    // onClick();
+    // state.filters = const FiltersModel();
+    // state._applyFilters(context: ref.context);
+
     child: Container(
         height: 35,
         width: 150,
@@ -34,30 +42,34 @@ Widget _clearFilterButton(
   );
 }
 
-Widget _saveView({required _FilterState state, required WidgetRef ref}) {
-  final themeProvider = ref.read(ProviderList.themeProvider);
+Widget SaveViewButton(
+    {required VoidCallback onClick,
+    required bool isFilterApplied,
+    required WidgetRef ref}) {
+  final themeManager = ref.read(ProviderList.themeProvider).themeManager;
   return InkWell(
-    onTap: state.isFilterEmpty()
-        ? null
-        : () {
-            Navigator.of(ref.context).push(MaterialPageRoute(
-                builder: (context) => CreateView(
-                      filtersData: state.filters,
-                      fromProjectIssues: true,
-                    )));
-          },
+    onTap: onClick,
+    //  state.isFilterEmpty()
+    //     ? null
+    //     : () {
+    //         Navigator.of(ref.context).push(MaterialPageRoute(
+    //             builder: (context) => CreateView(
+    //                   filtersData: state.filters,
+    //                   fromProjectIssues: true,
+    //                 )));
+    //       },
     child: Container(
         width: MediaQuery.of(ref.context).size.width * 0.42,
         height: 50,
         margin: const EdgeInsets.only(bottom: 18),
         decoration: BoxDecoration(
-          color: state.isFilterEmpty()
-              ? themeProvider.themeManager.borderSubtle01Color.withOpacity(0.6)
-              : themeProvider.themeManager.primaryColour.withOpacity(0.2),
+          color: !isFilterApplied
+              ? themeManager.borderSubtle01Color.withOpacity(0.6)
+              : themeManager.primaryColour.withOpacity(0.2),
           border: Border.all(
-              color: state.isFilterEmpty()
-                  ? themeProvider.themeManager.placeholderTextColor
-                  : themeProvider.themeManager.primaryColour),
+              color: !isFilterApplied
+                  ? themeManager.placeholderTextColor
+                  : themeManager.primaryColour),
           borderRadius: BorderRadius.circular(buttonBorderRadiusLarge),
         ),
         child: Center(
@@ -65,39 +77,21 @@ Widget _saveView({required _FilterState state, required WidgetRef ref}) {
             children: [
               Icon(
                 Icons.add,
-                color: state.isFilterEmpty()
-                    ? themeProvider.themeManager.placeholderTextColor
-                    : themeProvider.themeManager.primaryColour,
+                color: !isFilterApplied
+                    ? themeManager.placeholderTextColor
+                    : themeManager.primaryColour,
                 size: 24,
               ),
               CustomText(
                 '  Save View',
-                color: state.isFilterEmpty()
-                    ? themeProvider.themeManager.placeholderTextColor
-                    : themeProvider.themeManager.primaryColour,
+                color: !isFilterApplied
+                    ? themeManager.placeholderTextColor
+                    : themeManager.primaryColour,
                 fontWeight: FontWeightt.Semibold,
                 type: FontStyle.Medium,
               ),
             ],
           ),
         )),
-  );
-}
-
-Widget _applyFilterButton(
-    {required _FilterState state, required BuildContext context}) {
-  return Container(
-    height: 50,
-    width: state.fromCreateView || state.issueCategory == IssueCategory.myIssues
-        ? MediaQuery.of(context).size.width * 0.87
-        : MediaQuery.of(context).size.width * 0.42,
-    margin: const EdgeInsets.only(bottom: 18),
-    child: Button(
-      text: state.fromCreateView ? 'Add Filter' : 'Apply Filter',
-      ontap: () {
-        state._applyFilters(context: context);
-      },
-      textColor: Colors.white,
-    ),
   );
 }

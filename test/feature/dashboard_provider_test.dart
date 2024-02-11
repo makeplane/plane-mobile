@@ -45,7 +45,7 @@ void main() async {
     testWidgets('Check Initial Values', (tester) async {
       await setREF(tester);
 
-      expect(mockDashBoardProvider.getDashboardState, StateEnum.loading);
+      expect(mockDashBoardProvider.getDashboardState, DataState.loading);
       expect(mockDashBoardProvider.hideGithubBlock, false);
       expect(mockDashBoardProvider.dashboardData, {});
     });
@@ -55,10 +55,10 @@ void main() async {
       when(() => mockDashboardService.getDashboardData(url: any(named: 'url')))
           .thenAnswer((_) async => {});
       final getDashboard = mockDashBoardProvider.getDashboard();
-      expect(mockDashBoardProvider.getDashboardState, StateEnum.loading);
+      expect(mockDashBoardProvider.getDashboardState, DataState.loading);
       await getDashboard;
       expect(mockDashBoardProvider.dashboardData, isA<Map>());
-      expect(mockDashBoardProvider.getDashboardState, StateEnum.success);
+      expect(mockDashBoardProvider.getDashboardState, DataState.success);
     });
 
     testWidgets('Check Dashboard on Error', (tester) async {
@@ -72,7 +72,7 @@ void main() async {
 
       await mockDashBoardProvider.getDashboard();
       expect(mockDashBoardProvider.dashboardData, isA<Map>());
-      expect(mockDashBoardProvider.getDashboardState, StateEnum.error);
+      expect(mockDashBoardProvider.getDashboardState, DataState.error);
     });
   });
 }

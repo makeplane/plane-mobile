@@ -29,7 +29,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(
-          loading: authProvider.sendCodeState == StateEnum.loading,
+          loading: authProvider.sendCodeState == DataState.loading,
           widgetClass: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -107,7 +107,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
                             await authProvider.sendForgotCode(
                                 email: email.text);
                             if (authProvider.sendCodeState ==
-                                StateEnum.success) {
+                                DataState.success) {
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const ResetPassword()));

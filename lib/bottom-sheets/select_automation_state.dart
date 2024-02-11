@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 
 import '../utils/enums.dart';

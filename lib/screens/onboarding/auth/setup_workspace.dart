@@ -57,8 +57,8 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: LoadingWidget(
-            loading: prov.checkWorkspaceState == StateEnum.loading ||
-                prov.createWorkspaceState == StateEnum.loading,
+            loading: prov.checkWorkspaceState == DataState.loading ||
+                prov.createWorkspaceState == DataState.loading,
             widgetClass: CustomScrollView(
               slivers: [
                 SliverFillRemaining(
@@ -332,7 +332,7 @@ class _SetupWorkspaceState extends ConsumerState<SetupWorkspace> {
                                                 context: context,
                                                 refs: ref);
                                             if (prov.createWorkspaceState ==
-                                                StateEnum.success) {
+                                                DataState.success) {
                                               if (!widget.fromHomeScreen) {
                                                 profileProvider
                                                     .updateProfile(data: {

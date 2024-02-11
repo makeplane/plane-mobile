@@ -49,11 +49,11 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
     final notificationProvider = ref.watch(ProviderList.notificationProvider);
     return LoadingWidget(
       loading: widget.type == 'created'
-          ? notificationProvider.getCreatedState == StateEnum.loading
+          ? notificationProvider.getCreatedState == DataState.loading
           : widget.type == 'assigned'
-              ? notificationProvider.getAssignedState == StateEnum.loading
+              ? notificationProvider.getAssignedState == DataState.loading
               : widget.type == 'watching'
-                  ? notificationProvider.getWatchingState == StateEnum.loading
+                  ? notificationProvider.getWatchingState == DataState.loading
                   : false,
       widgetClass:
           // notificationProvider.getCreatedState == StateEnum.error ||
@@ -61,18 +61,18 @@ class _NotificationsListState extends ConsumerState<NotificationsList> {
           // notificationProvider.getArchivedState == StateEnum.error ?
           // errorState(context: context, showButton: false) :
           widget.type == 'assigned' &&
-                  notificationProvider.getAssignedState == StateEnum.error
+                  notificationProvider.getAssignedState == DataState.error
               ? errorState(
                   context: context,
                 )
               : widget.type == 'created' &&
-                      notificationProvider.getCreatedState == StateEnum.error
+                      notificationProvider.getCreatedState == DataState.error
                   ? errorState(
                       context: context,
                     )
                   : widget.type == 'watching' &&
                           notificationProvider.getWatchingState ==
-                              StateEnum.error
+                              DataState.error
                       ? errorState(
                           context: context,
                         )

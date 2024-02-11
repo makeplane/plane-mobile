@@ -18,7 +18,7 @@ class _PageScreenState extends ConsumerState<PageScreen> {
   Widget build(BuildContext context) {
     final pageProvider = ref.watch(ProviderList.pageProvider);
     return LoadingWidget(
-      loading: pageProvider.pagesListState == StateEnum.loading,
+      loading: pageProvider.pagesListState == DataState.loading,
       widgetClass: Padding(
         padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
         child: pageProvider.pages[pageProvider.selectedFilter]!.isNotEmpty

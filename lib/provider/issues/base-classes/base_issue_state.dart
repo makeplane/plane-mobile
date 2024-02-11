@@ -9,25 +9,25 @@ abstract class ABaseIssuesState {
   Ref? ref;
 
   /// A state that represents the state of [getIssues] api
-  StateEnum fetchIssuesState = StateEnum.empty;
+  DataState fetchIssuesState = DataState.empty;
 
   /// A state that represents the state of [deleteIssue] api
-  StateEnum deleteIssueState = StateEnum.empty;
+  DataState deleteIssueState = DataState.empty;
 
   /// A state that represents the state of [getIssueLayoutView] api
-  StateEnum fetchLayoutViewState = StateEnum.empty;
+  DataState fetchLayoutViewState = DataState.empty;
 
   /// A state that represents the state of [getIssueDisplayProperties] api
-  StateEnum fetchDPropertiesState = StateEnum.empty;
+  DataState fetchDPropertiesState = DataState.empty;
 
   /// A state that represents the state of [updateIssueDisplayProperties] api
-  StateEnum updateDPropertiesState = StateEnum.empty;
+  DataState updateDPropertiesState = DataState.empty;
 
   /// A state that represents the state of [updateIssue] api
-  StateEnum updateIssueState = StateEnum.empty;
+  DataState updateIssueState = DataState.empty;
 
   /// A state that represents the state of [createIssue] api
-  StateEnum createIssueState = StateEnum.empty;
+  DataState createIssueState = DataState.empty;
 
   /// A map that contains all the [rawIssues] with their [issueId] as key
   Map<String, IssueModel> rawIssues = {};

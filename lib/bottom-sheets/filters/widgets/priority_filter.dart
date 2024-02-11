@@ -1,45 +1,40 @@
-part of '../filter_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/core/icons/priority_icon.dart';
+import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
+import 'package:plane/provider/provider_list.dart';
+import 'package:plane/widgets/custom_expansion_tile.dart';
+import 'package:plane/widgets/rectangular_chip.dart';
 
-class _PriorityFilter extends ConsumerStatefulWidget {
-  const _PriorityFilter({required this.state});
-  final _FilterState state;
+class PriorityFilter extends ConsumerStatefulWidget {
+  const PriorityFilter({required this.filter, required this.onChange});
+  final FiltersModel filter;
+  final Function(String priority) onChange;
 
   @override
-  ConsumerState<_PriorityFilter> createState() => __PriorityFilterState();
+  ConsumerState<PriorityFilter> createState() => _PriorityFilterState();
 }
 
-class __PriorityFilterState extends ConsumerState<_PriorityFilter> {
+class _PriorityFilterState extends ConsumerState<PriorityFilter> {
   final priorities = ['urgent', 'high', 'medium', 'low', 'none'];
 
   @override
   Widget build(BuildContext context) {
-    final ThemeProvider themeProvider = ref.read(ProviderList.themeProvider);
+    final themeManager = ref.read(ProviderList.themeProvider).themeManager;
     return CustomExpansionTile(
       title: 'Priority',
       child: Wrap(
           children: priorities
               .map((priority) => GestureDetector(
-                  onTap: () {
-                    List<String> priorities = widget.state.filters.priority.toList();
-                    if (priorities.contains(priority)) {
-                      priorities.remove(priority);
-                    } else {
-                      priorities.add(priority);
-                    }
-                    widget.state.filters =
-                        widget.state.filters.copyWith(priority: priorities);
-                    widget.state.setState();
-                  },
+                  onTap: () => widget.onChange(priority),
                   child: RectangularChip(
                       ref: ref,
-                      icon: priorityIcon(priority),
+                      icon: PriorityIcon(priority),
                       text: priority,
-                      color: widget.state.filters.priority.contains(priority)
-                          ? themeProvider.themeManager.primaryColour
-                          : themeProvider
-                              .themeManager.secondaryBackgroundDefaultColor,
-                      selected:
-                          widget.state.filters.priority.contains(priority))))
+                      color: widget.filter.priority.contains(priority)
+                          ? themeManager.primaryColour
+                          : themeManager.secondaryBackgroundDefaultColor,
+                      selected: widget.filter.priority.contains(priority))))
               .toList()),
     );
   }

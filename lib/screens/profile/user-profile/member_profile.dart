@@ -43,9 +43,9 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
     final ProfileProvider profileProv = ref.watch(ProviderList.profileProvider);
 
     return LoadingWidget(
-      loading: memberprofileProvider.getMemberProfileState == StateEnum.loading,
+      loading: memberprofileProvider.getMemberProfileState == DataState.loading,
       widgetClass: memberprofileProvider.getMemberProfileState ==
-              StateEnum.loading
+              DataState.loading
           ? Container()
           : SingleChildScrollView(
               child: Column(
@@ -395,7 +395,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
       MemberProfileStateModel memberprofileProvider) {
     return Stack(
       children: [
-        profileProv.updateProfileState == StateEnum.loading
+        profileProv.updateProfileState == DataState.loading
             ? ShimmerEffectWidget(
                 height: 140,
                 width: MediaQuery.sizeOf(context).width,
@@ -498,7 +498,7 @@ class _MemberProfileState extends ConsumerState<MemberProfile> {
                     await profileProv.updateProfile(data: {
                       'cover_image': url['url'],
                     }).then((value) {
-                      if (profileProv.updateProfileState == StateEnum.error) {
+                      if (profileProv.updateProfileState == DataState.error) {
                         CustomToast.showToast(context,
                             message: 'Failed to update profile',
                             toastType: ToastType.failure);

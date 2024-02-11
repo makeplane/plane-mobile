@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/bottom-sheets/delete_labels_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_labels_sheet.dart';
 import 'package:plane/screens/project/settings/create_label.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 
 import 'package:plane/widgets/empty.dart';
 import 'package:plane/widgets/loading_widget.dart';
@@ -36,7 +37,7 @@ class _LablesPageState extends ConsumerState<LablesPage> {
     final labelNotifier = ref.read(ProviderList.labelProvider.notifier);
 
     return LoadingWidget(
-      loading: labelProvider.labelState == StateEnum.loading,
+      loading: labelProvider.labelState == DataState.loading,
       widgetClass: Container(
         color: themeProvider.themeManager.primaryBackgroundDefaultColor,
         child: labelProvider.projectLabels.isEmpty
@@ -152,63 +153,15 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                               );
                                             } else if (val == 'CONVERT' ||
                                                 val == 'ADD') {
-                                              showModalBottomSheet(
-                                                constraints: BoxConstraints(
-                                                    maxHeight:
-                                                        MediaQuery.sizeOf(
-                                                                    context)
-                                                                .height *
-                                                            0.8),
-                                                enableDrag: true,
-                                                isScrollControlled: true,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(20),
-                                                    topRight:
-                                                        Radius.circular(20),
-                                                  ),
-                                                ),
-                                                context: context,
-                                                builder: (context) {
-                                                  return SingleLabelSelect(
+                                              BottomSheetHelper.showBottomSheet(
+                                                  context,
+                                                  SingleLabelSelect(
                                                     labelID: label.id,
-                                                  );
-                                                },
-                                              );
+                                                  ));
                                             } else {
-                                              showModalBottomSheet(
-                                                constraints:
-                                                    const BoxConstraints(
-                                                        maxHeight: 300),
-                                                enableDrag: true,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(20),
-                                                    topRight:
-                                                        Radius.circular(20),
-                                                  ),
-                                                ),
-                                                context: context,
-                                                builder: (context) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: MediaQuery.of(
-                                                                context)
-                                                            .viewInsets
-                                                            .bottom),
-                                                    child: DeleteLabelSheet(
-                                                      labelName: label.name,
-                                                      labelId: label.id,
-                                                    ),
-                                                  );
-                                                },
-                                              );
+                                              //TODO: add delete label bottom sheet
+                                              BottomSheetHelper.showBottomSheet(
+                                                  context, Container());
                                             }
                                           },
                                           itemBuilder: (ctx) => [
@@ -455,47 +408,11 @@ class _LablesPageState extends ConsumerState<LablesPage> {
                                                                 "parent": null,
                                                               });
                                                             } else {
-                                                              showModalBottomSheet(
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                        maxHeight:
-                                                                            300),
-                                                                enableDrag:
-                                                                    true,
-                                                                shape:
-                                                                    const RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            20),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            20),
-                                                                  ),
-                                                                ),
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return Padding(
-                                                                    padding: EdgeInsets.only(
-                                                                        bottom: MediaQuery.of(context)
-                                                                            .viewInsets
-                                                                            .bottom),
-                                                                    child:
-                                                                        DeleteLabelSheet(
-                                                                      labelName:
-                                                                          childLabel
-                                                                              .name,
-                                                                      labelId:
-                                                                          childLabel
-                                                                              .id,
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              );
+                                                              //TODO: add delete label bottomsheet
+                                                              BottomSheetHelper
+                                                                  .showBottomSheet(
+                                                                      context,
+                                                                      Container());
                                                             }
                                                           },
                                                           itemBuilder: (ctx) =>
@@ -723,7 +640,7 @@ class _SingleLabelSelectState extends ConsumerState<SingleLabelSelect> {
               ],
             ),
           ),
-          labelProvider.labelState == StateEnum.loading
+          labelProvider.labelState == DataState.loading
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,

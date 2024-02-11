@@ -1,11 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:plane/config/const.dart';
+import 'package:plane/models/cycle/cycle_detail.model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -22,29 +20,64 @@ class CreateCycle extends ConsumerStatefulWidget {
 }
 
 class _CreateCycleState extends ConsumerState<CreateCycle> {
+  bool isCreating = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController cycleNameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-
   DateTime? dueDate;
   DateTime? startDate;
 
-  @override
-  void initState() {
-    super.initState();
-    log(ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace
-        .workspaceSlug
-        .toString());
-    log(ref.read(ProviderList.projectProvider).currentProject["id"]);
+  Future<void> handleCreateCycle(BuildContext context) async {
+    final cycleNotifier = ref.read(ProviderList.cycleProvider.notifier);
+    if (formKey.currentState!.validate()) {
+      // start_date cannot be after end_date
+      if (startDate != null && dueDate != null) {
+        if (startDate!.isAfter(dueDate!)) {
+          CustomToast.showToast(context,
+              message: 'Start date cannot be after end date',
+              toastType: ToastType.failure);
+
+          return;
+        }
+      }
+      setState(() {
+        isCreating = true;
+      });
+      // Payload to create cycle
+      final payload = CycleDetailModel.initial().copyWith(
+          name: nameController.text,
+          description: descriptionController.text,
+          start_date: startDate != null
+              ? DateFormat('yyyy-MM-dd').format(startDate!)
+              : null,
+          end_date: dueDate != null
+              ? DateFormat('yyyy-MM-dd').format(dueDate!)
+              : null,
+          project: ref.read(ProviderList.projectProvider).currentProject["id"]);
+
+      // Create cycle
+      cycleNotifier.createCycle(payload).then((value) {
+        value.fold((err) {
+          CustomToast.showToast(context,
+              message: err.messsage, toastType: ToastType.failure);
+        }, (cycle) {
+          CustomToast.showToast(context,
+              message: 'Cycle created successfully',
+              toastType: ToastType.success);
+        });
+      }).whenComplete(() {
+        setState(() {
+          isCreating = false;
+        });
+      });
+    }
+
+    Navigator.pop(Const.globalKey.currentContext!);
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = ref.watch(ProviderList.themeProvider);
-    final cyclesProvider = ref.watch(ProviderList.cyclesProvider);
-    final BuildContext mainBuildContext = context;
+    final themeManager = ref.watch(ProviderList.themeProvider).themeManager;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -56,10 +89,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
           },
           text: 'Create Cycle',
         ),
-        backgroundColor:
-            themeProvider.themeManager.primaryBackgroundDefaultColor,
+        backgroundColor: themeManager.primaryBackgroundDefaultColor,
         body: LoadingWidget(
-          loading: cyclesProvider.cyclesState == StateEnum.loading,
+          loading: isCreating,
           widgetClass: LayoutBuilder(builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
@@ -74,9 +106,8 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                         children: [
                           Container(
                             height: 1,
-                            width: MediaQuery.of(context).size.width,
-                            color:
-                                themeProvider.themeManager.borderSubtle01Color,
+                            width: MediaQuery.sizeOf(context).width,
+                            color: themeManager.borderSubtle01Color,
                           ),
                           Container(
                               margin: const EdgeInsets.only(
@@ -107,52 +138,9 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                   }
                                   return null;
                                 },
-                                controller: cycleNameController,
-                                decoration: themeProvider
-                                    .themeManager.textFieldDecoration),
+                                controller: nameController,
+                                decoration: themeManager.textFieldDecoration),
                           ),
-                          // Container(
-                          //   margin: const EdgeInsets.only(
-                          //       left: 20, right: 20, top: 20, bottom: 5),
-                          //   child: const CustomText(
-                          //     'Description',
-                          //     // color: themeProvider.secondaryTextColor,
-                          //     type: FontStyle.Small,
-                          //   ),
-                          // ),
-                          // Container(
-                          //   padding: const EdgeInsets.only(left: 20, right: 20),
-                          //   child: TextFormField(
-                          //     maxLines: 7,
-                          //     controller: descriptionController,
-                          //     decoration: themeProvider.themeManager.textFieldDecoration.copyWith(
-                          //       enabledBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //             color: themeProvider.isDarkThemeEnabled
-                          //                 ? darkThemeBorder
-                          //                 : const Color(0xFFE5E5E5),
-                          //             width: 1.0),
-                          //         borderRadius:
-                          //             const BorderRadius.all(Radius.circular(8)),
-                          //       ),
-                          //       disabledBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(
-                          //             color: themeProvider.isDarkThemeEnabled
-                          //                 ? darkThemeBorder
-                          //                 : const Color(0xFFE5E5E5),
-                          //             width: 1.0),
-                          //         borderRadius:
-                          //             const BorderRadius.all(Radius.circular(8)),
-                          //       ),
-                          //       focusedBorder: const OutlineInputBorder(
-                          //         borderSide:
-                          //             BorderSide(color: primaryColor, width: 2.0),
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(8)),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           Container(
                               margin: const EdgeInsets.only(
                                   left: 20, right: 20, top: 20, bottom: 5),
@@ -169,8 +157,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               FocusManager.instance.primaryFocus?.unfocus();
                               final date = await showDatePicker(
                                 builder: (context, child) => Theme(
-                                  data: themeProvider
-                                      .themeManager.datePickerThemeData,
+                                  data: themeManager.datePickerThemeData,
                                   child: child!,
                                 ),
                                 context: context,
@@ -196,8 +183,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider
-                                      .themeManager.borderSubtle01Color,
+                                  color: themeManager.borderSubtle01Color,
                                 ),
                               ),
                               child: Row(
@@ -206,8 +192,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                     onPressed: null,
                                     icon: Icon(
                                       Icons.today,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
+                                      color: themeManager.placeholderTextColor,
                                     ),
                                   ),
                                   CustomText(
@@ -238,8 +223,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               FocusManager.instance.primaryFocus?.unfocus();
                               final date = await showDatePicker(
                                 builder: (context, child) => Theme(
-                                  data: themeProvider
-                                      .themeManager.datePickerThemeData,
+                                  data: themeManager.datePickerThemeData,
                                   child: child!,
                                 ),
                                 context: context,
@@ -265,8 +249,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: themeProvider
-                                      .themeManager.borderSubtle01Color,
+                                  color: themeManager.borderSubtle01Color,
                                 ),
                               ),
                               child: Row(
@@ -275,8 +258,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                                     onPressed: null,
                                     icon: Icon(
                                       Icons.event,
-                                      color: themeProvider
-                                          .themeManager.placeholderTextColor,
+                                      color: themeManager.placeholderTextColor,
                                     ),
                                   ),
                                   CustomText(
@@ -290,8 +272,6 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                               ),
                             ),
                           ),
-
-                          // const Spacer(),
                         ],
                       ),
                     ),
@@ -300,117 +280,7 @@ class _CreateCycleState extends ConsumerState<CreateCycle> {
                           vertical: 20, horizontal: 16),
                       child: Button(
                         text: 'Create Cycle',
-                        ontap: () async {
-                          if (formKey.currentState!.validate()) {
-                            cyclesProvider.cyclesState = StateEnum.loading;
-                            cyclesProvider.setState();
-                            bool dateNotConflicted = false;
-
-                            if (startDate != null && dueDate != null) {
-                              if (startDate!.isAfter(dueDate!)) {
-                                CustomToast.showToast(mainBuildContext,
-                                    message:
-                                        'Start date cannot be after end date',
-                                    toastType: ToastType.failure);
-
-                                return;
-                              }
-
-                              dateNotConflicted =
-                                  await cyclesProvider.dateCheck(
-                                slug: ref
-                                    .read(ProviderList.workspaceProvider)
-                                    .selectedWorkspace
-                                    .workspaceSlug,
-                                projectId: ref
-                                    .read(ProviderList.projectProvider)
-                                    .currentProject["id"],
-                                data: {
-                                  "start_date": DateFormat('yyyy-MM-dd')
-                                      .format(startDate!),
-                                  "end_date":
-                                      DateFormat('yyyy-MM-dd').format(dueDate!),
-                                },
-                              );
-                            }
-
-                            if (dateNotConflicted ||
-                                (startDate == null && dueDate == null)) {
-                              await cyclesProvider.cyclesCrud(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace
-                                      .workspaceSlug,
-                                  projectId: ref
-                                      .read(ProviderList.projectProvider)
-                                      .currentProject["id"],
-                                  method: CRUD.create,
-                                  query: '',
-                                  data: {
-                                    "name": cycleNameController.text,
-                                    "description": descriptionController.text,
-                                    "start_date": startDate == null
-                                        ? null
-                                        : DateFormat('yyyy-MM-dd')
-                                            .format(startDate!),
-                                    "end_date": dueDate == null
-                                        ? null
-                                        : DateFormat('yyyy-MM-dd')
-                                            .format(dueDate!),
-                                    "status": "started"
-                                  },
-                                  ref: ref,
-                                  cycleId: '');
-
-                              CustomToast.showToastFromBool(
-                                  context: mainBuildContext,
-                                  isSuccess: cyclesProvider.cyclesState ==
-                                      StateEnum.success,
-                                  sucessMessage: 'Cycle created successfully');
-
-                              await cyclesProvider.cyclesCrud(
-                                  slug: ref
-                                      .read(ProviderList.workspaceProvider)
-                                      .selectedWorkspace
-                                      .workspaceSlug,
-                                  projectId: ref
-                                      .read(ProviderList.projectProvider)
-                                      .currentProject['id'],
-                                  method: CRUD.read,
-                                  query: 'all',
-                                  ref: ref,
-                                  cycleId: '');
-
-                              for (int i = 0;
-                                  i < cyclesProvider.queries.length;
-                                  i++) {
-                                ref
-                                    .read(ProviderList.cyclesProvider)
-                                    .cyclesCrud(
-                                        slug: ref
-                                            .read(
-                                                ProviderList.workspaceProvider)
-                                            .selectedWorkspace
-                                            .workspaceSlug,
-                                        projectId: ref
-                                            .read(ProviderList.projectProvider)
-                                            .currentProject['id'],
-                                        method: CRUD.read,
-                                        query: cyclesProvider.queries[i],
-                                        ref: ref,
-                                        cycleId: '');
-                              }
-                              Navigator.pop(Const.globalKey.currentContext!);
-                            } else {
-                              CustomToast.showToast(mainBuildContext,
-                                  message:
-                                      'Cycle date is conflicted with other cycle',
-                                  toastType: ToastType.failure);
-
-                              return;
-                            }
-                          }
-                        },
+                        ontap: () async {},
                         textColor: Colors.white,
                       ),
                     ),

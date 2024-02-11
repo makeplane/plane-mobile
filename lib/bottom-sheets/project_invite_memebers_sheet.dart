@@ -50,7 +50,7 @@ class _ProjectInviteMembersSheetState
     final profileProvider = ref.watch(ProviderList.profileProvider);
     final BuildContext mainBuildContext = context;
     return LoadingWidget(
-      loading: projectProvider.projectInvitationState == StateEnum.loading,
+      loading: projectProvider.projectInvitationState == DataState.loading,
       widgetClass: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -318,7 +318,7 @@ class _ProjectInviteMembersSheetState
                             },
                           );
                           if (projectProvider.projectInvitationState ==
-                              StateEnum.success) {
+                              DataState.success) {
                             postHogService(
                                 eventName: 'PROJECT_MEMBER_INVITE',
                                 properties: {
@@ -329,9 +329,9 @@ class _ProjectInviteMembersSheetState
                                   'WORKSPACE_NAME': workspaceProvider
                                       .selectedWorkspace.workspaceName,
                                   'PROJECT_ID':
-                                      projectProvider.projectDetailModel!.id,
-                                  'PROJECT_NAME':
-                                      projectProvider.projectDetailModel!.name,
+                                      projectProvider.currentprojectDetails!.id,
+                                  'PROJECT_NAME': projectProvider
+                                      .currentprojectDetails!.name,
                                   'INVITED_PROJECT_MEMBER': emailController.text
                                 },
                                 userEmail: profileProvider.userProfile.email!,
@@ -345,7 +345,8 @@ class _ProjectInviteMembersSheetState
                             projectProvider.getProjectMembers(
                               slug: workspaceProvider
                                   .selectedWorkspace.workspaceSlug,
-                              projId: projectProvider.projectDetailModel!.id!,
+                              projId:
+                                  projectProvider.currentprojectDetails!.id!,
                             );
                           } else {
                             CustomToast.showToast(

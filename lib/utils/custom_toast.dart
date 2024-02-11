@@ -186,12 +186,12 @@ class CustomToast {
 
   static void showToastFromStateEnum(
       {required BuildContext context,
-      required StateEnum stateEnum,
+      required DataState stateEnum,
       required String sucessMessage,
       String errorMessage = "Something went wrong!"}) {
     showToastFromBool(
         context: context,
-        isSuccess: stateEnum == StateEnum.success,
+        isSuccess: stateEnum == DataState.success,
         sucessMessage: sucessMessage);
   }
 

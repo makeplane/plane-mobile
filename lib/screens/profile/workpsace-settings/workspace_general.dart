@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom-sheets/company_size_sheet.dart';
-import 'package:plane/bottom-sheets/delete_workspace_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_workspace_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
@@ -94,8 +94,8 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
           ),
           body: LoadingWidget(
             loading: workspaceProvider.updateWorkspaceState ==
-                    StateEnum.loading ||
-                workspaceProvider.workspaceInvitationState == StateEnum.loading,
+                    DataState.loading ||
+                workspaceProvider.workspaceInvitationState == DataState.loading,
             widgetClass: SingleChildScrollView(
               child: Column(
                 children: [
@@ -122,7 +122,7 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                                     ),
                                   ),
                                   fileProvider.fileUploadState ==
-                                          StateEnum.loading
+                                          DataState.loading
                                       ? Container(
                                           height: 45,
                                           width: 45,
@@ -468,14 +468,14 @@ class _WorkspaceGeneralState extends ConsumerState<WorkspaceGeneral> {
                             }, ref: ref);
                             await workspaceProvider.getWorkspaces();
                             if (workspaceProvider.updateWorkspaceState ==
-                                StateEnum.success) {
+                                DataState.success) {
                               CustomToast.showToast(context,
                                   message: 'Workspace updated successfully',
                                   toastType: ToastType.success);
                               Navigator.pop(context);
                             }
                             if (workspaceProvider.updateWorkspaceState ==
-                                StateEnum.error) {
+                                DataState.error) {
                               CustomToast.showToast(context,
                                   message:
                                       'Something went wrong, please try again',

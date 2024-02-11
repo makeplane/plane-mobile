@@ -4,11 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/config/apis.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 
 class SearchIssueProvider with ChangeNotifier {
   List<dynamic> issues = [];
-  StateEnum searchIssuesState = StateEnum.loading;
+  DataState searchIssuesState = DataState.loading;
 
   void clear() {
     issues = [];
@@ -21,7 +21,7 @@ class SearchIssueProvider with ChangeNotifier {
       String input = '',
       // required bool parent
       required IssueDetailCategory type}) async {
-    searchIssuesState = StateEnum.loading;
+    searchIssuesState = DataState.loading;
     final String query = type == IssueDetailCategory.parent
         ? 'parent'
         : type == IssueDetailCategory.subIssue
@@ -42,7 +42,7 @@ class SearchIssueProvider with ChangeNotifier {
           : '${APIs.searchIssues.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}?search&$query=true&issue_id=$issueId';
     }
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -51,23 +51,23 @@ class SearchIssueProvider with ChangeNotifier {
 
       issues.clear();
       issues = response.data;
-      searchIssuesState = StateEnum.success;
+      searchIssuesState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.message.toString());
-      searchIssuesState = StateEnum.error;
+      searchIssuesState = DataState.error;
       notifyListeners();
     }
   }
 
   void clearIssues() {
-    searchIssuesState = StateEnum.loading;
+    searchIssuesState = DataState.loading;
     issues.clear();
     notifyListeners();
   }
 
   void setStateToLoading() {
-    searchIssuesState = StateEnum.loading;
+    searchIssuesState = DataState.loading;
     notifyListeners();
   }
 }

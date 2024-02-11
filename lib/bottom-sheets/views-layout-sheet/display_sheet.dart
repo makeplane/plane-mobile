@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
 import 'package:plane/models/project/layout-properties/layout_properties.model.dart';
-import 'package:plane/provider/issues/base-classes/base_issue_state.dart';
 import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
@@ -14,10 +11,8 @@ import 'package:plane/widgets/custom_text.dart';
 import 'widgets/display_tab.dart';
 
 class DisplayFilterSheet extends ConsumerStatefulWidget {
-  const DisplayFilterSheet(
-      {required this.issuesProvider, required this.issuesState, super.key});
+  const DisplayFilterSheet({required this.issuesProvider, super.key});
   final ABaseIssuesProvider issuesProvider;
-  final ABaseIssuesState issuesState;
 
   @override
   ConsumerState<DisplayFilterSheet> createState() => _DisplayFilterSheetState();
@@ -75,7 +70,7 @@ class _DisplayFilterSheetState extends ConsumerState<DisplayFilterSheet> {
     issueType = IssuesConverter.fromStringToIssueType(
         widget.issuesProvider.displayFilters.type);
     showEmptyGroups = widget.issuesProvider.displayFilters.show_empty_groups;
-    dProperties = widget.issuesState.layoutProperties.display_properties;
+    dProperties = widget.issuesProvider.displayProperties;
     layout = widget.issuesProvider.layout;
     super.initState();
   }

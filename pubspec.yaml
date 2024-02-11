@@ -76,6 +76,8 @@ dependencies:
   flutter_native_splash: ^2.3.2
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  logger: ^1.4.0
+  dio_http2_adapter: ^2.3.2
 
 dev_dependencies:
   freezed: ^2.4.6

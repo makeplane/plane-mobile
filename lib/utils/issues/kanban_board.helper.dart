@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/core/components/issues/issue-card/issue_card_root.dart';
-
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/models/project/issue/issue_model.dart';
 import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';

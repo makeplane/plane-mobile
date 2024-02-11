@@ -38,9 +38,9 @@ class _ImportEportState extends ConsumerState<ImportExport> {
           },
           text: 'Import & Export'),
       body: LoadingWidget(
-        loading: integrationProvider.getIntegrationState == StateEnum.loading ||
+        loading: integrationProvider.getIntegrationState == DataState.loading ||
             integrationProvider.getInstalledIntegrationState ==
-                StateEnum.loading,
+                DataState.loading,
         widgetClass: SingleChildScrollView(
           child: Column(
             children: [

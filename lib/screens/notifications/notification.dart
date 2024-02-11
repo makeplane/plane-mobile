@@ -166,7 +166,6 @@ class _NotifiactionScreenState extends ConsumerState<NotifiactionScreen>
                 ),
               ]),
           CustomDivider(
-            themeProvider: themeProvider,
             color: themeProvider.themeManager.borderSubtle01Color,
           ),
           Expanded(

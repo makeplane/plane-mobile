@@ -27,7 +27,7 @@ class _SubscribesIssuesPageState extends ConsumerState<SubscribesIssuesPage> {
       color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
       margin: const EdgeInsets.only(top: 5),
       child: userProfileProvider.getUserSubscribedIssuesState ==
-              StateEnum.loading
+              DataState.loading
           ? Center(
               child: SizedBox(
                 width: 30,

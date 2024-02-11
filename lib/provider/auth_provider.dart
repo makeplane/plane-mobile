@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/config/const.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/startup/dependency_resolver.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
@@ -15,21 +15,21 @@ import 'package:plane/services/shared_preference_service.dart';
 class AuthProvider extends ChangeNotifier {
   AuthProvider(ChangeNotifierProviderRef<AuthProvider> this.ref);
   Ref ref;
-  StateEnum sendCodeState = StateEnum.empty;
-  StateEnum validateCodeState = StateEnum.empty;
-  StateEnum googleAuthState = StateEnum.empty;
-  StateEnum signInState = StateEnum.empty;
-  StateEnum signUpState = StateEnum.empty;
-  StateEnum resetPassState = StateEnum.empty;
+  DataState sendCodeState = DataState.empty;
+  DataState validateCodeState = DataState.empty;
+  DataState googleAuthState = DataState.empty;
+  DataState signInState = DataState.empty;
+  DataState signUpState = DataState.empty;
+  DataState resetPassState = DataState.empty;
 
   Future sendMagicCode({required String email, bool resend = false}) async {
     if (!resend) {
-      sendCodeState = StateEnum.loading;
+      sendCodeState = DataState.loading;
       notifyListeners();
     }
 
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: false,
         url: APIs.baseApi + APIs.generateMagicLink,
         hasBody: true,
@@ -38,12 +38,12 @@ class AuthProvider extends ChangeNotifier {
           'email': email,
         },
       );
-      sendCodeState = StateEnum.success;
+      sendCodeState = DataState.success;
       log(response.data.toString());
       notifyListeners();
     } catch (e) {
       log(e.toString());
-      sendCodeState = StateEnum.error;
+      sendCodeState = DataState.error;
       notifyListeners();
     }
   }
@@ -53,11 +53,11 @@ class AuthProvider extends ChangeNotifier {
       required String token,
       required BuildContext context,
       required WidgetRef ref}) async {
-    validateCodeState = StateEnum.loading;
+    validateCodeState = DataState.loading;
     notifyListeners();
     try {
       log({"key": key, "token": token}.toString());
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
           hasAuth: false,
           url: APIs.baseApi + APIs.magicValidate,
           hasBody: true,
@@ -70,7 +70,7 @@ class AuthProvider extends ChangeNotifier {
       // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
 
       await DependencyResolver.resolve(ref: ref);
-      validateCodeState = StateEnum.success;
+      validateCodeState = DataState.success;
       log(response.data.toString());
       notifyListeners();
     } on DioException catch (error) {
@@ -82,7 +82,7 @@ class AuthProvider extends ChangeNotifier {
         toastType: ToastType.failure,
         maxHeight: 100,
       );
-      validateCodeState = StateEnum.failed;
+      validateCodeState = DataState.failed;
       notifyListeners();
     }
   }
@@ -92,9 +92,9 @@ class AuthProvider extends ChangeNotifier {
       required BuildContext context,
       required WidgetRef ref}) async {
     try {
-      googleAuthState = StateEnum.loading;
+      googleAuthState = DataState.loading;
       notifyListeners();
-      final Response response = await DioConfig().dioServe(
+      final Response response = await DioClient().request(
         hasAuth: false,
         url: APIs.googleAuth,
         hasBody: true,
@@ -106,7 +106,7 @@ class AuthProvider extends ChangeNotifier {
           refreshToken: response.data["refresh_token"]);
       // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       await DependencyResolver.resolve(ref: ref);
-      googleAuthState = StateEnum.success;
+      googleAuthState = DataState.success;
       notifyListeners();
     } catch (e) {
       log(e.toString());
@@ -116,7 +116,7 @@ class AuthProvider extends ChangeNotifier {
         message: 'Something went wrong, please try again.',
         toastType: ToastType.failure,
       );
-      googleAuthState = StateEnum.failed;
+      googleAuthState = DataState.failed;
       notifyListeners();
     }
   }
@@ -126,10 +126,10 @@ class AuthProvider extends ChangeNotifier {
       required String password,
       required BuildContext context,
       required WidgetRef ref}) async {
-    signInState = StateEnum.loading;
+    signInState = DataState.loading;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: false,
         url: APIs.signIn,
         hasBody: true,
@@ -145,11 +145,11 @@ class AuthProvider extends ChangeNotifier {
           refreshToken: response.data["refresh_token"]);
       // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       await DependencyResolver.resolve(ref: ref);
-      signInState = StateEnum.success;
+      signInState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.toString());
-      signInState = StateEnum.failed;
+      signInState = DataState.failed;
       notifyListeners();
       CustomToast.showToastWithColors(
           context, e.response!.data['error'].toString(),
@@ -158,23 +158,23 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future sendForgotCode({required String email}) async {
-    sendCodeState = StateEnum.loading;
+    sendCodeState = DataState.loading;
     notifyListeners();
     log(email);
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: false,
         url: APIs.sendForgotPassCode,
         hasBody: true,
         httpMethod: HttpMethod.post,
         data: {'email': email},
       );
-      sendCodeState = StateEnum.success;
+      sendCodeState = DataState.success;
       log(response.data.toString());
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
-      sendCodeState = StateEnum.failed;
+      sendCodeState = DataState.failed;
       notifyListeners();
     }
   }
@@ -184,10 +184,10 @@ class AuthProvider extends ChangeNotifier {
       required String password,
       BuildContext? context,
       required WidgetRef ref}) async {
-    signUpState = StateEnum.loading;
+    signUpState = DataState.loading;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: false,
         url: APIs.signUp,
         hasBody: true,
@@ -203,11 +203,11 @@ class AuthProvider extends ChangeNotifier {
           refreshToken: response.data["refresh_token"]);
       // SharedPrefrenceServices.setUserID(response.data["user"]['id']);
       await DependencyResolver.resolve(ref: ref);
-      signUpState = StateEnum.success;
+      signUpState = DataState.success;
       notifyListeners();
     } catch (e) {
       log(e.toString());
-      signUpState = StateEnum.failed;
+      signUpState = DataState.failed;
       notifyListeners();
       if (e is DioException) {
         if (context != null) {
@@ -231,10 +231,10 @@ class AuthProvider extends ChangeNotifier {
 
   Future resetPassword(
       {required String password, required String token}) async {
-    resetPassState = StateEnum.loading;
+    resetPassState = DataState.loading;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
           hasAuth: false,
           url: APIs.resetPassword
               .replaceAll('\$UID', token)
@@ -243,7 +243,7 @@ class AuthProvider extends ChangeNotifier {
           httpMethod: HttpMethod.post,
           data: {"new_password": password, "confirm_password": password});
 
-      resetPassState = StateEnum.success;
+      resetPassState = DataState.success;
       log(response.data.toString());
       ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
         const SnackBar(
@@ -253,7 +253,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     } on DioException catch (err) {
       log(err.toString());
-      resetPassState = StateEnum.failed;
+      resetPassState = DataState.failed;
 
       ScaffoldMessenger.of(Const.globalKey.currentContext!).showSnackBar(
         SnackBar(

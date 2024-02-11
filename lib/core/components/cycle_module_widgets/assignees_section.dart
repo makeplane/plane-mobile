@@ -1,116 +1,112 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
+import 'package:plane/models/cycle/cycle_detail.model.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/widgets/completion_percentage.dart';
 import 'package:plane/widgets/custom_text.dart';
+import 'completion_percentage.dart';
 
-Widget assigneesWidget(
-    {required WidgetRef ref,
-    required Map detailData,
-    required List<String> assignee_ids}) {
-  final themeManager = ref.read(ProviderList.themeProvider).themeManager;
-  return Column(
-    children: [
-      Align(
-          alignment: Alignment.centerLeft,
-          child: CustomText(
-            'Assignees',
-            type: FontStyle.Medium,
-            fontWeight: FontWeightt.Medium,
-            color: themeManager.primaryTextColor,
-          )),
-      const SizedBox(height: 10),
-      detailData['assignees'].length == 0
-          ? const CustomText('No data found.')
-          : Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              decoration: BoxDecoration(
-                color: themeManager.primaryBackgroundDefaultColor,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: themeManager.borderSubtle01Color,
-                ),
-              ),
-              child: Column(
-                children: [
-                  ...List.generate(
-                    detailData['assignees'].length,
-                    (idx) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 8),
-                        margin: const EdgeInsets.symmetric(vertical: 2),
-                        decoration: BoxDecoration(
-                          color: (assignee_ids
-                                  .contains(detailData['assignees'][idx]
-                                      ['assignee_id'])
-                              ? themeManager.secondaryBackgroundDefaultColor
-                              : themeManager.primaryBackgroundDefaultColor),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
+class ACycleCardAssigneesSection extends ConsumerStatefulWidget {
+  const ACycleCardAssigneesSection({required this.activeCycle, super.key});
+  final CycleDetailModel activeCycle;
+  @override
+  ConsumerState<ACycleCardAssigneesSection> createState() =>
+      _ACycleCardAssigneesSectionState();
+}
+
+class _ACycleCardAssigneesSectionState
+    extends ConsumerState<ACycleCardAssigneesSection> {
+  @override
+  Widget build(BuildContext context) {
+    final themeManager = ref.read(ProviderList.themeProvider).themeManager;
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        backgroundColor: themeManager.primaryBackgroundDefaultColor,
+        collapsedBackgroundColor: themeManager.primaryBackgroundDefaultColor,
+        iconColor: themeManager.primaryTextColor,
+        collapsedIconColor: themeManager.primaryTextColor,
+        title: const Align(
+            alignment: Alignment.centerLeft,
+            child: CustomText(
+              'Assignees',
+              type: FontStyle.Medium,
+              fontWeight: FontWeightt.Medium,
+            )),
+        children: [
+          Container(
+            color: themeManager.primaryBackgroundDefaultColor,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: widget.activeCycle.distribution == null ||
+                    widget.activeCycle.distribution!.assignees.isEmpty
+                ? Container(
+                    padding: const EdgeInsets.only(left: 20, bottom: 20),
+                    alignment: Alignment.center,
+                    child: CustomText(
+                      'No assignees',
+                      color: themeManager.placeholderTextColor,
+                    ),
+                  )
+                : Column(
+                    children: widget.activeCycle.distribution!.assignees
+                        .map(
+                          (assignee) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: detailData['assignees'][idx]
-                                                    ['avatar'] !=
-                                                null &&
-                                            detailData['assignees'][idx]
-                                                    ['avatar'] !=
-                                                ''
-                                        ? CircleAvatar(
-                                            radius: 10,
-                                            backgroundImage: NetworkImage(
-                                                detailData['assignees'][idx]
-                                                    ['avatar']),
-                                          )
-                                        : CircleAvatar(
-                                            radius: 10,
-                                            backgroundColor: themeManager
-                                                .tertiaryBackgroundDefaultColor,
-                                            child: Center(
-                                              child: CustomText(
-                                                detailData['assignees'][idx]
-                                                            ['first_name'] !=
-                                                        null
-                                                    ? detailData['assignees']
-                                                                [idx]
-                                                            ['first_name'][0]
-                                                        .toString()
-                                                        .toUpperCase()
-                                                    : '',
-                                                type: FontStyle.Small,
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: assignee.avatar.isNotEmpty
+                                          ? CircleAvatar(
+                                              radius: 10,
+                                              backgroundImage:
+                                                  NetworkImage(assignee.avatar),
+                                            )
+                                          : CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor:
+                                                  const Color.fromRGBO(
+                                                      29, 30, 32, 1),
+                                              child: Center(
+                                                child: CustomText(
+                                                  assignee.display_name
+                                                      .capitalize(),
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
-                                          )),
-                                CustomText(
-                                  detailData['assignees'][idx]
-                                          ['display_name'] ??
-                                      'No Assignees',
-                                  color: themeManager.secondaryTextColor,
+                                    ),
+                                    CustomText(
+                                      assignee.display_name,
+                                      fontWeight: FontWeightt.Regular,
+                                      color: themeManager.secondaryTextColor,
+                                      type: FontStyle.Large,
+                                    ),
+                                  ],
                                 ),
+                                Row(
+                                  children: [
+                                    CompletionPercentage(
+                                        value:
+                                            widget.activeCycle.completed_issues,
+                                        totalValue:
+                                            widget.activeCycle.total_issues),
+                                  ],
+                                )
                               ],
                             ),
-                            CompletionPercentage(
-                              value: detailData['assignees'][idx]
-                                  ['completed_issues'],
-                              totalValue: detailData['assignees'][idx]
-                                  ['total_issues'],
-                            )
-                          ],
-                        ),
-                      );
-                    },
+                          ),
+                        )
+                        .toList(),
                   ),
-                ],
-              ),
-            ),
-    ],
-  );
+          )
+        ],
+      ),
+    );
+  }
 }

@@ -54,7 +54,7 @@ class _SetupProfileScreenState extends ConsumerState<SetupProfileScreen> {
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LoadingWidget(
-          loading: prov.updateProfileState == StateEnum.loading,
+          loading: prov.updateProfileState == DataState.loading,
           widgetClass: SingleChildScrollView(
             child: Form(
               key: formKey,

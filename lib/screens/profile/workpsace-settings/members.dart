@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plane/bottom-sheets/delete_leave_project_sheet.dart';
-import 'package:plane/bottom-sheets/delete_workspace_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_leave_project_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_workspace_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/profile/user-profile/user_profile.dart';
 import 'package:plane/screens/profile/workpsace-settings/invite_members.dart';
@@ -82,8 +82,8 @@ class _MembersState extends ConsumerState<Members> {
         ],
       ),
       body: LoadingWidget(
-        loading: workspaceProvider.getMembersState == StateEnum.loading,
-        widgetClass: workspaceProvider.getMembersState == StateEnum.success
+        loading: workspaceProvider.getMembersState == DataState.loading,
+        widgetClass: workspaceProvider.getMembersState == DataState.success
             ? MembersListWidget(
                 fromWorkspace: widget.fromWorkspace,
               )
@@ -111,7 +111,7 @@ class _MembersListWidgetState extends ConsumerState<MembersListWidget> {
     final projectsProvider = ref.watch(ProviderList.projectProvider);
 
     return LoadingWidget(
-      loading: projectsProvider.updateProjectMemberState == StateEnum.loading,
+      loading: projectsProvider.updateProjectMemberState == DataState.loading,
       widgetClass: Container(
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           child: widget.fromWorkspace
@@ -746,9 +746,9 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                             'WORKSPACE_SLUG': workspaceProvider
                                 .selectedWorkspace.workspaceSlug,
                             'PROJECT_ID':
-                                projectsProvider.projectDetailModel!.id,
+                                projectsProvider.currentprojectDetails!.id,
                             'PROJECT_NAME':
-                                projectsProvider.projectDetailModel!.name
+                                projectsProvider.currentprojectDetails!.name
                           },
                           role: getRole(),
                         );
@@ -772,9 +772,10 @@ class _ProjectMembersWidgetState extends ConsumerState<ProjectMembersWidget> {
                               workspaceProvider.selectedWorkspace.workspaceName,
                           'WORKSPACE_SLUG':
                               workspaceProvider.selectedWorkspace.workspaceSlug,
-                          'PROJECT_ID': projectsProvider.projectDetailModel!.id,
+                          'PROJECT_ID':
+                              projectsProvider.currentprojectDetails!.id,
                           'PROJECT_NAME':
-                              projectsProvider.projectDetailModel!.name
+                              projectsProvider.currentprojectDetails!.name
                         },
                         role: Role.none,
                       );

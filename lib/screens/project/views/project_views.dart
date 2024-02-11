@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:plane/bottom-sheets/delete_cycle_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_cycle_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/empty.dart';
@@ -34,7 +35,7 @@ class _ViewsState extends ConsumerState<Views> {
     final viewsProvider = ref.watch(ProviderList.viewsProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
-      loading: viewsProvider.viewsState == StateEnum.loading,
+      loading: viewsProvider.viewsState == DataState.loading,
       widgetClass: viewsProvider.views.isEmpty
           ? EmptyPlaceholder.projectViews(context, ref)
           : SingleChildScrollView(
@@ -251,28 +252,9 @@ class _ViewsState extends ConsumerState<Views> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            enableDrag: true,
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.50),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              ),
-                            ),
-                            context: context,
-                            builder: (ctx) {
-                              return DeleteCycleSheet(
-                                name: viewsProvider.views[index]["name"],
-                                id: viewsProvider.views[index]["id"],
-                                type: 'View',
-                                index: index,
-                              );
-                            },
-                          );
+                          //TODO: Add delete bottom sheet
+                          BottomSheetHelper.showBottomSheet(
+                              context, Container());
                         },
                         child: Icon(
                           LucideIcons.trash2,

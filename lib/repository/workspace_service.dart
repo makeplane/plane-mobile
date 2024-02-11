@@ -2,18 +2,18 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 
 import '../config/apis.dart';
 import '../utils/enums.dart';
 
 class WorkspaceService {
   WorkspaceService(this.dio);
-  DioConfig dio;
+  DioClient dio;
 
   Future<Either<List<dynamic>, DioException>> getWorkspaces() async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
         hasAuth: true,
         url: APIs.listWorkspaces,
         hasBody: false,
@@ -29,7 +29,7 @@ class WorkspaceService {
   Future<Either<List, DioException>> getWorkspaceMembers(
       {required String url}) async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -45,7 +45,7 @@ class WorkspaceService {
   Future<Either<List, DioException>> getWorkspaceMembersInvitations(
       {required String url}) async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -61,7 +61,7 @@ class WorkspaceService {
   Future<Either<bool, DioException>> removeWorkspaceMembersInvitations(
       {required String url}) async {
     try {
-      await dio.dioServe(
+      await dio.request(
         hasAuth: true,
         url: url,
         hasBody: false,
@@ -73,5 +73,4 @@ class WorkspaceService {
       return Right(err);
     }
   }
-
 }

@@ -24,9 +24,10 @@ class _IssueListCardState extends ConsumerState<IssueListCard> {
     final themeManager = ref.read(ProviderList.themeProvider).themeManager;
     final appliedDisplayProperties = widget.issuesProvider.displayProperties;
     final projectProvider = ref.read(ProviderList.projectProvider);
+
     return Container(
       color: themeManager.primaryBackgroundDefaultColor,
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.fromLTRB(15,10,15,10),
       child: Row(
         children: [
           appliedDisplayProperties.priority
@@ -41,7 +42,7 @@ class _IssueListCardState extends ConsumerState<IssueListCard> {
                   margin: const EdgeInsets.only(right: 15),
                   height: 30,
                   width: 30,
-                  child: priorityIcon(widget.issue.priority))
+                  child: PriorityIcon(widget.issue.priority))
               : const SizedBox(),
           appliedDisplayProperties.key
               ? SizedBox(

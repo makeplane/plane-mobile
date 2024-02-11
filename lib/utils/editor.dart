@@ -65,7 +65,7 @@ class _EDITORState extends ConsumerState<EDITOR> {
       ),
       body: SizedBox(
         // height: 500,
-        child: issueProvider.cookiesState == StateEnum.loading
+        child: issueProvider.cookiesState == DataState.loading
             ? Container(
                 alignment: Alignment.center,
                 color: themeProvider.themeManager.primaryBackgroundDefaultColor,

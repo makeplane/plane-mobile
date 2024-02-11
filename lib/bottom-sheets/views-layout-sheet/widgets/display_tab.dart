@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
@@ -8,7 +6,6 @@ import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_expansion_tile.dart';
 import 'package:plane/widgets/custom_text.dart';
-
 import 'display_properties_list.dart';
 
 class DisplayTab extends ConsumerStatefulWidget {
@@ -28,7 +25,7 @@ class DisplayTab extends ConsumerStatefulWidget {
   final IssueType issueType;
   final IssuesLayout layout;
   final bool showEmptyGroups;
-  final IssueCategory issuesCategory;
+  final IssuesCategory issuesCategory;
   final DisplayPropertiesModel dProperties;
   final Function(DisplayPropertiesModel dProperties) onDPropertiesChange;
   final Function(
@@ -110,7 +107,7 @@ class _DisplayTabState extends ConsumerState<DisplayTab> {
 
   bool _shouldHideGroupbyProperty(GroupBY groupby) {
     /// in [global-issues] group by [project, created_by] should be hidden
-    if (widget.issuesCategory == IssueCategory.myIssues &&
+    if (widget.issuesCategory == IssuesCategory.GLOBAL &&
         (groupby == GroupBY.project || groupby == GroupBY.createdBY)) {
       return true;
     }
@@ -121,7 +118,7 @@ class _DisplayTabState extends ConsumerState<DisplayTab> {
     }
 
     /// group-by project should only be available in [global-issues]
-    else if (widget.issuesCategory != IssueCategory.myIssues &&
+    else if (widget.issuesCategory != IssuesCategory.GLOBAL &&
         groupby == GroupBY.project) {
       return true;
     }

@@ -4,16 +4,16 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/models/project/state/state_model.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class StatesService {
-  final dio = DioConfig();
+  final dio = DioClient();
 
   Future<Either<Map<String, StateModel>, DioException>> getStates(
       {required String slug, required String projectId}) async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
         hasAuth: true,
         url: APIs.states
             .replaceAll("\$SLUG", slug)
@@ -66,7 +66,7 @@ class StatesService {
       required String slug,
       required String projectId}) async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
           hasAuth: true,
           url: APIs.states
               .replaceFirst('\$SLUG', slug)
@@ -87,7 +87,7 @@ class StatesService {
       required String projectId,
       required String stateId}) async {
     try {
-      final response = await dio.dioServe(
+      final response = await dio.request(
           hasAuth: true,
           url:
               '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$stateId/',
@@ -106,7 +106,7 @@ class StatesService {
       required String projectId,
       required String stateId}) async {
     try {
-      await dio.dioServe(
+      await dio.request(
         hasAuth: true,
         url:
             '${APIs.states.replaceFirst('\$SLUG', slug).replaceFirst('\$PROJECTID', projectId)}$stateId/',

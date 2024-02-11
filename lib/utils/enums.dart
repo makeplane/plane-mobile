@@ -2,7 +2,7 @@
 
 enum Environment { production, staging, dev }
 
-enum StateEnum {
+enum DataState {
   error,
   success,
   failed,
@@ -37,13 +37,13 @@ enum IssueType { all, active, backlog }
 
 enum CRUD { create, read, update, delete }
 
-enum IssueCategory {
-  projectIssues,
-  cycleIssues,
-  moduleIssues,
-  myIssues,
-  views,
-  archivedIssues,
+enum IssuesCategory {
+  PROJECT,
+  CYCLE,
+  MODULE,
+  GLOBAL,
+  PROJECT_VIEW,
+  ARCHIVE,
 }
 
 enum IssueDetailCategory {

@@ -20,7 +20,7 @@ class _ModuleScreenState extends ConsumerState<ModuleScreen> {
     final themeProvider = ref.watch(ProviderList.themeProvider);
     final modulesProvider = ref.watch(ProviderList.modulesProvider);
     return LoadingWidget(
-      loading: modulesProvider.moduleState == StateEnum.loading,
+      loading: modulesProvider.moduleState == DataState.loading,
       widgetClass: Padding(
         padding: const EdgeInsets.only(
           top: 16,

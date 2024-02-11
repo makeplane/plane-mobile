@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
 
 class PageProvider with ChangeNotifier {
-  StateEnum pagesListState = StateEnum.empty;
-  StateEnum blockState = StateEnum.empty;
-  StateEnum pageFavoriteState = StateEnum.empty;
-  StateEnum blockSheetState = StateEnum.empty;
+  DataState pagesListState = DataState.empty;
+  DataState blockState = DataState.empty;
+  DataState pageFavoriteState = DataState.empty;
+  DataState blockSheetState = DataState.empty;
 
   PageFilters selectedFilter = PageFilters.all;
   Map<PageFilters, List<dynamic>> pages = {
@@ -73,14 +73,14 @@ class PageProvider with ChangeNotifier {
     try {
       if (httpMethod != HttpMethod.get || httpMethod == HttpMethod.delete) {
         if (httpMethod == HttpMethod.delete) {
-          blockState = StateEnum.loading;
+          blockState = DataState.loading;
         }
-        blockSheetState = StateEnum.loading;
+        blockSheetState = DataState.loading;
         notifyListeners();
       } else {
-        blockState = StateEnum.loading;
+        blockState = DataState.loading;
       }
-      final res = await DioConfig().dioServe(
+      final res = await DioClient().request(
           httpMethod: httpMethod,
           hasAuth: true,
           hasBody: httpMethod == HttpMethod.get ? false : true,
@@ -126,8 +126,9 @@ class PageProvider with ChangeNotifier {
                           workspaceProvider.selectedWorkspace.workspaceName,
                       'WORKSPACE_SLUG':
                           workspaceProvider.selectedWorkspace.workspaceSlug,
-                      'PROJECT_ID': projectProvider.projectDetailModel!.id,
-                      'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+                      'PROJECT_ID': projectProvider.currentprojectDetails!.id,
+                      'PROJECT_NAME':
+                          projectProvider.currentprojectDetails!.name,
                       'PAGE_ID': pageID,
                       'BLOCK_ID': res.data['id']
                     },
@@ -144,8 +145,8 @@ class PageProvider with ChangeNotifier {
       } else {
         blocks = res.data;
       }
-      blockSheetState = StateEnum.success;
-      blockState = StateEnum.success;
+      blockSheetState = DataState.success;
+      blockState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       //log(e.response.toString());
@@ -155,8 +156,8 @@ class PageProvider with ChangeNotifier {
             context, e.response!.data['detail'] ?? e.response!.data,
             toastType: ToastType.failure);
       }
-      blockSheetState = StateEnum.failed;
-      blockState = StateEnum.error;
+      blockSheetState = DataState.failed;
+      blockState = DataState.error;
       notifyListeners();
     }
   }
@@ -165,14 +166,14 @@ class PageProvider with ChangeNotifier {
     required String slug,
     required String projectId,
   }) async {
-    pagesListState = StateEnum.loading;
+    pagesListState = DataState.loading;
     notifyListeners();
     try {
       log(APIs.getPages
               .replaceAll("\$SLUG", slug)
               .replaceAll("\$PROJECTID", projectId) +
           getQuery(selectedFilter));
-      final Response response = await DioConfig().dioServe(
+      final Response response = await DioClient().request(
           httpMethod: HttpMethod.get,
           url: APIs.getPages
                   .replaceAll("\$SLUG", slug)
@@ -188,11 +189,11 @@ class PageProvider with ChangeNotifier {
         pages[selectedFilter] = response.data;
       }
 
-      pagesListState = StateEnum.success;
+      pagesListState = DataState.success;
       setState();
     } on DioException catch (e) {
       log(e.response.toString());
-      pagesListState = StateEnum.error;
+      pagesListState = DataState.error;
       setState();
     }
   }
@@ -202,11 +203,11 @@ class PageProvider with ChangeNotifier {
       required String slug,
       required String projectId,
       required bool shouldItBeFavorite}) async {
-    pageFavoriteState = StateEnum.loading;
+    pageFavoriteState = DataState.loading;
     setState();
     try {
       if (shouldItBeFavorite) {
-        await DioConfig().dioServe(
+        await DioClient().request(
             httpMethod: HttpMethod.post,
             data: {"page": pageId},
             hasAuth: true,
@@ -215,7 +216,7 @@ class PageProvider with ChangeNotifier {
                 .replaceAll("\$SLUG", slug)
                 .replaceAll("\$PROJECTID", projectId));
       } else {
-        await DioConfig().dioServe(
+        await DioClient().request(
             hasAuth: true,
             hasBody: false,
             httpMethod: HttpMethod.delete,
@@ -223,10 +224,10 @@ class PageProvider with ChangeNotifier {
                 '${APIs.favouritePage.replaceAll("\$SLUG", slug).replaceAll("\$PROJECTID", projectId)}$pageId/');
       }
 
-      pageFavoriteState = StateEnum.success;
+      pageFavoriteState = DataState.success;
       setState();
     } on DioException catch (e) {
-      pageFavoriteState = StateEnum.error;
+      pageFavoriteState = DataState.error;
       log(e.response.toString());
 
       setState();
@@ -241,13 +242,13 @@ class PageProvider with ChangeNotifier {
       required WidgetRef ref,
       BuildContext? context,
       bool? fromDispose = false}) async {
-    blockSheetState = StateEnum.loading;
+    blockSheetState = DataState.loading;
     notifyListeners();
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     final profileProvider = ref.read(ProviderList.profileProvider);
     try {
-      final res = await DioConfig().dioServe(
+      final res = await DioClient().request(
           httpMethod: HttpMethod.patch,
           hasAuth: true,
           hasBody: true,
@@ -260,19 +261,19 @@ class PageProvider with ChangeNotifier {
             'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
             'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
             'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
-            'PROJECT_ID': projectProvider.projectDetailModel!.id,
-            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PROJECT_ID': projectProvider.currentprojectDetails!.id,
+            'PROJECT_NAME': projectProvider.currentprojectDetails!.name,
             'PAGE_ID': res.data['id']
           },
           userEmail: profileProvider.userProfile.email!,
           userID: profileProvider.userProfile.id!);
       final int index = pages[selectedFilter]!
           .indexWhere((element) => element["id"] == pageId);
-      pagesListState = StateEnum.success;
+      pagesListState = DataState.success;
       res.data["is_favorite"] = pages[selectedFilter]![index]["is_favorite"];
       pages[selectedFilter]![index] = res.data;
 
-      blockSheetState = StateEnum.success;
+      blockSheetState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       //log(e.response.toString());
@@ -287,7 +288,7 @@ class PageProvider with ChangeNotifier {
         }
       }
       log(e.response!.data.toString());
-      blockSheetState = StateEnum.error;
+      blockSheetState = DataState.error;
       notifyListeners();
       setState();
     }
@@ -301,9 +302,9 @@ class PageProvider with ChangeNotifier {
       required WidgetRef ref,
       BuildContext? context}) async {
     try {
-      blockState = StateEnum.loading;
+      blockState = DataState.loading;
       notifyListeners();
-      final res = await DioConfig().dioServe(
+      final res = await DioClient().request(
           httpMethod: HttpMethod.post,
           hasAuth: true,
           hasBody: true,
@@ -318,7 +319,7 @@ class PageProvider with ChangeNotifier {
           blockID: blockID,
           projectId: projectId,
           ref: ref);
-      blockState = StateEnum.success;
+      blockState = DataState.success;
 
       log(res.data.toString());
       notifyListeners();
@@ -329,7 +330,7 @@ class PageProvider with ChangeNotifier {
             context, e.response!.data['detail'] ?? e.response!.data,
             toastType: ToastType.failure);
       }
-      blockState = StateEnum.error;
+      blockState = DataState.error;
       notifyListeners();
     }
   }
@@ -340,31 +341,31 @@ class PageProvider with ChangeNotifier {
       required String projectId,
       required String userId,
       required WidgetRef ref}) async {
-    pagesListState = StateEnum.loading;
+    pagesListState = DataState.loading;
     setState();
     final workspaceProvider = ref.read(ProviderList.workspaceProvider);
     final projectProvider = ref.read(ProviderList.projectProvider);
     final profileProvider = ref.read(ProviderList.profileProvider);
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
           httpMethod: HttpMethod.post,
           url: APIs.createPage
               .replaceAll("\$SLUG", slug)
               .replaceAll("\$PROJECTID", projectId),
           data: {"name": pageTitle});
-      pagesListState = StateEnum.success;
+      pagesListState = DataState.success;
       postHogService(
           eventName: 'PAGE_CREATE',
           properties: {
             'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
             'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
             'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
-            'PROJECT_ID': projectProvider.projectDetailModel!.id,
-            'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+            'PROJECT_ID': projectProvider.currentprojectDetails!.id,
+            'PROJECT_NAME': projectProvider.currentprojectDetails!.name,
             'PAGE_ID': response.data['id']
           },
-               userEmail: profileProvider.userProfile.email!,
-                                userID: profileProvider.userProfile.id!);
+          userEmail: profileProvider.userProfile.email!,
+          userID: profileProvider.userProfile.id!);
       updatepageList(
         slug: slug,
         projectId: projectId,
@@ -372,7 +373,7 @@ class PageProvider with ChangeNotifier {
       setState();
     } on DioException catch (e) {
       log(e.response.toString());
-      pagesListState = StateEnum.error;
+      pagesListState = DataState.error;
       setState();
     }
   }
@@ -382,10 +383,10 @@ class PageProvider with ChangeNotifier {
     required String slug,
     required String projectId,
   }) async {
-    pagesListState = StateEnum.loading;
+    pagesListState = DataState.loading;
     setState();
     try {
-      await DioConfig().dioServe(
+      await DioClient().request(
         httpMethod: HttpMethod.delete,
         url: APIs.deletePage
             .replaceAll("\$SLUG", slug)
@@ -394,11 +395,11 @@ class PageProvider with ChangeNotifier {
       );
 
       updatepageList(slug: slug, projectId: projectId);
-      pagesListState = StateEnum.success;
+      pagesListState = DataState.success;
       setState();
     } on DioException catch (e) {
       log(e.response.toString());
-      pagesListState = StateEnum.error;
+      pagesListState = DataState.error;
       setState();
     }
   }

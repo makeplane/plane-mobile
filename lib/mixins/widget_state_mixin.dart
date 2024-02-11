@@ -14,17 +14,11 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   bool errorAllowed = true;
   late ThemeManager themeManager;
   double? _height;
-  int _count = 1;
 
   void setHeight() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final RenderBox box = context.findRenderObject() as RenderBox;
       _height = box.size.height;
-      if (_count > 0) {
-        setState(() {
-          _count--;
-        });
-      }
     });
   }
 
@@ -32,14 +26,14 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
     return LoadingType.none;
   }
 
-  LoadingType setWidgetState(List<StateEnum> states,
+  LoadingType setWidgetState(List<DataState> states,
       {LoadingType loadingType = LoadingType.translucent,
       bool allowError = true}) {
     errorAllowed = allowError;
     for (final state in states) {
-      if (state == StateEnum.loading) {
+      if (state == DataState.loading) {
         return loadingType;
-      } else if (state == StateEnum.error || state == StateEnum.failed) {
+      } else if (state == DataState.error || state == DataState.failed) {
         return LoadingType.error;
       }
     }
@@ -79,12 +73,14 @@ mixin WidgetStateMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
                         height:
                             loadingType == LoadingType.wrap ? _height : null,
                         decoration: BoxDecoration(
-                            // borderRadius: BorderRadius.circular(30),
-                            color: themeManager.primaryBackgroundDefaultColor
-                                .withOpacity(0.5),
-                            borderRadius: loadingType == LoadingType.wrap ?const BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30)) : BorderRadius.zero,
+                          // borderRadius: BorderRadius.circular(30),
+                          color: themeManager.primaryBackgroundDefaultColor
+                              .withOpacity(0.5),
+                          borderRadius: loadingType == LoadingType.wrap
+                              ? const BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))
+                              : BorderRadius.zero,
                         ),
                         alignment: Alignment.center,
                         child: SizedBox(

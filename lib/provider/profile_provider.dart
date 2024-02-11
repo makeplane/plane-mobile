@@ -7,7 +7,7 @@ import 'package:plane/models/user_setting_model.dart';
 import 'package:plane/repository/profile_provider_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/config/apis.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 
 import '../services/shared_preference_service.dart';
 import '../utils/timezone_manager.dart';
@@ -32,8 +32,8 @@ class ProfileProvider extends ChangeNotifier {
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
-  StateEnum getProfileState = StateEnum.empty;
-  StateEnum updateProfileState = StateEnum.empty;
+  DataState getProfileState = DataState.empty;
+  DataState updateProfileState = DataState.empty;
   UserProfile userProfile = UserProfile.initialize();
   UserSettingModel userSetting = UserSettingModel.initialize();
 
@@ -65,7 +65,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<Either<UserProfile, DioException>> getProfile() async {
-    getProfileState = StateEnum.loading;
+    getProfileState = DataState.loading;
     final response = await profileService.getProfile();
 
     return response.fold((userProfile) {
@@ -74,7 +74,7 @@ class ProfileProvider extends ChangeNotifier {
       SharedPrefrenceServices.setUserID(userProfile.id!);
       firstName.text = userProfile.firstName!;
       lastName.text = userProfile.lastName!;
-      getProfileState = StateEnum.success;
+      getProfileState = DataState.success;
       selectedTimeZone = userProfile.userTimezone.toString();
       TimeZoneManager.findLabelFromTimeZonesList(selectedTimeZone) ??
           'UTC, GMT';
@@ -82,7 +82,7 @@ class ProfileProvider extends ChangeNotifier {
       return Left(userProfile);
     }, (error) {
       log(error.toString());
-      getProfileState = StateEnum.error;
+      getProfileState = DataState.error;
       notifyListeners();
       return Right(error);
     });
@@ -101,17 +101,17 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<Either<UserProfile, DioException>> updateProfile(
       {required Map data}) async {
-    updateProfileState = StateEnum.loading;
+    updateProfileState = DataState.loading;
     notifyListeners();
     final response = await profileService.updateProfile(data: data);
     if (response.isLeft()) {
       userProfile = response.fold((l) => l, (r) => UserProfile.initialize());
       SharedPrefrenceServices.setTheme(userProfile.theme!);
-      updateProfileState = StateEnum.success;
+      updateProfileState = DataState.success;
       notifyListeners();
     } else {
       log(response.fold((l) => l.toString(), (r) => r.toString()));
-      updateProfileState = StateEnum.error;
+      updateProfileState = DataState.error;
       notifyListeners();
     }
     return response;
@@ -119,7 +119,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future updateIsOnBoarded({required bool val}) async {
     try {
-      await DioConfig().dioServe(
+      await DioClient().request(
           hasAuth: true,
           url: APIs.isOnboarded,
           hasBody: true,
@@ -133,10 +133,10 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future deleteAvatar() async {
-    updateProfileState = StateEnum.loading;
+    updateProfileState = DataState.loading;
     notifyListeners();
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: "${APIs.fileUpload}${userProfile.avatar!.split('/').last}/",
         hasBody: false,
@@ -144,12 +144,12 @@ class ProfileProvider extends ChangeNotifier {
       );
       log(response.statusCode.toString());
       await updateProfile(data: {"avatar": ""});
-      updateProfileState = StateEnum.success;
+      updateProfileState = DataState.success;
       notifyListeners();
     } on DioException catch (e) {
       log(e.response.toString());
       log(e.error.toString());
-      updateProfileState = StateEnum.error;
+      updateProfileState = DataState.error;
       notifyListeners();
     }
   }

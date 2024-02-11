@@ -89,7 +89,6 @@ class _CompanySizeState extends ConsumerState<CompanySize> {
               },
               separatorBuilder: (context, index) {
                 return CustomDivider(
-                    themeProvider: themeProvider,
                     color: themeProvider.themeManager.borderDisabledColor);
               },
             ),

@@ -261,7 +261,7 @@ class _ActivityGraphWidgetState extends ConsumerState<ActivityGraphWidget> {
     final dashboardProvider = ref.watch(ProviderList.dashboardProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     Color color = themeProvider.themeManager.tertiaryBackgroundDefaultColor;
-    if (dashboardProvider.getDashboardState == StateEnum.success) {
+    if (dashboardProvider.getDashboardState == DataState.success) {
       for (final element
           in dashboardProvider.dashboardData['issue_activities']) {
         if (element['created_date'] == date) {

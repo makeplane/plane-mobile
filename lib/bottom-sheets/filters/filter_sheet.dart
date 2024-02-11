@@ -1,69 +1,76 @@
-// ignore_for_file: unused_local_variable
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:plane/core/icons/priority_icon.dart';
-import 'package:plane/core/icons/state_group_icon.dart';
+import 'package:plane/bottom-sheets/filters/widgets/date_filter.dart';
+import 'package:plane/bottom-sheets/filters/widgets/member_filter.dart';
 import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
+import 'package:plane/models/project/label/label.model.dart';
 import 'package:plane/models/project/state/state_model.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/provider/theme_provider.dart';
-import 'package:plane/screens/create_view_screen.dart';
-import 'package:plane/utils/constants.dart';
-import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
-import 'package:plane/utils/issues/issues.helper.dart';
-import 'package:plane/utils/theme_manager.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_divider.dart';
-import 'package:plane/widgets/custom_expansion_tile.dart';
 import 'package:plane/widgets/custom_text.dart';
-import 'package:plane/widgets/rectangular_chip.dart';
-import '../../provider/projects_provider.dart';
-part 'filter_sheet_state.dart';
-part 'widgets/priority_filter.dart';
-part 'widgets/state_filter.dart';
-part 'widgets/assigness_filter.dart';
-part 'widgets/created_by_filter.dart';
-part 'widgets/due_date_filter.dart';
-part 'widgets/start_date_filter.dart';
-part 'widgets/filter_buttons.dart';
-part 'widgets/labels_filter.dart';
+import 'widgets/filter_buttons.dart';
+import 'widgets/labels_filter.dart';
+import 'widgets/priority_filter.dart';
+import 'widgets/state_filter.dart';
 
-// ignore: must_be_immutable
-class FilterSheet extends ConsumerStatefulWidget {
-  FilterSheet({
-    super.key,
-    required this.issueCategory,
-    this.appliedFilters = const FiltersModel(),
-    this.fromCreateView = false,
-  });
-  final IssueCategory issueCategory;
-  final FiltersModel appliedFilters;
-  bool fromCreateView = false;
+class SelectFilterSheet extends ConsumerStatefulWidget {
+  SelectFilterSheet(
+      {required this.appliedFilter,
+      required this.applyFilter,
+      required this.clearAllFilter,
+      this.saveView,
+      this.showSaveViewButton = false,
+      required this.labels,
+      required this.states,
+      super.key}) {
+    if (showSaveViewButton) assert(saveView != null);
+  }
+  final FiltersModel appliedFilter;
+  final VoidCallback clearAllFilter;
+  final Function(FiltersModel filter) applyFilter;
+  final VoidCallback? saveView;
+  final bool showSaveViewButton;
+  final List<StateModel> states;
+  final List<LabelModel> labels;
   @override
-  ConsumerState<FilterSheet> createState() => _FilterSheetState();
+  ConsumerState<SelectFilterSheet> createState() => _SelectFilterSheetState();
 }
 
-class _FilterSheetState extends ConsumerState<FilterSheet> {
-  late _FilterState state;
+class _SelectFilterSheetState extends ConsumerState<SelectFilterSheet> {
+  FiltersModel filters = const FiltersModel();
+  bool get _isFilterApplied =>
+      filters.priority.isNotEmpty ||
+      filters.state.isNotEmpty ||
+      filters.assignees.isNotEmpty ||
+      filters.created_by.isNotEmpty ||
+      filters.labels.isNotEmpty ||
+      filters.target_date.isNotEmpty ||
+      filters.start_date.isNotEmpty ||
+      filters.state_group.isNotEmpty ||
+      filters.subscriber.isNotEmpty;
+
+  void handleFilterChange(String property, String value) {
+    List<String> filter = filters.toJson()[property];
+    setState(() {
+      if (filter.contains(value)) {
+        filter.remove(value);
+      } else {
+        filter.add(value);
+      }
+    });
+  }
 
   @override
   void initState() {
-    state = _FilterState(
-        appliedFilters: widget.appliedFilters,
-        issueCategory: widget.issueCategory,
-        fromCreateView: widget.fromCreateView,
-        setState: () => setState(() {}),
-        ref: ref);
+    filters = widget.appliedFilter.copyWith();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = ref.watch(ProviderList.themeProvider);
+    final themeManager = ref.read(ProviderList.themeProvider).themeManager;
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Stack(
@@ -86,44 +93,65 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       icon: Icon(
                         Icons.close,
                         size: 27,
-                        color: themeProvider.themeManager.placeholderTextColor,
+                        color: themeManager.placeholderTextColor,
                       ),
                     ),
                   ],
                 ),
               ),
-              state.isFilterApplied
+              !_isFilterApplied
                   ? Container()
-                  : _clearFilterButton(state: state, ref: ref)
+                  : ClearFilterButton(onClick: widget.clearAllFilter, ref: ref)
             ],
           ),
           Container(
-            margin: EdgeInsets.only(
-                top: state.isFilterApplied ? 50 : 95, bottom: 80),
+            margin:
+                EdgeInsets.only(top: _isFilterApplied ? 95 : 50, bottom: 80),
             child: SingleChildScrollView(
               child: Wrap(
                 children: [
-                  _PriorityFilter(state: state),
-                  CustomDivider(themeProvider: themeProvider),
-                  _StateFilter(state: state),
-                  widget.issueCategory == IssueCategory.myIssues
-                      ? Container()
-                      : CustomDivider(themeProvider: themeProvider),
-                  widget.issueCategory == IssueCategory.myIssues
-                      ? Container()
-                      : _AssigneesFilter(state: state),
-                  widget.issueCategory == IssueCategory.myIssues
-                      ? Container()
-                      : CustomDivider(themeProvider: themeProvider),
-                  widget.issueCategory == IssueCategory.myIssues
-                      ? Container()
-                      : _CreatedByFilter(state: state),
-                  CustomDivider(themeProvider: themeProvider),
-                  _LabelFilter(state: state),
-                  CustomDivider(themeProvider: themeProvider),
-                  _DueDateFilter(state: state),
-                  CustomDivider(themeProvider: themeProvider),
-                  _StartDateFilter(state: state),
+                  PriorityFilter(
+                    filter: filters,
+                    onChange: (priority) =>
+                        handleFilterChange('priority', priority),
+                  ),
+                  const CustomDivider(),
+                  StateFilter(
+                    states: widget.states,
+                    onChange: (stateId) => handleFilterChange('state', stateId),
+                  ),
+                  const CustomDivider(),
+                  MemberFilter(
+                    filter: filters,
+                    title: 'Assignees',
+                    onChange: (memberId) =>
+                        handleFilterChange('assignees', memberId),
+                  ),
+                  const CustomDivider(),
+                  MemberFilter(
+                    filter: filters,
+                    title: 'Created by',
+                    onChange: (memberId) =>
+                        handleFilterChange('created_by', memberId),
+                  ),
+                  const CustomDivider(),
+                  LabelFilter(
+                    filter: filters,
+                    labels: widget.labels,
+                    onChange: (labelId) => handleFilterChange('label', labelId),
+                  ),
+                  const CustomDivider(),
+                  DateFilter(
+                    title: 'Start Date',
+                    filterDates: filters.start_date,
+                    onChange: (date) => handleFilterChange('start_date', date),
+                  ),
+                  const CustomDivider(),
+                  DateFilter(
+                    title: 'Target Date',
+                    filterDates: filters.target_date,
+                    onChange: (date) => handleFilterChange('target_date', date),
+                  ),
                 ],
               ),
             ),
@@ -135,18 +163,26 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               child: Row(
-                mainAxisAlignment: widget.fromCreateView ||
-                        widget.issueCategory == IssueCategory.myIssues
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  widget.fromCreateView ||
-                          widget.issueCategory == IssueCategory.myIssues
-                      ? Container()
-                      : _saveView(state: state, ref: ref),
-                  _applyFilterButton(
-                    state: state,
-                    context: context,
+                  widget.showSaveViewButton
+                      ? Expanded(
+                          child: SaveViewButton(
+                              isFilterApplied: _isFilterApplied,
+                              onClick: widget.saveView!,
+                              ref: ref))
+                      : Container(),
+                  Expanded(
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.42,
+                      margin: const EdgeInsets.only(bottom: 18),
+                      child: Button(
+                        text: 'Apply Filter',
+                        ontap: () => widget.applyFilter(filters),
+                        textColor: Colors.white,
+                      ),
+                    ),
                   )
                 ],
               ),

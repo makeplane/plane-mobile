@@ -8,7 +8,7 @@ import 'package:plane/bottom-sheets/block_sheet.dart';
 import 'package:plane/bottom-sheets/label_sheet.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -313,7 +313,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                               ref: ref)
                                           .then((value) {
                                         if (pageProvider.blockSheetState ==
-                                            StateEnum.success) {
+                                            DataState.success) {
                                           pageProvider.pages[pageProvider
                                                       .selectedFilter]![
                                                   widget.index]
@@ -627,7 +627,7 @@ class _PageDetailState extends ConsumerState<PageDetail> {
                                   ref: ref)
                               .then((value) {
                             if (pageProvider.blockSheetState ==
-                                StateEnum.error) {
+                                DataState.error) {
                               setState(() {
                                 (pageProvider.pages[pageProvider
                                             .selectedFilter]![widget.index]

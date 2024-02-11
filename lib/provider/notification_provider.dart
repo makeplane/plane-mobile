@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/config/apis.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class NotificationProvider extends ChangeNotifier {
   NotificationProvider(
       ChangeNotifierProviderRef<NotificationProvider> this.ref);
   Ref? ref;
-  StateEnum getCreatedState = StateEnum.idle;
-  StateEnum getAssignedState = StateEnum.idle;
-  StateEnum getWatchingState = StateEnum.idle;
-  StateEnum getUnreadState = StateEnum.idle;
-  StateEnum getArchivedState = StateEnum.idle;
-  StateEnum getSnoozedState = StateEnum.idle;
-  StateEnum markAllAsReadState = StateEnum.idle;
+  DataState getCreatedState = DataState.idle;
+  DataState getAssignedState = DataState.idle;
+  DataState getWatchingState = DataState.idle;
+  DataState getUnreadState = DataState.idle;
+  DataState getArchivedState = DataState.idle;
+  DataState getSnoozedState = DataState.idle;
+  DataState markAllAsReadState = DataState.idle;
 
   int getCreatedCount = 0;
   int getAssignedCount = 0;
@@ -50,17 +50,17 @@ class NotificationProvider extends ChangeNotifier {
     bool getSnoozed = false,
   }) async {
     type == 'created'
-        ? getCreatedState = StateEnum.loading
+        ? getCreatedState = DataState.loading
         : type == 'assigned'
-            ? getAssignedState = StateEnum.loading
+            ? getAssignedState = DataState.loading
             : type == 'watching'
-                ? getWatchingState = StateEnum.loading
+                ? getWatchingState = DataState.loading
                 : type == 'unread'
-                    ? getUnreadState = StateEnum.loading
+                    ? getUnreadState = DataState.loading
                     : type == 'archived'
-                        ? getArchivedState = StateEnum.loading
+                        ? getArchivedState = DataState.loading
                         : type == 'snoozed'
-                            ? getSnoozedState = StateEnum.loading
+                            ? getSnoozedState = DataState.loading
                             : null;
     notifyListeners();
     final String slug = ref!
@@ -68,7 +68,7 @@ class NotificationProvider extends ChangeNotifier {
         .selectedWorkspace
         .workspaceSlug;
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: getUnread
             ? '${APIs.notifications.replaceAll('\$SLUG', slug)}?read=false'
@@ -101,17 +101,17 @@ class NotificationProvider extends ChangeNotifier {
         snoozed = response.data;
       }
       type == 'created'
-          ? getCreatedState = StateEnum.success
+          ? getCreatedState = DataState.success
           : type == 'assigned'
-              ? getAssignedState = StateEnum.success
+              ? getAssignedState = DataState.success
               : type == 'watching'
-                  ? getWatchingState = StateEnum.success
+                  ? getWatchingState = DataState.success
                   : type == 'unread'
-                      ? getUnreadState = StateEnum.success
+                      ? getUnreadState = DataState.success
                       : type == 'archived'
-                          ? getArchivedState = StateEnum.success
+                          ? getArchivedState = DataState.success
                           : type == 'snoozed'
-                              ? getSnoozedState = StateEnum.success
+                              ? getSnoozedState = DataState.success
                               : null;
       notifyListeners();
     } catch (e) {
@@ -120,10 +120,10 @@ class NotificationProvider extends ChangeNotifier {
       }
       log(e.toString());
       type == 'created'
-          ? getCreatedState = StateEnum.error
+          ? getCreatedState = DataState.error
           : type == 'assigned'
-              ? getAssignedState = StateEnum.error
-              : getWatchingState = StateEnum.error;
+              ? getAssignedState = DataState.error
+              : getWatchingState = DataState.error;
       notifyListeners();
     }
   }
@@ -135,7 +135,7 @@ class NotificationProvider extends ChangeNotifier {
         .workspaceSlug;
 
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: '${APIs.notifications.replaceAll('\$SLUG', slug)}unread',
         hasBody: false,
@@ -164,7 +164,7 @@ class NotificationProvider extends ChangeNotifier {
 
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/read');
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/read/',
@@ -193,12 +193,12 @@ class NotificationProvider extends ChangeNotifier {
     // log('${APIs.notifications.replaceAll('\$SLUG', slug)}/mark-all-read/');
     try {
       type == 'created'
-          ? getCreatedState = StateEnum.loading
+          ? getCreatedState = DataState.loading
           : type == 'assigned'
-              ? getAssignedState = StateEnum.loading
-              : getWatchingState = StateEnum.loading;
+              ? getAssignedState = DataState.loading
+              : getWatchingState = DataState.loading;
       notifyListeners();
-      await DioConfig().dioServe(
+      await DioClient().request(
         hasAuth: true,
         url: '${APIs.notifications.replaceAll('\$SLUG', slug)}mark-all-read/',
         hasBody: true,
@@ -211,10 +211,10 @@ class NotificationProvider extends ChangeNotifier {
       );
 
       type == 'created'
-          ? getCreatedState = StateEnum.success
+          ? getCreatedState = DataState.success
           : type == 'assigned'
-              ? getAssignedState = StateEnum.success
-              : getWatchingState = StateEnum.success;
+              ? getAssignedState = DataState.success
+              : getWatchingState = DataState.success;
       notifyListeners();
     } catch (e) {
       if (e is DioException) {
@@ -222,10 +222,10 @@ class NotificationProvider extends ChangeNotifier {
       }
       log(e.toString());
       type == 'created'
-          ? getCreatedState = StateEnum.error
+          ? getCreatedState = DataState.error
           : type == 'assigned'
-              ? getAssignedState = StateEnum.error
-              : getWatchingState = StateEnum.error;
+              ? getAssignedState = DataState.error
+              : getWatchingState = DataState.error;
       notifyListeners();
     }
   }
@@ -239,7 +239,7 @@ class NotificationProvider extends ChangeNotifier {
 
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url:
             '${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/archive/',
@@ -273,7 +273,7 @@ class NotificationProvider extends ChangeNotifier {
         .workspaceSlug;
     log('${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId');
     try {
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: true,
         url: '${APIs.notifications.replaceAll('\$SLUG', slug)}$notificationId/',
         hasBody: true,

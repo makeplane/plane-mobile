@@ -330,7 +330,7 @@ class _MemberStatusState extends ConsumerState<MemberStatus> {
             ),
           ],
         ),
-        projectProvider.updateProjectMemberState == StateEnum.loading
+        projectProvider.updateProjectMemberState == DataState.loading
             ? Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(

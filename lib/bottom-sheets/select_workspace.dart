@@ -9,7 +9,6 @@ import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/workspace_logo_for_diffrent_extensions.dart';
-
 import '../mixins/widget_state_mixin.dart';
 
 class SelectWorkspace extends ConsumerStatefulWidget {
@@ -31,10 +30,50 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
     ], loadingType: LoadingType.wrap);
   }
 
+  Future<void> handleWorkspaceChange(String workspaceId) async {
+    final prov = ref.read(ProviderList.workspaceProvider);
+    final notificationProvider = ref.read(ProviderList.notificationProvider);
+    await prov
+        .selectWorkspace(
+      id: workspaceId,
+      context: context,
+    )
+        .then(
+      (value) async {
+        ref.read(ProviderList.projectProvider).currentProject = {};
+        ref.read(ProviderList.modulesProvider).clearData();
+        ref.read(ProviderList.myIssuesProvider).clear();
+        ref.read(ProviderList.activityProvider).clear();
+        ref.read(ProviderList.projectProvider).getProjects(
+            slug: prov.workspaces
+                .where((element) =>
+                    element['id'] ==
+                    ref
+                        .read(ProviderList.profileProvider)
+                        .userProfile
+                        .lastWorkspaceId)
+                .first['slug']);
+
+        await ref.read(ProviderList.myIssuesProvider).getMyIssuesView();
+        ref.read(ProviderList.myIssuesProvider)
+          ..filterIssues(assigned: true)
+          ..getLabels();
+        notificationProvider
+          ..getUnreadCount()
+          ..getNotifications(type: 'assigned')
+          ..getNotifications(type: 'created')
+          ..getNotifications(type: 'watching')
+          ..getNotifications(type: 'unread', getUnread: true)
+          ..getNotifications(type: 'archived', getArchived: true)
+          ..getNotifications(type: 'snoozed', getSnoozed: true);
+      },
+    );
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget render(BuildContext context) {
     final prov = ref.watch(ProviderList.workspaceProvider);
-    final profileProvider = ref.watch(ProviderList.profileProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return Container(
       padding: const EdgeInsets.all(16),
@@ -72,79 +111,8 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
               shrinkWrap: true,
               itemBuilder: (ctx, index) {
                 return GestureDetector(
-                  onTap: () async {
-                    await prov
-                        .selectWorkspace(
-                      id: prov.workspaces[index]["id"],
-                      context: context,
-                    )
-                        .then(
-                      (value) async {
-                        ref.read(ProviderList.projectProvider).currentProject =
-                            {};
-                        ref.read(ProviderList.cyclesProvider).clearData();
-                        ref.read(ProviderList.modulesProvider).clearData();
-                        ref.read(ProviderList.myIssuesProvider).clear();
-                        ref.read(ProviderList.activityProvider).clear();
-                        ref.read(ProviderList.projectProvider).getProjects(
-                            slug: ref
-                                .read(ProviderList.workspaceProvider)
-                                .workspaces
-                                .where((element) =>
-                                    element['id'] ==
-                                    profileProvider.userProfile.lastWorkspaceId)
-                                .first['slug']);
-                        // ref
-                        //     .read(ProviderList.projectProvider)
-                        //     .favouriteProjects(
-                        //       index: 0,
-                        //       slug: ref
-                        //           .read(ProviderList.workspaceProvider)
-                        //           .workspaces
-                        //           .where((element) =>
-                        //               element['id'] ==
-                        //               profileProvider
-                        //                   .userProfile.lastWorkspaceId)
-                        //           .first['slug'],
-                        //       method: HttpMethod.get,
-                        //       projectID: "",
-                        //     );
-                        await ref
-                            .read(ProviderList.myIssuesProvider)
-                            .getMyIssuesView();
-                        ref
-                            .read(ProviderList.myIssuesProvider)
-                            .filterIssues(assigned: true);
-                        ref.watch(ProviderList.myIssuesProvider).getLabels();
-
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getUnreadCount();
-
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getNotifications(type: 'assigned');
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getNotifications(type: 'created');
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getNotifications(type: 'watching');
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getNotifications(type: 'unread', getUnread: true);
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getNotifications(
-                                type: 'archived', getArchived: true);
-                        ref
-                            .read(ProviderList.notificationProvider)
-                            .getNotifications(
-                                type: 'snoozed', getSnoozed: true);
-                      },
-                    );
-                    Navigator.of(context).pop();
-                  },
+                  onTap: () =>
+                      handleWorkspaceChange(prov.workspaces[index]['id']),
                   child: Column(
                     children: [
                       Container(
@@ -190,10 +158,7 @@ class _SelectWorkspaceState extends ConsumerState<SelectWorkspace>
                                   themeProvider.themeManager.tertiaryTextColor,
                             ),
                             const Spacer(),
-                            ref
-                                        .read(ProviderList.workspaceProvider)
-                                        .selectedWorkspace
-                                        .workspaceId ==
+                            prov.selectedWorkspace.workspaceId ==
                                     prov.workspaces[index]['id']
                                 ? const Icon(
                                     Icons.done,

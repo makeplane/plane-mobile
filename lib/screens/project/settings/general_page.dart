@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/bottom-sheets/delete_leave_project_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_leave_project_sheet.dart';
 import 'package:plane/bottom-sheets/emoji_sheet.dart';
 import 'package:plane/bottom-sheets/project_select_cover_image.dart';
 
@@ -56,13 +56,13 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final projectProvider = ref.watch(ProviderList.projectProvider);
       isEmoji = projectProvider.currentProject['emoji'] != null;
-      name.text = projectProvider.projectDetailModel!.name!;
-      description.text = projectProvider.projectDetailModel!.description!;
+      name.text = projectProvider.currentprojectDetails!.name!;
+      description.text = projectProvider.currentprojectDetails!.description!;
       setState(() {
-        isProjectPublic = projectProvider.projectDetailModel!.network == 2;
+        isProjectPublic = projectProvider.currentprojectDetails!.network == 2;
       });
 
-      identifier.text = projectProvider.projectDetailModel!.identifier!;
+      identifier.text = projectProvider.currentprojectDetails!.identifier!;
       getRole();
     });
   }
@@ -87,7 +87,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
         FocusScope.of(context).unfocus();
       },
       child: LoadingWidget(
-        loading: projectProvider.updateProjectState == StateEnum.loading,
+        loading: projectProvider.updateProjectState == DataState.loading,
         widgetClass: Container(
           color: themeProvider.themeManager.primaryBackgroundDefaultColor,
           padding: const EdgeInsets.only(
@@ -154,8 +154,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         .read(ProviderList.workspaceProvider)
                                         .selectedWorkspace
                                         .workspaceSlug,
-                                    projId:
-                                        projectProvider.projectDetailModel!.id!,
+                                    projId: projectProvider
+                                        .currentprojectDetails!.id!,
                                     data: {
                                       'name': name.text,
                                       'description': description.text,
@@ -171,8 +171,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         .read(ProviderList.workspaceProvider)
                                         .selectedWorkspace
                                         .workspaceSlug,
-                                    projId:
-                                        projectProvider.projectDetailModel!.id!,
+                                    projId: projectProvider
+                                        .currentprojectDetails!.id!,
                                     data: {
                                       'name': name.text,
                                       'description': description.text,
@@ -237,19 +237,20 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         ),
                                       )
                                     : CustomText(
-                                        projectProvider.projectDetailModel !=
+                                        projectProvider
+                                                        .currentprojectDetails !=
                                                     null &&
                                                 projectProvider
-                                                        .projectDetailModel!
+                                                        .currentprojectDetails!
                                                         .emoji !=
                                                     null &&
                                                 int.tryParse(projectProvider
-                                                        .projectDetailModel!
+                                                        .currentprojectDetails!
                                                         .emoji!) !=
                                                     null
                                             ? String.fromCharCode(int.parse(
                                                 projectProvider
-                                                    .projectDetailModel!
+                                                    .currentprojectDetails!
                                                     .emoji!))
                                             : '🚀',
                                       ),
@@ -328,7 +329,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                     loading: ref
                             .watch(ProviderList.fileUploadProvider)
                             .fileUploadState ==
-                        StateEnum.loading,
+                        DataState.loading,
                     widgetClass: Stack(
                       children: [
                         Container(
@@ -342,7 +343,8 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
-                              projectProvider.projectDetailModel!.coverImage!,
+                              projectProvider
+                                  .currentprojectDetails!.coverImage!,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -377,11 +379,11 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           });
                                       log(url.toString());
                                       setState(() {
-                                        projectProvider.projectDetailModel!
+                                        projectProvider.currentprojectDetails!
                                                 .coverImage =
                                             url['url'] ??
                                                 projectProvider
-                                                    .projectDetailModel!
+                                                    .currentprojectDetails!
                                                     .coverImage;
                                       });
                                     },
@@ -508,9 +510,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         });
                                         Navigator.of(context).pop();
                                       }),
-                                  //const SizedBox(height: 5),
-                                  CustomDivider(themeProvider: themeProvider),
-                                  //const SizedBox(height: 5),
+                                  const CustomDivider(),
                                   selectionCard(
                                       title: 'Public',
                                       isSelected: isProjectPublic,
@@ -663,9 +663,9 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                                 .selectedWorkspace
                                                 .workspaceSlug,
                                             'PROJECT_ID': projectProvider
-                                                .projectDetailModel!.id,
+                                                .currentprojectDetails!.id,
                                             'PROJECT_NAME': projectProvider
-                                                .projectDetailModel!.name
+                                                .currentprojectDetails!.name
                                           },
                                           role: getRole(),
                                         ),
@@ -687,7 +687,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                               ontap: () async {
                                 if (identifier.text !=
                                     projectProvider
-                                        .projectDetailModel!.identifier) {
+                                        .currentprojectDetails!.identifier) {
                                   final available = await projectProvider
                                       .checkIdentifierAvailability(
                                           slug: ref
@@ -704,7 +704,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                             .selectedWorkspace
                                             .workspaceSlug,
                                         projId: projectProvider
-                                            .projectDetailModel!.id!,
+                                            .currentprojectDetails!.id!,
                                         data: {
                                           'name': name.text,
                                           'description': description.text,
@@ -712,7 +712,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           'network': isProjectPublic ? 2 : 0,
                                           'emoji': selectedEmoji,
                                           'cover_image': projectProvider
-                                              .projectDetailModel!.coverImage
+                                              .currentprojectDetails!.coverImage
                                         },
                                         ref: ref);
                                   } else {
@@ -729,7 +729,7 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                           .selectedWorkspace
                                           .workspaceSlug,
                                       projId: projectProvider
-                                          .projectDetailModel!.id!,
+                                          .currentprojectDetails!.id!,
                                       data: {
                                         'name': name.text,
                                         'description': description.text,
@@ -737,12 +737,12 @@ class _GeneralPageState extends ConsumerState<GeneralPage> {
                                         'network': isProjectPublic ? 2 : 0,
                                         'emoji': selectedEmoji,
                                         'cover_image': projectProvider
-                                            .projectDetailModel!.coverImage
+                                            .currentprojectDetails!.coverImage
                                       },
                                       ref: ref);
 
                                   if (projectProvider.updateProjectState ==
-                                      StateEnum.success) {
+                                      DataState.success) {
                                     // ignore: use_build_context_synchronously
                                     CustomToast.showToast(context,
                                         message: 'Project updated successfully',

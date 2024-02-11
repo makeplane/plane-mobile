@@ -69,9 +69,8 @@ class _NotificationMoreOptionsSheetState
           ),
           const SizedBox(height: 30),
           ListView.separated(
-            separatorBuilder: (context, index) => CustomDivider(
-              themeProvider: themeProvider,
-              margin: const EdgeInsets.only(top: 5, bottom: 5),
+            separatorBuilder: (context, index) => const CustomDivider(
+              margin: EdgeInsets.only(top: 5, bottom: 5),
             ),
             shrinkWrap: true,
             itemCount: options.length,

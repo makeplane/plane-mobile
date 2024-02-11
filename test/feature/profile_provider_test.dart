@@ -23,9 +23,9 @@ void main() {
       return Left(UserProfile.initialize(firstName: 'TESTING'));
     });
     final getProfile = profileProvider.getProfile();
-    expect(profileProvider.getProfileState, StateEnum.loading);
+    expect(profileProvider.getProfileState, DataState.loading);
     await getProfile;
-    expect(profileProvider.getProfileState, StateEnum.success);
+    expect(profileProvider.getProfileState, DataState.success);
     expect(profileProvider.userProfile.firstName, 'TESTING');
   });
 
@@ -35,9 +35,9 @@ void main() {
       return Right(DioException(requestOptions: RequestOptions()));
     });
     final getProfile = profileProvider.getProfile();
-    expect(profileProvider.getProfileState, StateEnum.loading);
+    expect(profileProvider.getProfileState, DataState.loading);
     await getProfile;
-    expect(profileProvider.getProfileState, StateEnum.error);
+    expect(profileProvider.getProfileState, DataState.error);
     expect(profileProvider.userProfile.firstName, '');
   });
 }

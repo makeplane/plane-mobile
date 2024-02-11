@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
 import 'package:plane/bottom-sheets/views-layout-sheet/widgets/layout_tab.dart';
 import 'package:plane/models/project/issue/issue_model.dart';
 import 'package:plane/provider/issues/base-classes/base_issue_state.dart';
 import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
@@ -683,7 +683,7 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                         builder: (ctx) {
                           return LayoutTab(
                             issuesProvider: widget.issuesProvider,
-                            issueCategory: IssueCategory.projectIssues,
+                            issueCategory: IssuesCategory.PROJECT,
                           );
                         });
                   },
@@ -717,23 +717,8 @@ class _DayDetailState extends ConsumerState<DayDetail> {
                 Expanded(
                     child: InkWell(
                   onTap: () {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        enableDrag: true,
-                        constraints: BoxConstraints(
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 0.85),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        )),
-                        context: context,
-                        builder: (ctx) {
-                          return FilterSheet(
-                            issueCategory: IssueCategory.projectIssues,
-                          );
-                        });
+                    //TODO: add filter sheet
+                    BottomSheetHelper.showBottomSheet(context, Container());
                   },
                   child: SizedBox.expand(
                     child: Row(

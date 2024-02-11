@@ -51,7 +51,7 @@ class _KanbanCardDPropertiesState extends ConsumerState<KanbanCardDProperties> {
                   margin: const EdgeInsets.only(right: 5),
                   height: 30,
                   width: 30,
-                  child: priorityIcon(widget.issue.priority))
+                  child: PriorityIcon(widget.issue.priority))
               : const SizedBox(
                   width: 0,
                 ),
@@ -64,13 +64,13 @@ class _KanbanCardDPropertiesState extends ConsumerState<KanbanCardDProperties> {
               : Container(),
           widget.appliedDProperties.due_date == true
               ? DueDateDProperties(
-                dueDate:widget.issue.target_date ,
-              )
+                  dueDate: widget.issue.target_date,
+                )
               : const SizedBox(),
           widget.appliedDProperties.due_date
               ? StartDateDProperty(
                   startDate: widget.issue.start_date,
-              )
+                )
               : const SizedBox(),
           widget.appliedDProperties.sub_issue_count
               ? Container(
@@ -116,9 +116,7 @@ class _KanbanCardDPropertiesState extends ConsumerState<KanbanCardDProperties> {
               : const SizedBox(),
           (widget.appliedDProperties.estimate &&
                   projectProvider.currentProject['estimate'] != null)
-              ? EstimateDProperty(
-                  estimate_point: widget.issue.estimate_point
-              )
+              ? EstimateDProperty(estimate_point: widget.issue.estimate_point)
               : const SizedBox(),
         ],
       ),

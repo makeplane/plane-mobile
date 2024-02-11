@@ -8,10 +8,11 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:plane/bottom-sheets/filters/filter_sheet.dart';
 import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/constants.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -124,7 +125,7 @@ class _CreateViewState extends ConsumerState<CreateView> {
           text: 'Create View',
         ),
         body: LoadingWidget(
-          loading: viewsProvider.viewsState == StateEnum.loading,
+          loading: viewsProvider.viewsState == DataState.loading,
           widgetClass: LayoutBuilder(builder: (ctx, constraints) {
             return SingleChildScrollView(
               child: Stack(
@@ -188,27 +189,10 @@ class _CreateViewState extends ConsumerState<CreateView> {
                               //container containing a plus icon and text add filter
                               GestureDetector(
                                 onTap: () async {
-                                  await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      enableDrag: true,
-                                      constraints: BoxConstraints(
-                                          maxHeight: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.85),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(30),
-                                      )),
-                                      context: context,
-                                      builder: (ctx) {
-                                        return FilterSheet(
-                                          issueCategory:
-                                              IssueCategory.projectIssues,
-                                          fromCreateView: true,
-                                        );
-                                      });
+                                  //TODO: add select Filter sheet
+                                  BottomSheetHelper.showBottomSheet(
+                                      context, Container());
+
                                   setState(() {
                                     log(filtersData.toString());
                                   });

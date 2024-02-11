@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_button.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/widgets/custom_text.dart';
@@ -154,7 +154,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
                         "labels_list": selectedLabels,
                       },
                       ref: ref);
-                  if (pageProvider.blockSheetState == StateEnum.success) {
+                  if (pageProvider.blockSheetState == DataState.success) {
                     pageProvider.selectedLabels.clear();
                     for (final element in (pageProvider.pages[
                             pageProvider.selectedFilter]![widget.pageIndex]
@@ -170,7 +170,7 @@ class _LabelSheetState extends ConsumerState<LabelSheet> {
               ),
               Container(height: 20),
             ]),
-            pageProvider.blockSheetState == StateEnum.loading
+            pageProvider.blockSheetState == DataState.loading
                 ? Container(
                     height: height - 32,
                     alignment: Alignment.center,

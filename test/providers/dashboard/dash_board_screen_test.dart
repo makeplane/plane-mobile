@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:plane/bottom-sheets/global_search_sheet.dart';
 import 'package:plane/bottom-sheets/select_workspace.dart';
 import 'package:plane/models/user_profile_model.dart';
-import 'package:plane/models/Workspace/workspace_model.dart';
+import 'package:plane/models/workspace/workspace_model.dart';
 import 'package:plane/provider/dashboard_provider.dart';
 import 'package:plane/provider/profile_provider.dart';
 import 'package:plane/provider/projects_provider.dart';
@@ -16,7 +16,7 @@ import 'package:plane/provider/workspace_provider.dart';
 import 'package:plane/repository/dashboard_service.dart';
 import 'package:plane/screens/dashboard/dash_board_screen.dart';
 import 'package:plane/screens/onboarding/auth/setup_workspace.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_text.dart';
 
@@ -48,7 +48,7 @@ void main() {
     mockProfileProvider = MockProfileProvider();
 
     dashboardProvider = DashBoardProvider(
-        ref: null, dashboardService: DashboardService(DioConfig()));
+        ref: null, dashboardService: DashboardService(DioClient()));
 
     ProviderList.workspaceProvider =
         ChangeNotifierProvider<MockWorkspaceProvider>(
@@ -63,7 +63,7 @@ void main() {
     when(() => mockWorkspaceProvider.selectedWorkspace)
         .thenReturn(WorkspaceModel.initialize(workspaceName: 'TESTER'));
     when(() => mockWorkspaceProvider.selectWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockProfileProvider.userProfile)
         .thenReturn(UserProfile.initialize(firstName: 'TESTER'));
     when(
@@ -71,7 +71,7 @@ void main() {
     ).thenReturn([]);
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
     when(() => mockDashBoardProvider.hideGithubBlock).thenReturn(false);
     when(
       () => mockDashBoardProvider.dashboardData,
@@ -102,7 +102,7 @@ void main() {
   testWidgets('Greetings Check', (tester) async {
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
     await tester.pumpWidget(const MaterialApp(
         home: ProviderScope(child: DashBoardScreen(fromSignUp: false))));
 
@@ -116,7 +116,7 @@ void main() {
   testWidgets('Create Project card conditional rendering ', (tester) async {
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
 
     await tester.pumpWidget(const MaterialApp(
         home: ProviderScope(child: DashBoardScreen(fromSignUp: false))));
@@ -128,7 +128,7 @@ void main() {
     ).thenReturn([{}]);
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
 
     await tester.pumpWidget(const MaterialApp(
         home: ProviderScope(child: DashBoardScreen(fromSignUp: false))));
@@ -141,7 +141,7 @@ void main() {
     ).thenReturn([{}]);
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
 
     await tester.pumpWidget(const MaterialApp(
         home: ProviderScope(child: DashBoardScreen(fromSignUp: false))));
@@ -168,7 +168,7 @@ void main() {
   testWidgets('Hide Github Block', (tester) async {
     when(
       () => mockProjectsProvider.projectState,
-    ).thenAnswer((_) => StateEnum.success);
+    ).thenAnswer((_) => DataState.success);
     ProviderList.dashboardProvider =
         ChangeNotifierProvider<DashBoardProvider>((ref) => dashboardProvider);
     await tester.pumpWidget(const MaterialApp(
@@ -208,9 +208,9 @@ void main() {
 
   testWidgets('Dashboard : Navigation Test', (tester) async {
     when(() => mockWorkspaceProvider.checkWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockWorkspaceProvider.createWorkspaceState)
-        .thenReturn(StateEnum.success);
+        .thenReturn(DataState.success);
     when(() => mockWorkspaceProvider.companySize).thenReturn('');
     when(
       () => mockWorkspaceProvider.workspaces,

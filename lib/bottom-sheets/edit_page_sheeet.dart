@@ -30,7 +30,7 @@ class _EditPageSheetState extends ConsumerState<EditPageSheet> {
     final pageProvider = ref.watch(ProviderList.pageProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
-      loading: pageProvider.pagesListState == StateEnum.loading,
+      loading: pageProvider.pagesListState == DataState.loading,
       widgetClass: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(

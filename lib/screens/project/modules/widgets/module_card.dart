@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:plane/bottom-sheets/delete_module_sheet.dart';
+import 'package:plane/bottom-sheets/delete-leave-sheets/delete_module_sheet.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/modules/module-detail/module_issues_page.dart';
 import 'package:plane/widgets/custom_text.dart';

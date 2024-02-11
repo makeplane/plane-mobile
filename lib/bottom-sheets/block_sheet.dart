@@ -168,7 +168,7 @@ class _BlockSheetState extends ConsumerState<BlockSheet> {
               ],
             ),
           ),
-          pageProvider.blockSheetState == StateEnum.loading
+          pageProvider.blockSheetState == DataState.loading
               ? Container(
                   height: height - 32,
                   alignment: Alignment.center,

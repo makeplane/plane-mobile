@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:plane/screens/Activity/activity.dart';
+import 'package:plane/screens/activity/activity.dart';
 import 'package:plane/screens/project/create_project_screen.dart';
 import 'package:plane/screens/project/cycles/create-cycle/create_cycle.dart';
 import 'package:plane/screens/project/modules/create-module/create_module.dart';

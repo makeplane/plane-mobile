@@ -36,10 +36,10 @@ class _ExtraNotificationsState extends ConsumerState<ExtraNotifications> {
       ),
       body: LoadingWidget(
         loading: widget.type == 'archived'
-            ? notificationProvider.getArchivedState == StateEnum.loading
+            ? notificationProvider.getArchivedState == DataState.loading
             : widget.type == 'snoozed'
-                ? notificationProvider.getSnoozedState == StateEnum.loading
-                : notificationProvider.getUnreadState == StateEnum.loading,
+                ? notificationProvider.getSnoozedState == DataState.loading
+                : notificationProvider.getUnreadState == DataState.loading,
         widgetClass: NotificationsList(
           data: widget.type == 'archived'
               ? notificationProvider.archived

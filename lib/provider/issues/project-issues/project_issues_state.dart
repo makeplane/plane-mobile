@@ -9,19 +9,19 @@ class ProjectIssuesState implements ABaseIssuesState {
   @override
   Ref? ref;
   @override
-  StateEnum fetchIssuesState = StateEnum.empty;
+  DataState fetchIssuesState = DataState.empty;
   @override
-  StateEnum deleteIssueState = StateEnum.empty;
+  DataState deleteIssueState = DataState.empty;
   @override
-  StateEnum fetchLayoutViewState = StateEnum.empty;
+  DataState fetchLayoutViewState = DataState.empty;
   @override
-  StateEnum fetchDPropertiesState = StateEnum.empty;
+  DataState fetchDPropertiesState = DataState.empty;
   @override
-  StateEnum updateDPropertiesState = StateEnum.empty;
+  DataState updateDPropertiesState = DataState.empty;
   @override
-  StateEnum updateIssueState = StateEnum.empty;
+  DataState updateIssueState = DataState.empty;
   @override
-  StateEnum createIssueState = StateEnum.empty;
+  DataState createIssueState = DataState.empty;
   @override
   Map<String, IssueModel> rawIssues = {};
   @override
@@ -49,13 +49,13 @@ class ProjectIssuesState implements ABaseIssuesState {
 
   ProjectIssuesState copyWith({
     Ref? ref,
-    StateEnum? fetchIssuesState,
-    StateEnum? deleteIssueState,
-    StateEnum? fetchIssueLayoutViewState,
-    StateEnum? fetchDPropertiesState,
-    StateEnum? updateDPropertiesState,
-    StateEnum? updateIssueState,
-    StateEnum? createIssueState,
+    DataState? fetchIssuesState,
+    DataState? deleteIssueState,
+    DataState? fetchIssueLayoutViewState,
+    DataState? fetchDPropertiesState,
+    DataState? updateDPropertiesState,
+    DataState? updateIssueState,
+    DataState? createIssueState,
     IssueModel? createIssuePayload,
     Map<String, IssueModel>? rawIssues,
     Map<String, List<IssueModel>>? currentLayoutIssues,
@@ -85,13 +85,13 @@ class ProjectIssuesState implements ABaseIssuesState {
   factory ProjectIssuesState.initial(Ref ref) {
     return ProjectIssuesState(
       ref: ref,
-      fetchIssuesState: StateEnum.empty,
-      deleteIssueState: StateEnum.empty,
-      fetchLayoutViewState: StateEnum.empty,
-      fetchDPropertiesState: StateEnum.empty,
-      updateDPropertiesState: StateEnum.empty,
-      updateIssueState: StateEnum.empty,
-      createIssueState: StateEnum.empty,
+      fetchIssuesState: DataState.empty,
+      deleteIssueState: DataState.empty,
+      fetchLayoutViewState: DataState.empty,
+      fetchDPropertiesState: DataState.empty,
+      updateDPropertiesState: DataState.empty,
+      updateIssueState: DataState.empty,
+      createIssueState: DataState.empty,
       createIssuePayload: IssueModel.initial(),
       rawIssues: {},
       currentLayoutIssues: {},

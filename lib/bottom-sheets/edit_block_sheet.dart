@@ -34,8 +34,8 @@ class _TempEditBlockState extends ConsumerState<EditBlockSheet> {
     final pageProvider = ref.watch(ProviderList.pageProvider);
     final themeProvider = ref.watch(ProviderList.themeProvider);
     return LoadingWidget(
-      loading: pageProvider.pagesListState == StateEnum.loading ||
-          pageProvider.blockState == StateEnum.loading,
+      loading: pageProvider.pagesListState == DataState.loading ||
+          pageProvider.blockState == DataState.loading,
       widgetClass: Container(
         padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
         child: Column(

@@ -99,7 +99,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
             const SizedBox(width: 10),
           ],
         ),
-        body: projectProvider.getProjectState == StateEnum.error
+        body: projectProvider.getProjectState == DataState.error
             ? errorState(
                 context: context,
                 ontap: () {
@@ -107,7 +107,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
                 },
               )
             : LoadingWidget(
-                loading: projectProvider.getProjectState == StateEnum.loading,
+                loading: projectProvider.getProjectState == DataState.loading,
                 widgetClass: projectProvider.projects.isEmpty &&
                         projectProvider.starredProjects.isEmpty
                     ? EmptyPlaceholder.emptyProject(context, refresh, ref)
@@ -848,7 +848,7 @@ class _ProjectScreenState extends ConsumerState<ProjectScreen>
   Widget unJoinedProjects(
       ProjectsProvider projectProvider, ThemeProvider themeProvider) {
     return LoadingWidget(
-      loading: projectProvider.projectState == StateEnum.loading,
+      loading: projectProvider.projectState == DataState.loading,
       widgetClass: checkUnJoinedProject(projects: projectProvider.projects)
           ? RefreshIndicator(
               color: themeProvider.themeManager.primaryColour,

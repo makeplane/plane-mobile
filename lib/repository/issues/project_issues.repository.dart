@@ -1,20 +1,20 @@
-import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:plane/config/apis.dart';
+import 'package:plane/core/exception/plane_exception.dart';
 import 'package:plane/models/project/layout-properties/layout_properties.model.dart';
 import 'package:plane/models/project/issue/issue_model.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/enums.dart';
 
 class ProjectIssuesRepository {
-  final _dio = DioConfig();
+  final _dio = DioClient();
   final baseApi = APIs.baseApi;
 
-  Future<Either<DioException, IssueModel>> createIssue(
+  Future<Either<PlaneException, IssueModel>> createIssue(
       String workspaceSlug, String projectId, IssueModel payload) async {
     try {
-      final response = await _dio.dioServe(
+      final response = await _dio.request(
           url:
               '$baseApi/api/workspaces/$workspaceSlug/projects/$projectId/issues/',
           hasAuth: true,
@@ -24,14 +24,15 @@ class ProjectIssuesRepository {
 
       return Right(IssueModel.fromJson(response.data));
     } on DioException catch (err) {
-      return Left(err);
+      return Left(throw PlaneException(
+          err.message ?? 'Failed to create project-issue.'));
     }
   }
 
-  Future<Either<DioException, void>> deleteIssue(
+  Future<Either<PlaneException, void>> deleteIssue(
       String workspaceSlug, String projectId, String issueId) async {
     try {
-      await _dio.dioServe(
+      await _dio.request(
           url:
               '$baseApi/api/workspaces/$workspaceSlug/projects/$projectId/issues/$issueId/',
           hasAuth: true,
@@ -40,14 +41,15 @@ class ProjectIssuesRepository {
 
       return const Right(null);
     } on DioException catch (err) {
-      return Left(err);
+      return Left(throw PlaneException(
+          err.message ?? 'Failed to delete project-issue.'));
     }
   }
 
-  Future<Either<DioException, Map<String, IssueModel>>> fetchIssues(
+  Future<Either<PlaneException, Map<String, IssueModel>>> fetchIssues(
       String workspaceSlug, String projectId, String query) async {
     try {
-      final response = await _dio.dioServe(
+      final response = await _dio.request(
           url:
               '$baseApi/api/workspaces/$workspaceSlug/projects/$projectId/issues/?$query',
           hasBody: false,
@@ -60,15 +62,15 @@ class ProjectIssuesRepository {
 
       return Right(issues);
     } on DioException catch (err) {
-      log('Failed to fetch project-issues ${err.toString()}');
-      return Left(err);
+      return Left(throw PlaneException(
+          err.message ?? 'Failed to fetch project-issues.'));
     }
   }
 
-  Future<Either<DioException, IssueModel>> updateIssue(
+  Future<Either<PlaneException, IssueModel>> updateIssue(
       String workspaceSlug, String projectId, IssueModel payload) async {
     try {
-      final response = await _dio.dioServe(
+      final response = await _dio.request(
           url:
               '$baseApi/api/workspaces/$workspaceSlug/projects/$projectId/issues/${payload.id}/',
           hasAuth: true,
@@ -78,14 +80,15 @@ class ProjectIssuesRepository {
 
       return Right(IssueModel.fromJson(response.data));
     } on DioException catch (err) {
-      return Left(err);
+      return Left(throw PlaneException(
+          err.message ?? 'Failed to update project-issue.'));
     }
   }
 
-  Future<Either<DioException, LayoutPropertiesModel>> fetchLayoutProperties(
+  Future<Either<PlaneException, LayoutPropertiesModel>> fetchLayoutProperties(
       String workspaceSlug, String projectId) async {
     try {
-      final response = await _dio.dioServe(
+      final response = await _dio.request(
           url:
               '$baseApi/api/workspaces/$workspaceSlug/projects/$projectId/user-properties/',
           hasAuth: true,
@@ -94,16 +97,17 @@ class ProjectIssuesRepository {
 
       return Right(LayoutPropertiesModel.fromJson(response.data));
     } on DioException catch (err) {
-      return Left(err);
+      return Left(throw PlaneException(
+          err.message ?? 'Failed to fetch project-issues layout properties.'));
     }
   }
 
-  Future<Either<DioException, LayoutPropertiesModel>> updateLayoutProperties(
+  Future<Either<PlaneException, LayoutPropertiesModel>> updateLayoutProperties(
       String workspaceSlug,
       String projectId,
       LayoutPropertiesModel payload) async {
     try {
-      final response = await _dio.dioServe(
+      final response = await _dio.request(
           url:
               '$baseApi/api/workspaces/$workspaceSlug/projects/$projectId/user-properties/',
           hasAuth: true,
@@ -113,8 +117,8 @@ class ProjectIssuesRepository {
 
       return Right(LayoutPropertiesModel.fromJson(response.data));
     } on DioException catch (err) {
-      log('Failed to update layout-view ${err.toString()}');
-      return Left(err);
+      return Left(throw PlaneException(
+          err.message ?? 'Failed to update project-issues layout properties.'));
     }
   }
 }

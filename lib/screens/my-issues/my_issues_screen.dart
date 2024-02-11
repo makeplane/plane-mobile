@@ -6,6 +6,7 @@ import 'package:plane/bottom-sheets/global_search_sheet.dart';
 import 'package:plane/kanban/custom/board.dart';
 import 'package:plane/kanban/models/inputs.dart';
 import 'package:plane/provider/provider_list.dart';
+import 'package:plane/utils/bottom_sheet.helper.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_app_bar.dart';
@@ -142,22 +143,16 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
-                  showModalBottomSheet(
-                      isScrollControlled: true,
-                      enableDrag: true,
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.85),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      )),
-                      context: context,
-                      builder: (ctx) {
-                        return FilterSheet(
-                          issueCategory: IssueCategory.myIssues,
-                        );
-                      });
+                  // BottomSheetHelper.showBottomSheet(context,
+                  //  SelectFilterSheet(
+                  //   appliedFilter: ,
+                  //   applyFilter: ,
+                  //   labels: [],
+                  //   clearAllFilter: ,
+                  //   states: [],
+                  //   saveView: ,
+
+                  // ));
                 },
                 child: Stack(
                   children: [
@@ -222,9 +217,9 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
             ],
           ),
           body: projectProvider.projects.isEmpty &&
-                  projectProvider.getProjectState == StateEnum.success
+                  projectProvider.getProjectState == DataState.success
               ? EmptyPlaceholder.emptyProject(context, refresh, ref)
-              : projectProvider.getProjectState == StateEnum.loading
+              : projectProvider.getProjectState == DataState.loading
                   ? Center(
                       child: SizedBox(
                         width: 30,
@@ -447,14 +442,14 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
     }
 
     return LoadingWidget(
-      loading: issueProvider.myIssuesViewState == StateEnum.loading ||
-          issueProvider.myIssuesFilterState == StateEnum.loading,
+      loading: issueProvider.myIssuesViewState == DataState.loading ||
+          issueProvider.myIssuesFilterState == DataState.loading,
       widgetClass: Container(
         color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
         padding: issueProvider.issues.projectView == IssuesLayout.kanban
             ? const EdgeInsets.only(top: 15, left: 0)
             : null,
-        child: issueProvider.myIssuesViewState == StateEnum.loading
+        child: issueProvider.myIssuesViewState == DataState.loading
             ? Container()
             : issueProvider.isISsuesEmpty
                 ? Column(
@@ -465,7 +460,7 @@ class _MyIssuesScreenState extends ConsumerState<MyIssuesScreen> {
                           : EmptyPlaceholder.emptyIssues(
                               context,
                               ref: ref,
-                              type: IssueCategory.myIssues,
+                              type: IssuesCategory.GLOBAL,
                               assignee: issueProvider.pageIndex == 0
                                   ? {
                                       profileProvider.userProfile.id!: {

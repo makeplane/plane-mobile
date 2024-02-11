@@ -7,7 +7,7 @@ import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
 import 'package:plane/provider/provider_list.dart';
 import 'package:plane/screens/project/issues/issue_detail.dart';
 import 'package:plane/utils/enums.dart';
-import 'package:plane/utils/extensions/string_extensions.dart';
+import 'package:plane/core/extensions/string_extensions.dart';
 import 'package:plane/widgets/custom_text.dart';
 import 'package:plane/widgets/square_avatar_widget.dart';
 
@@ -17,7 +17,7 @@ class SpreadSheetView extends ConsumerStatefulWidget {
       required this.issueCategory,
       required this.issuesProvider,
       super.key});
-  final IssueCategory issueCategory;
+  final IssuesCategory issueCategory;
   final ABaseIssuesProvider issuesProvider;
   final List<IssueModel> issues;
 
@@ -75,6 +75,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
         ),
       );
     }
+
     final statesNotifier = ref.watch(ProviderList.statesProvider.notifier);
     final labelsNotifier = ref.watch(ProviderList.labelProvider.notifier);
     final projectProvider = ref.watch(ProviderList.projectProvider);
@@ -228,7 +229,7 @@ class _SpreadSheetViewState extends ConsumerState<SpreadSheetView> {
             width: 200,
             child: Row(
               children: [
-                stateGroupIcon(statesNotifier
+                StateGroupIcon(statesNotifier
                     .getStateById(widget.issues[index].state_id)
                     ?.group),
                 const SizedBox(

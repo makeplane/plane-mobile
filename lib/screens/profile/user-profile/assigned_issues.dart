@@ -29,7 +29,7 @@ class _UserAssignedIssuesPageState
       width: width,
       color: themeProvider.themeManager.secondaryBackgroundDefaultColor,
       margin: const EdgeInsets.only(top: 5),
-      child: userProfileProvider.getUserAssingedIssuesState == StateEnum.loading
+      child: userProfileProvider.getUserAssingedIssuesState == DataState.loading
           ? Center(
               child: SizedBox(
                 width: 30,

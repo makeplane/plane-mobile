@@ -114,7 +114,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         const SizedBox(height: 20),
                         projectProvider.projects.isEmpty &&
                                 projectProvider.getProjectState ==
-                                    StateEnum.success &&
+                                    DataState.success &&
                                 workspaceProvider.isAdminOrMember()
                             ? createProjectWidget(themeProvider, context)
                             : Container(),

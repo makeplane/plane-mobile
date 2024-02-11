@@ -24,7 +24,7 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
     return Scaffold(
       body: SafeArea(
         child: LoadingWidget(
-          loading: authProvider.resetPassState == StateEnum.loading,
+          loading: authProvider.resetPassState == DataState.loading,
           widgetClass: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),

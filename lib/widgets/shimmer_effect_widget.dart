@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/utils/extensions/color_extension.dart';
+import 'package:plane/core/extensions/color_extension.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerEffectWidget extends ConsumerStatefulWidget {

@@ -202,7 +202,7 @@ class EmptyPlaceholder {
       String? projectId,
       Map<String, dynamic>? assignee,
       WidgetRef? ref,
-      IssueCategory? type}) {
+      IssuesCategory? type}) {
     final themeProvider = ref!.watch(ProviderList.themeProvider);
     final projectProvider = ref.watch(ProviderList.projectProvider);
     return Container(
@@ -238,7 +238,7 @@ class EmptyPlaceholder {
               ? noPermsionToCreateWidget('issue', themeProvider)
               : GestureDetector(
                   onTap: () {
-                    if (type == IssueCategory.myIssues) {
+                    if (type == IssuesCategory.GLOBAL) {
                       ref.watch(ProviderList.projectProvider).currentProject =
                           ref.watch(ProviderList.projectProvider).projects[0];
                       ref.watch(ProviderList.projectProvider).setState();
@@ -747,12 +747,12 @@ class EmptyPlaceholder {
               projectProvider
                   .joinProject(projectId: projectId, slug: slug, refs: ref)
                   .then((_) {
-                if (projectProvider.joinprojectState == StateEnum.success) {
+                if (projectProvider.joinprojectState == DataState.success) {
                   CustomToast.showToast(context,
                       message: "joined project successfully",
                       toastType: ToastType.success);
                 } else if (projectProvider.joinprojectState ==
-                    StateEnum.error) {
+                    DataState.error) {
                   CustomToast.showToast(context,
                       message: "Something gone wrong",
                       toastType: ToastType.failure);
@@ -769,7 +769,7 @@ class EmptyPlaceholder {
                 borderRadius: BorderRadius.circular(buttonBorderRadiusMedium),
                 color: themeProvider.themeManager.primaryColour,
               ),
-              child: projectProvider.joinprojectState == StateEnum.loading
+              child: projectProvider.joinprojectState == DataState.loading
                   ? const Center(
                       child: SizedBox(
                         height: 20,

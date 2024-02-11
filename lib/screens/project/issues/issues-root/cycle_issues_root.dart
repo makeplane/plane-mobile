@@ -20,7 +20,7 @@ class _CycleIssuesRootState extends ConsumerState<CycleIssuesRoot> {
         ref.watch(ProviderList.cycleIssuesProvider.notifier);
 
     return LoadingWidget(
-        loading: cycleIssuesState.fetchIssuesState == StateEnum.loading,
+        loading: cycleIssuesState.fetchIssuesState == DataState.loading,
         widgetClass: IssueLayoutHandler(
           issueLayout: cycleIssueProvider.layout,
           issuesProvider: cycleIssueProvider,

@@ -83,9 +83,8 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
             ],
           ),
         ),
-        CustomDivider(
-          themeProvider: themeProvider,
-          margin: const EdgeInsets.symmetric(vertical: 3),
+        const CustomDivider(
+          margin: EdgeInsets.symmetric(vertical: 3),
         ),
         InkWell(
           onTap: () async {
@@ -111,9 +110,8 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
             ],
           ),
         ),
-        CustomDivider(
-          themeProvider: themeProvider,
-          margin: const EdgeInsets.symmetric(vertical: 3),
+        const CustomDivider(
+          margin: EdgeInsets.symmetric(vertical: 3),
         ),
         InkWell(
           onTap: () async {
@@ -139,9 +137,8 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
             ],
           ),
         ),
-        CustomDivider(
-          themeProvider: themeProvider,
-          margin: const EdgeInsets.symmetric(vertical: 3),
+        const CustomDivider(
+          margin: EdgeInsets.symmetric(vertical: 3),
         ),
         InkWell(
           onTap: () async {
@@ -167,9 +164,8 @@ class _FilterPageSheetState extends ConsumerState<FilterPageSheet> {
             ],
           ),
         ),
-        CustomDivider(
-          themeProvider: themeProvider,
-          margin: const EdgeInsets.symmetric(vertical: 3),
+        const CustomDivider(
+          margin: EdgeInsets.symmetric(vertical: 3),
         ),
         InkWell(
           onTap: () async {

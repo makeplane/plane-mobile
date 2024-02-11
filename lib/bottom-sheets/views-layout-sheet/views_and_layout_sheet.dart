@@ -16,7 +16,7 @@ class ViewsAndLayoutSheet extends ConsumerStatefulWidget {
   const ViewsAndLayoutSheet(
       {required this.issuesProvider, required this.issueCategory, super.key});
   final ABaseIssuesProvider issuesProvider;
-  final IssueCategory issueCategory;
+  final IssuesCategory issueCategory;
   @override
   ConsumerState<ViewsAndLayoutSheet> createState() =>
       _ViewsAndLayoutSheetState();

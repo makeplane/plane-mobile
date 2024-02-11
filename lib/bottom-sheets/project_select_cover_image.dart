@@ -9,7 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/services/dio_service.dart';
+import 'package:plane/core/dio/dio_service.dart';
 import 'package:plane/utils/custom_toast.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/widgets/custom_button.dart';
@@ -86,7 +86,7 @@ class _SelectCoverImageState extends ConsumerState<SelectCoverImage> {
           ? 'https://api/unsplash/&page=$page&per_page=$perPage'
           : 'https://api.unsplash/&query=${searchController.text}&page=$page&per_page=$perPage ';
       log(url);
-      final response = await DioConfig().dioServe(
+      final response = await DioClient().request(
         hasAuth: false,
         url: url,
         hasBody: false,

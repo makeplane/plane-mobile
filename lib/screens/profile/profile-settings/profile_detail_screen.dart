@@ -85,7 +85,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
           text: 'General',
         ),
         body: LoadingWidget(
-          loading: profileProvider.updateProfileState == StateEnum.loading,
+          loading: profileProvider.updateProfileState == DataState.loading,
           widgetClass:
               LayoutBuilder(builder: (context, BoxConstraints constraints) {
             return SafeArea(
@@ -132,7 +132,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                                               ),
                                               fileUploadProvider
                                                           .fileUploadState ==
-                                                      StateEnum.loading
+                                                      DataState.loading
                                                   ? Container(
                                                       height: 100,
                                                       width: 100,
@@ -706,7 +706,7 @@ class _ProfileDetailScreenState extends ConsumerState<ProfileDetailScreen> {
                               },
                             );
                             if (profileProvider.updateProfileState ==
-                                StateEnum.success) {
+                                DataState.success) {
                               Navigator.pop(Const.globalKey.currentContext!);
 
                               CustomToast.showToast(screenContext,

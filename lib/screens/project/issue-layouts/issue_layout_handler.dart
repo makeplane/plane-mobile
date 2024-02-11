@@ -29,7 +29,7 @@ class _IssueLayoutState extends ConsumerState<IssueLayoutHandler> {
   @override
   Widget build(BuildContext context) {
     return widget.issuesState.rawIssues.isEmpty &&
-            widget.issuesState.fetchIssuesState == StateEnum.success
+            widget.issuesState.fetchIssuesState == DataState.success
         ? EmptyPlaceholder.emptyIssues(context, ref: ref)
         : widget.issueLayout == IssuesLayout.list
             ? ListLayoutRoot(
@@ -50,7 +50,7 @@ class _IssueLayoutState extends ConsumerState<IssueLayoutHandler> {
                     : SpreadSheetView(
                         issues: widget.issues,
                         issuesProvider: widget.issuesProvider,
-                        issueCategory: IssueCategory.projectIssues,
+                        issueCategory: IssuesCategory.PROJECT,
                       );
   }
 }

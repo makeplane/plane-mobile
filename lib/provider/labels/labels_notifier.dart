@@ -1,103 +1,121 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plane/models/Project/Label/label.model.dart';
+import 'package:plane/core/exception/plane_exception.dart';
+import 'package:plane/models/project/label/label.model.dart';
 import 'package:plane/provider/provider_list.dart';
-import 'package:plane/repository/labels.service.dart';
+import 'package:plane/repository/labels.repository.dart';
 import 'package:plane/utils/enums.dart';
 import 'package:plane/utils/global_functions.dart';
 import 'labels_state.dart';
 
 class LabelNotifier extends StateNotifier<LabelState> {
-  LabelNotifier(this.ref, this._labelsService) : super(LabelState.initialize());
+  LabelNotifier(this.ref, this._labelRepository)
+      : super(LabelState.initialize());
   // Ref for accessing other providers
   final Ref ref;
-  // Labels Service
-  final LabelsService _labelsService;
+  // Label repository
+  final LabelRepository _labelRepository;
 
-  // Get Label by Id
+  // Returns the label from label-id
   LabelModel? getLabelById(String id) {
     return state.projectLabels[id];
   }
 
-  // Get List of Label IDs I
-  List<String> getLabelIds() {
-    return state.projectLabels.keys.toList();
-  }
+  // Returns the list of label ids I
+  List<String> get getLabelIds => state.projectLabels.keys.toList();
 
-  // Get Project Labels
-  Future getProjectLabels() async {
-    state = state.copyWith(labelState: StateEnum.loading);
+  // Fetches project labels and store it in provider.
+  Future<Either<PlaneException, Map<String, LabelModel>>>
+      getProjectLabels() async {
+    state = state.copyWith(labelState: DataState.loading);
     final projectID =
         ref.read(ProviderList.projectProvider).currentProject['id'];
     final slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
-    final response = await _labelsService.getProjectLabels(slug, projectID);
-    response.fold(
+    final response = await _labelRepository.getProjectLabels(slug, projectID);
+    return response.fold(
+      (err) {
+        state = state.copyWith(labelState: DataState.error);
+        return Left(err);
+      },
       (labels) {
         state = state.copyWith(
-            projectLabels: labels, labelState: StateEnum.success);
-      },
-      (err) {
-        state = state.copyWith(labelState: StateEnum.error);
+            projectLabels: labels, labelState: DataState.success);
+        return Right(labels);
       },
     );
   }
 
-  // Get Workspace Labels
-  Future getWorkspaceLabels() async {
-    state = state.copyWith(labelState: StateEnum.loading);
+  // Fetches workspace labels and store it in provider.
+  Future<Either<PlaneException, Map<String, LabelModel>>>
+      getWorkspaceLabels() async {
+    state = state.copyWith(labelState: DataState.loading);
     final slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
-    final response = await _labelsService.getProjectLabels(slug, '');
-    response.fold(
+    final response = await _labelRepository.getProjectLabels(slug, '');
+    return response.fold(
+      (err) {
+        state = state.copyWith(labelState: DataState.error);
+        return Left(err);
+      },
       (labels) {
         state = state.copyWith(
-            workspaceLabels: labels, labelState: StateEnum.success);
-      },
-      (err) {
-        state = state.copyWith(labelState: StateEnum.error);
+            workspaceLabels: labels, labelState: DataState.success);
+        return Right(labels);
       },
     );
   }
 
-  // Create Label
-  Future createLabel(Map<String, dynamic> payload) async {
-    state = state.copyWith(labelState: StateEnum.loading);
+  /// Creates new label and adds it in [projectLabels]
+  ///
+  Future<Either<PlaneException, LabelModel>> createLabel(
+      Map<String, dynamic> payload) async {
+    state = state.copyWith(labelState: DataState.loading);
     final slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     final projectID =
         ref.read(ProviderList.projectProvider).currentProject['id'];
-    final response = await _labelsService.createLabel(slug, projectID, payload);
-    response.fold(
+    final response =
+        await _labelRepository.createLabel(slug, projectID, payload);
+    return response.fold(
+      (err) {
+        state = state.copyWith(labelState: DataState.error);
+        return Left(err);
+      },
       (label) {
         state = state.copyWith(projectLabels: {
           ...state.projectLabels,
           label.id: label,
-        }, labelState: StateEnum.success);
+        }, labelState: DataState.success);
         sendPostHogEvent(method: CRUD.create, labelID: label.id);
-      },
-      (err) {
-        state = state.copyWith(labelState: StateEnum.error);
+        return Right(label);
       },
     );
   }
 
   // Update Label
-  Future updateLabel(Map<String, dynamic> payload) async {
-    state = state.copyWith(labelState: StateEnum.loading);
+  Future<Either<PlaneException, LabelModel>> updateLabel(
+      Map<String, dynamic> payload) async {
+    state = state.copyWith(labelState: DataState.loading);
     final slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     final projectID =
         ref.read(ProviderList.projectProvider).currentProject['id'];
-    final response = await _labelsService.updateLabel(slug, projectID, payload);
-    response.fold(
+    final response =
+        await _labelRepository.updateLabel(slug, projectID, payload);
+    return response.fold(
+      (err) {
+        state = state.copyWith(labelState: DataState.error);
+        return Left(err);
+      },
       (label) {
         final projectLabels = state.projectLabels;
         projectLabels[label.id] = LabelModel.fromJson({
@@ -105,36 +123,37 @@ class LabelNotifier extends StateNotifier<LabelState> {
           ...label.toJson(),
         });
         state = state.copyWith(
-            projectLabels: projectLabels, labelState: StateEnum.success);
+            projectLabels: projectLabels, labelState: DataState.success);
         sendPostHogEvent(method: CRUD.update, labelID: label.id);
-      },
-      (err) {
-        state = state.copyWith(labelState: StateEnum.error);
+        return Right(label);
       },
     );
   }
 
   // Delete Label
-  Future deleteLabel(String labelID) async {
-    state = state.copyWith(labelState: StateEnum.loading);
+  Future<Either<PlaneException, void>> deleteLabel(String labelID) async {
+    state = state.copyWith(labelState: DataState.loading);
     final slug = ref
         .read(ProviderList.workspaceProvider)
         .selectedWorkspace
         .workspaceSlug;
     final projectID =
         ref.read(ProviderList.projectProvider).currentProject['id'];
-    final response = await _labelsService.deleteLabel(slug, projectID, labelID);
-    response.fold(
+    final response =
+        await _labelRepository.deleteLabel(slug, projectID, labelID);
+    return response.fold(
+      (err) {
+        state = state.copyWith(labelState: DataState.error);
+        return Left(err);
+      },
       (label) {
         state = state.copyWith(
             projectLabels: state.projectLabels..remove(labelID),
-            labelState: StateEnum.success);
-      },
-      (err) {
-        state = state.copyWith(labelState: StateEnum.error);
+            labelState: DataState.success);
+        sendPostHogEvent(method: CRUD.delete, labelID: labelID);
+        return const Right(null);
       },
     );
-    sendPostHogEvent(method: CRUD.delete, labelID: labelID);
   }
 
   // SEND POSTHOG EVENT
@@ -154,8 +173,8 @@ class LabelNotifier extends StateNotifier<LabelState> {
           'WORKSPACE_ID': workspaceProvider.selectedWorkspace.workspaceId,
           'WORKSPACE_SLUG': workspaceProvider.selectedWorkspace.workspaceSlug,
           'WORKSPACE_NAME': workspaceProvider.selectedWorkspace.workspaceName,
-          'PROJECT_ID': projectProvider.projectDetailModel!.id,
-          'PROJECT_NAME': projectProvider.projectDetailModel!.name,
+          'PROJECT_ID': projectProvider.currentprojectDetails!.id,
+          'PROJECT_NAME': projectProvider.currentprojectDetails!.name,
           'LABEL_ID': labelID
         },
         userEmail: profileProvider.userProfile.email ?? '',

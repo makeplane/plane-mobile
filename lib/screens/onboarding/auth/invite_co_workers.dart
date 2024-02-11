@@ -45,8 +45,8 @@ class _InviteCOWorkersState extends ConsumerState<InviteCOWorkers> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: LoadingWidget(
-          loading: prov.workspaceInvitationState == StateEnum.loading ||
-              prov.workspaceInvitationState == StateEnum.loading,
+          loading: prov.workspaceInvitationState == DataState.loading ||
+              prov.workspaceInvitationState == DataState.loading,
           widgetClass: SafeArea(
             child: SingleChildScrollView(
               child: Container(

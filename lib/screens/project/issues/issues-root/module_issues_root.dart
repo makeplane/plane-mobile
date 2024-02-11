@@ -22,7 +22,7 @@ class _ModuleIssuesRootState extends ConsumerState<ModuleIssuesRoot> {
         ref.read(ProviderList.projectIssuesProvider.notifier).issuesLayout;
 
     return LoadingWidget(
-        loading: projectIssuesState.fetchIssuesState == StateEnum.loading,
+        loading: projectIssuesState.fetchIssuesState == DataState.loading,
         widgetClass: IssueLayoutHandler(
           issueLayout: issuesLayout,
           issuesProvider: issueProvider,

@@ -1,10 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plane/core/exception/plane_exception.dart';
 import 'package:plane/kanban/models/inputs.dart';
-import 'package:plane/models/current_route_detail.dart';
 import 'package:plane/models/project/issue-filter-properties-and-view/issue_filter_and_properties.dart';
 import 'package:plane/models/project/layout-properties/layout_properties.model.dart';
 import 'package:plane/provider/issues/base-classes/base_issues_provider.dart';
@@ -45,6 +44,9 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
       state.layoutProperties.display_properties;
 
   @override
+  FiltersModel get appliedFilters => state.layoutProperties.filters;
+
+  @override
   IssuesLayout get issuesLayout => IssuesConverter.fromStringToIssuesLayout(
       state.layoutProperties.display_filters.layout);
 
@@ -71,78 +73,66 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
   }
 
   @override
-  Future<Either<DioException, IssueModel>> createIssue(
+  Future<Either<PlaneException, IssueModel>> createIssue(
       IssueModel payload) async {
-    final String projectId =
-        ref.read(ProviderList.projectProvider).currentProject['id'];
-    final String workspaceSlug = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace
-        .workspaceSlug;
-    state = state.copyWith(createIssueState: StateEnum.loading);
+    final workspaceSlug = ref.read(ProviderList.workspaceProvider).slug;
+    final projectId = ref.read(ProviderList.projectProvider).currentProjectId;
+    state = state.copyWith(createIssueState: DataState.loading);
     final result = await _projectIssuesRepository.createIssue(
-        projectId, workspaceSlug, payload);
+        workspaceSlug, projectId, payload);
     final issues = state.rawIssues;
     return result.fold((err) {
-      state = state.copyWith(createIssueState: StateEnum.error);
+      state = state.copyWith(createIssueState: DataState.error);
       return Left(err);
     }, (issue) {
       issues.addEntries([MapEntry(issue.id, issue)]);
       state = state.copyWith(
-          createIssueState: StateEnum.success, rawIssues: issues);
+          createIssueState: DataState.success, rawIssues: issues);
       return Right(issue);
     });
   }
 
   @override
-  Future<Either<DioException, void>> deleteIssue(String issueId) async {
-    final String projectId =
-        ref.read(ProviderList.projectProvider).currentProject['id'];
-    final String workspaceSlug = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace
-        .workspaceSlug;
-    state = state.copyWith(createIssueState: StateEnum.loading);
+  Future<Either<PlaneException, void>> deleteIssue(String issueId) async {
+    final workspaceSlug = ref.read(ProviderList.workspaceProvider).slug;
+    final projectId = ref.read(ProviderList.projectProvider).currentProjectId;
+    state = state.copyWith(createIssueState: DataState.loading);
     final result = await _projectIssuesRepository.deleteIssue(
-        projectId, workspaceSlug, issueId);
+        workspaceSlug, projectId, issueId);
     final issues = state.rawIssues;
     return result.fold((err) {
-      state = state.copyWith(createIssueState: StateEnum.error);
+      state = state.copyWith(createIssueState: DataState.error);
       return Left(err);
     }, (issue) {
       issues.remove(issueId);
       state = state.copyWith(
-          createIssueState: StateEnum.success, rawIssues: issues);
+          createIssueState: DataState.success, rawIssues: issues);
       return const Right(null);
     });
   }
 
   @override
-  Future<Either<DioException, IssueModel>> updateIssue(
+  Future<Either<PlaneException, IssueModel>> updateIssue(
       IssueModel payload) async {
-    final String projectId =
-        ref.read(ProviderList.projectProvider).currentProject['id'];
-    final String workspaceSlug = ref
-        .read(ProviderList.workspaceProvider)
-        .selectedWorkspace
-        .workspaceSlug;
+    final workspaceSlug = ref.read(ProviderList.workspaceProvider).slug;
+    final projectId = ref.read(ProviderList.projectProvider).currentProjectId;
     final result = await _projectIssuesRepository.updateIssue(
-        projectId, workspaceSlug, payload);
+        workspaceSlug, projectId, payload);
     final issues = state.rawIssues;
     return result.fold((err) {
-      state = state.copyWith(createIssueState: StateEnum.error);
+      state = state.copyWith(createIssueState: DataState.error);
       return Left(err);
     }, (issue) {
       issues[issue.id] = issue;
       state = state.copyWith(
-          createIssueState: StateEnum.success, rawIssues: issues);
+          createIssueState: DataState.success, rawIssues: issues);
       return Right(issue);
     });
   }
 
   Map<String, List<IssueModel>> _getIssuesOrganized(List<IssueModel> issues) {
     return IssuesHelper.organizeIssues(issues, group_by, order_by,
-        labelIDs: ref.read(ProviderList.labelProvider.notifier).getLabelIds(),
+        labelIDs: ref.read(ProviderList.labelProvider.notifier).getLabelIds,
         memberIDs: ref
             .read(ProviderList.projectProvider)
             .projectMembers
@@ -164,8 +154,10 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
   }
 
   @override
-  Future<Either<DioException, Map<String, IssueModel>>> fetchIssues() async {
-    state = state.copyWith(fetchIssuesState: StateEnum.loading);
+  Future<Either<PlaneException, Map<String, IssueModel>>> fetchIssues() async {
+    final workspaceSlug = ref.read(ProviderList.workspaceProvider).slug;
+    final projectId = ref.read(ProviderList.projectProvider).currentProjectId;
+    state = state.copyWith(fetchIssuesState: DataState.loading);
 
     /// prepare [query] params
     String query =
@@ -174,18 +166,16 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
 
     /// fetch project-issues from api
     final result = await _projectIssuesRepository.fetchIssues(
-        currentRouteDetails.workspaceSlug!,
-        currentRouteDetails.projectId!,
-        query);
+        workspaceSlug, projectId, query);
 
     return result.fold((err) {
-      state = state.copyWith(fetchIssuesState: StateEnum.error);
+      state = state.copyWith(fetchIssuesState: DataState.error);
       return Left(err);
     }, (issues) async {
       /// if layout is [kanban] then organize issues in board format, else organize in group format
       final currentLayoutIssues = _getIssuesOrganized(issues.values.toList());
       state = state.copyWith(
-        fetchIssuesState: StateEnum.success,
+        fetchIssuesState: DataState.success,
         rawIssues: issues,
         currentLayoutIssues: currentLayoutIssues,
         kanbanOrganizedIssues: layout == IssuesLayout.kanban
@@ -197,30 +187,34 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
   }
 
   @override
-  Future<Either<DioException, LayoutPropertiesModel>>
+  Future<Either<PlaneException, LayoutPropertiesModel>>
       fetchLayoutProperties() async {
+    final workspaceSlug = ref.read(ProviderList.workspaceProvider).slug;
+    final projectId = ref.read(ProviderList.projectProvider).currentProjectId;
     state = state.copyWith(
-        fetchIssueLayoutViewState: StateEnum.loading,
-        fetchIssuesState: StateEnum.loading);
+        fetchIssueLayoutViewState: DataState.loading,
+        fetchIssuesState: DataState.loading);
     final result = await _projectIssuesRepository.fetchLayoutProperties(
-        currentRouteDetails.workspaceSlug!, currentRouteDetails.projectId!);
+        workspaceSlug, projectId);
     return result.fold((err) {
-      state = state.copyWith(fetchIssueLayoutViewState: StateEnum.error);
+      state = state.copyWith(fetchIssueLayoutViewState: DataState.error);
       return Left(err);
     }, (layoutProperties) {
       state = state.copyWith(
-          fetchIssueLayoutViewState: StateEnum.success,
+          fetchIssueLayoutViewState: DataState.success,
           layoutProperties: layoutProperties);
       return Right(layoutProperties);
     });
   }
 
   @override
-  Future<Either<DioException, LayoutPropertiesModel>> updateLayoutProperties(
+  Future<Either<PlaneException, LayoutPropertiesModel>> updateLayoutProperties(
       LayoutPropertiesModel payload) async {
+    final workspaceSlug = ref.read(ProviderList.workspaceProvider).slug;
+    final projectId = ref.read(ProviderList.projectProvider).currentProjectId;
+
     /// if layout is updated to [kanban] from any other layout
     /// then organize issues in board format
-
     state = state.copyWith(layoutProperties: payload);
     final currentLayoutIssues =
         _getIssuesOrganized(state.rawIssues.values.toList());
@@ -232,11 +226,9 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
         layoutProperties: payload);
 
     final result = await _projectIssuesRepository.updateLayoutProperties(
-        currentRouteDetails.workspaceSlug!,
-        currentRouteDetails.projectId!,
-        payload);
+        workspaceSlug, projectId, payload);
     return result.fold((err) {
-      state = state.copyWith(fetchIssueLayoutViewState: StateEnum.error);
+      state = state.copyWith(fetchIssueLayoutViewState: DataState.error);
       return Left(err);
     }, (layoutProperties) {
       return Right(layoutProperties);
@@ -247,8 +239,7 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
   void applyIssueLayoutView() {
     final projectMembers =
         ref.read(ProviderList.projectProvider).projectMembers;
-    final labelIds =
-        ref.read(ProviderList.labelProvider.notifier).getLabelIds();
+    final labelIds = ref.read(ProviderList.labelProvider.notifier).getLabelIds;
     final states = ref.read(ProviderList.statesProvider).projectStates;
 
     state = state.copyWith(
@@ -282,5 +273,5 @@ class ProjectIssuesNotifier extends StateNotifier<ProjectIssuesState>
   }
 
   @override
-  IssueCategory get category => IssueCategory.projectIssues;
+  IssuesCategory get category => IssuesCategory.PROJECT;
 }

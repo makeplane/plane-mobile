@@ -21,15 +21,15 @@ class _ControlPageState extends ConsumerState<ControlPage> {
       (_) async {
         final projectProvider = ref.read(ProviderList.projectProvider);
         projectProvider.lead.text =
-            (projectProvider.projectDetailModel!.projectLead == null
+            (projectProvider.currentprojectDetails!.projectLead == null
                 ? ''
                 : projectProvider
-                    .projectDetailModel!.projectLead!['display_name']);
+                    .currentprojectDetails!.projectLead!['display_name']);
         projectProvider.assignee.text =
-            projectProvider.projectDetailModel!.defaultAssignee == null
+            projectProvider.currentprojectDetails!.defaultAssignee == null
                 ? ''
                 : projectProvider
-                    .projectDetailModel!.defaultAssignee!['display_name'];
+                    .currentprojectDetails!.defaultAssignee!['display_name'];
       },
     );
   }
@@ -84,16 +84,16 @@ class _ControlPageState extends ConsumerState<ControlPage> {
                           return ProjectLeadAssigneeSheet(
                             title: 'Lead ',
                             leadId: projectProvider
-                                        .projectDetailModel!.projectLead !=
+                                        .currentprojectDetails!.projectLead !=
                                     null
                                 ? projectProvider
-                                    .projectDetailModel!.projectLead!['id']
+                                    .currentprojectDetails!.projectLead!['id']
                                 : '',
-                            assigneId: projectProvider
-                                        .projectDetailModel!.defaultAssignee !=
+                            assigneId: projectProvider.currentprojectDetails!
+                                        .defaultAssignee !=
                                     null
-                                ? projectProvider
-                                    .projectDetailModel!.defaultAssignee!['id']
+                                ? projectProvider.currentprojectDetails!
+                                    .defaultAssignee!['id']
                                 : '',
                           );
                         },
@@ -203,17 +203,17 @@ class _ControlPageState extends ConsumerState<ControlPage> {
                         builder: (ctx) {
                           return ProjectLeadAssigneeSheet(
                             title: 'Assignee ',
-                            assigneId: projectProvider
-                                        .projectDetailModel!.defaultAssignee !=
+                            assigneId: projectProvider.currentprojectDetails!
+                                        .defaultAssignee !=
                                     null
-                                ? projectProvider
-                                    .projectDetailModel!.defaultAssignee!['id']
+                                ? projectProvider.currentprojectDetails!
+                                    .defaultAssignee!['id']
                                 : '',
                             leadId: projectProvider
-                                        .projectDetailModel!.projectLead !=
+                                        .currentprojectDetails!.projectLead !=
                                     null
                                 ? projectProvider
-                                    .projectDetailModel!.projectLead!['id']
+                                    .currentprojectDetails!.projectLead!['id']
                                 : '',
                           );
                         },
